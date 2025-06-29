@@ -3,3 +3,4 @@ tkinter designer
 tkinter
 pillow
 webbrowser
+tkextrafont
