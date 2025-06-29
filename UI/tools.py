@@ -1,42 +1,25 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label
-from PIL import Image, ImageTk
-import time
+from tkinter import Label, PhotoImage
 
+def relative_to_assets(path: str) -> Path:
+    output_path = Path(__file__).parent
+    assets_path = output_path / "TKassets" / "TelaInicial"
+    return assets_path / Path(path)
 
-def relative_to_assets(ASSETS_PATH, OUTPUT_PATH, path: str) -> Path:
-    return ASSETS_PATH / Path(path)
-
-
-def fade_out(callback, steps=10, delay=30):
-    base_img = Image.new("RGBA", (1280, 720), (0, 0, 0, 0))
-    overlay_label = Label(window, bg="", borderwidth=0)
+def fade_out(window, canvas, callback, steps=10, delay=20):
+    overlay_label = Label(window, bg="#45312C", borderwidth=0)
     overlay_label.place(x=0, y=0, relwidth=1, relheight=1)
+    overlay_label.lower(canvas)
+    
+    fade_step(window, overlay_label, 0, steps, delay, callback)
 
-    # Armazena imagens em lista para evitar garbage collection
-    fade_out.imgs = []
-    # Começa a animação
-    fade_step(0, steps, delay, callback, overlay_label)
-
-
-def fade_step(step, steps, delay, callback, overlay_label):
+def fade_step(window, label, step, steps, delay, callback):
     if step > steps:
-        overlay_label.destroy()
-        callback()
+        label.destroy()
+        if callback:
+            callback()
         return
 
-    alpha = int(255 * (step / steps))
-    img = Image.new("RGBA", (1280, 720), (0, 0, 0, alpha))
-    photo = ImageTk.PhotoImage(img)
-    fade_out.imgs.append(photo)  # impede o GC de deletar a imagem
-    overlay_label.config(image=photo)
-
-    window.after(delay, lambda: fade_step(step + 1, steps, delay, callback, overlay_label))
-
-
-def limpar_janela():
-    # Remove todos os widgets do canvas
-    for widget in window.winfo_children():
-        if widget != canvas: # Não remova o canvas principal
-            widget.destroy()
-    canvas.delete("all") # Limpa todos os itens desenhados no canvas (imagens, textos)
+    label.lift()
+    
+    window.after(delay, lambda: fade_step(window, label, step + 1, steps, delay, callback))
