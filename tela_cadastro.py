@@ -29,7 +29,6 @@ def _selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
-
 def criar_tela_cadastro(window, canvas):
     tools.limpar_tela(canvas)
     canvas.configure(bg="#EADFC8")
@@ -317,7 +316,7 @@ def criar_tela_cadastro(window, canvas):
         fill="#EED3B2",
         font=("Poppins Black", 24 * -1)
     )
-
+    
     canvas.create_text(
         588.0,
         70.0,
@@ -339,8 +338,9 @@ def criar_tela_cadastro(window, canvas):
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#000716",
-        highlightthickness=0
+        fg="#44302C",
+        highlightthickness=0,
+        font=("Poppins", 18)
     )
     entry_1.place(
         x=489.0,
@@ -361,8 +361,9 @@ def criar_tela_cadastro(window, canvas):
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#000716",
-        highlightthickness=0
+        fg="#44302C",
+        highlightthickness=0,
+        font=("Poppins", 18)
     )
     entry_2.place(
         x=489.0,
@@ -383,8 +384,10 @@ def criar_tela_cadastro(window, canvas):
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#000716",
-        highlightthickness=0
+        fg="#44302C",
+        highlightthickness=0,
+        font=("Poppins", 18),
+        show="*"
     )
     entry_3.place(
         x=489.0,
@@ -405,8 +408,10 @@ def criar_tela_cadastro(window, canvas):
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#000716",
-        highlightthickness=0
+        fg="#44302C",
+        highlightthickness=0,
+        font=("Poppins", 18),
+        show="*"
     )
     entry_4.place(
         x=489.0,

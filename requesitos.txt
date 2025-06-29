@@ -1,5 +1,5 @@
 setuptools
-tkinter designer
+tkinter designer (opcional )
 tkinter
 pillow
 webbrowser

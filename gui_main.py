@@ -2,6 +2,7 @@ from tkinter import Tk, Canvas, PhotoImage
 from pathlib import Path
 from tkextrafont import Font
 import tela_inicial
+from modulos import usercrud
 
 window = Tk()
 window.title("P.A.T.A.S")
@@ -19,7 +20,6 @@ except Exception as e:
     print(f"Erro ao carregar fontes: {e}. A usar fontes padrão.")
     window.font_poppins_regular = ("Arial", 18)
     window.font_poppins_black = ("Arial", 24, "bold")
-
 
 icon_path = Path(__file__).parent / "TKassets" / "pata_256.png"
 icon = PhotoImage(
