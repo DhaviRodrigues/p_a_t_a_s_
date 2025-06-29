@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 import time
 
 
-def relative_to_assets(path: str) -> Path:
+def relative_to_assets(ASSETS_PATH, OUTPUT_PATH, path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
 

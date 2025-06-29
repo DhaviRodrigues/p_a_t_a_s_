@@ -8,7 +8,6 @@ import tela_cadastro
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "TKassets" / "TelaInicial"
 
-
 window = Tk()
 
 window.geometry("1280x720")
@@ -27,7 +26,7 @@ canvas = Canvas(
 def tela_inicial():
     canvas.place(x = 0, y = 0)
     image_image_1 = PhotoImage(
-        file=tools.relative_to_assets("image_1.png"))
+        file=tools.relative_to_assets(ASSETS_PATH, OUTPUT_PATH, "image_1.png"))
     image_1 = canvas.create_image(
         640.0,
         360.0,
@@ -35,7 +34,7 @@ def tela_inicial():
     )
 
     button_image_1 = PhotoImage(
-        file=tools.relative_to_assets("button_1.png"))
+        file=tools.relative_to_assets(ASSETS_PATH, OUTPUT_PATH,"button_1.png"))
     button_1 = Button(
         image=button_image_1,
         borderwidth=0,
@@ -51,7 +50,7 @@ def tela_inicial():
     )
 
     button_image_2 = PhotoImage(
-        file=tools.relative_to_assets("button_2.png"))
+        file=tools.relative_to_assets(ASSETS_PATH, OUTPUT_PATH,"button_2.png"))
     button_2 = Button(
         image=button_image_2,
         borderwidth=0,
