@@ -1,6 +1,7 @@
 from pathlib import Path
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
-
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, Label
+from PIL import Image, ImageTk
+import time
 
 OUTPUT_PATH = Path(__file__).parent
 ASSETS_PATH = OUTPUT_PATH / "TKassets" / "UI"
@@ -9,22 +10,33 @@ ASSETS_PATH = OUTPUT_PATH / "TKassets" / "UI"
 def relative_to_assets(path: str) -> Path:
     return ASSETS_PATH / Path(path)
 
-import time
 
-def fade_out(window, step=0.05, delay=50, on_complete=None):
-    alpha = 1.0
-    def step_fade():
-        nonlocal alpha
-        alpha -= step
-        if alpha <= 0:
-            alpha = 0
-            window.attributes("-alpha", alpha)
-            if on_complete:
-                on_complete()
-            return
-        window.attributes("-alpha", alpha)
-        window.after(delay, step_fade)
-    step_fade()
+
+def fade_out(callback, steps=10, delay=30):
+    base_img = Image.new("RGBA", (1280, 720), (0, 0, 0, 0))
+    overlay_label = Label(window, bg="", borderwidth=0)
+    overlay_label.place(x=0, y=0, relwidth=1, relheight=1)
+
+    # Armazena imagens em lista para evitar garbage collection
+    fade_out.imgs = []
+    # Começa a animação
+    fade_step(0, steps, delay, callback, overlay_label)
+
+
+def fade_step(step, steps, delay, callback, overlay_label):
+    if step > steps:
+        overlay_label.destroy()
+        callback()
+        return
+
+    alpha = int(255 * (step / steps))
+    img = Image.new("RGBA", (1280, 720), (0, 0, 0, alpha))
+    photo = ImageTk.PhotoImage(img)
+    fade_out.imgs.append(photo)  # impede o GC de deletar a imagem
+    overlay_label.config(image=photo)
+
+    window.after(delay, lambda: fade_step(step + 1, steps, delay, callback, overlay_label))
+
 
 def limpar_janela():
     # Remove todos os widgets do canvas
@@ -50,7 +62,7 @@ def tela_inicial():
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tela_cadastro(),
+        command=lambda:tela_cadastro(),
         relief="flat"
     )
     button_1.place(
@@ -87,8 +99,10 @@ def tela_inicial():
     window.resizable(False, False)
     window.mainloop()
 
+
 def tela_cadastro():
     limpar_janela()
+    window.attributes("-alpha", 1.0)
 
 
 window = Tk()
@@ -99,7 +113,7 @@ window.configure(bg = "#45312C")
 
 canvas = Canvas(
     window,
-    bg = "#FFFFFF",
+    bg = "#45312C",
     height = 720,
     width = 1280,
     bd = 0,
@@ -108,3 +122,4 @@ canvas = Canvas(
 )
 
 tela_inicial()
+window.mainloop()

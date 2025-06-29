@@ -1,3 +1,4 @@
 setuptools
 tkinter designer
 tkinter
+pillow
