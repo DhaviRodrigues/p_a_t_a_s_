@@ -9,13 +9,15 @@ class Usuario:
         self.nome = nome
         self.email = email
         self.senha = senha
+        self.icone = icone
     
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
         return {
             "id": self.id,
             "nome": self.nome,
             "email": self.email,
-            "senha": self.senha
+            "senha": self.senha,
+            "icone": self.icone
         }
 
 def cadastrar_usuario(nome, email, senha, confirma_senha, icone):

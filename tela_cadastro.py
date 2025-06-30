@@ -1,6 +1,7 @@
-from tkinter import Button, PhotoImage, Entry
+from tkinter import Button, PhotoImage, Entry, messagebox
 import tela_inicial
 import tools
+from modulos import usercrud
 
 user_icon = None
 
@@ -29,6 +30,22 @@ def _selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
+def _tentar_cadastro(entries):
+    nome = entries['nome'].get()
+    email = entries['email'].get()
+    senha = entries['senha'].get()
+    confirma_senha = entries['confirma_senha'].get()
+
+    resultado = usercrud.cadastrar_usuario(nome, email, senha, confirma_senha, user_icon)
+
+    if resultado is True:
+        messagebox.showinfo("Cadastro Concluído", f"Bem-vindo(a), {nome}! O seu cadastro foi realizado com sucesso.")
+        for entry in entries.values():
+            entry.delete(0, 'end')
+    else:
+        messagebox.showerror("Erro de Cadastro", resultado)
+
+
 def criar_tela_cadastro(window, canvas):
     tools.limpar_tela(canvas)
     canvas.configure(bg="#EADFC8")
@@ -50,7 +67,7 @@ def criar_tela_cadastro(window, canvas):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=lambda: _tentar_cadastro(entries),
         relief="flat"
     )
     button_1.place(
@@ -77,7 +94,7 @@ def criar_tela_cadastro(window, canvas):
         width=67.0,
         height=73.0
     )
-
+    
     canvas.icon_images = []
 
     icon_image_3 = PhotoImage(
@@ -278,7 +295,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Nome:",
         fill="#44302C",
-        font=("Poppins Black", 24 * -1)
+        font=(window.font_poppins_black, 24 * -1)
     )
 
     canvas.create_text(
@@ -287,7 +304,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Email:",
         fill="#44302C",
-        font=("Poppins Black", 24 * -1)
+        font=(window.font_poppins_black, 24 * -1)
     )
 
     canvas.create_text(
@@ -296,7 +313,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Senha:",
         fill="#44302C",
-        font=("Poppins Black", 24 * -1)
+        font=(window.font_poppins_black, 24 * -1)
     )
 
     canvas.create_text(
@@ -305,7 +322,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Confirme sua senha:",
         fill="#44302C",
-        font=("Poppins Black", 24 * -1)
+        font=(window.font_poppins_black, 24 * -1)
     )
 
     canvas.create_text(
@@ -314,7 +331,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Escolha um ícone \n               de perfil ",
         fill="#EED3B2",
-        font=("Poppins Black", 24 * -1)
+        font=(window.font_poppins_black, 24 * -1)
     )
     
     canvas.create_text(
@@ -323,99 +340,74 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Preencha as informações: ",
         fill="#44312D",
-        font=("Poppins Black", 36 * -1)
+        font=(window.font_poppins_black, 36 * -1)
     )
 
-    canvas.entry_image_1 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "entry_1.png")
-    )
-    canvas.create_image(
-        836.0,
-        200.0,
-        image=canvas.entry_image_1
-    )
-    entry_1 = Entry(
+    entry_nome = Entry(
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#44302C",
+        fg="#000716",
         highlightthickness=0,
-        font=("Poppins", 18)
+        font=(window.font_poppins_regular, 18)
     )
-    entry_1.place(
+    entry_nome.place(
         x=489.0,
         y=171.0,
         width=694.0,
         height=56.0
     )
 
-    canvas.entry_image_2 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "entry_2.png")
-    )
-    canvas.create_image(
-        836.0,
-        316.0,
-        image=canvas.entry_image_2
-    )
-    entry_2 = Entry(
+    entry_email = Entry(
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#44302C",
+        fg="#000716",
         highlightthickness=0,
-        font=("Poppins", 18)
+        font=(window.font_poppins_regular, 18)
     )
-    entry_2.place(
+    entry_email.place(
         x=489.0,
         y=287.0,
         width=694.0,
         height=56.0
     )
 
-    canvas.entry_image_3 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "entry_3.png")
-    )
-    canvas.create_image(
-        836.0,
-        432.0,
-        image=canvas.entry_image_3
-    )
-    entry_3 = Entry(
+    entry_senha = Entry(
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#44302C",
+        fg="#000716",
         highlightthickness=0,
-        font=("Poppins", 18),
+        font=(window.font_poppins_regular, 18),
         show="*"
     )
-    entry_3.place(
+    entry_senha.place(
         x=489.0,
         y=403.0,
         width=694.0,
         height=56.0
     )
 
-    canvas.entry_image_4 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "entry_4.png")
-    )
-    canvas.create_image(
-        836.0,
-        548.0,
-        image=canvas.entry_image_4
-    )
-    entry_4 = Entry(
+    entry_confirma_senha = Entry(
         canvas,
         bd=0,
         bg="#FFFFFF",
-        fg="#44302C",
+        fg="#000716",
         highlightthickness=0,
-        font=("Poppins", 18),
+        font=(window.font_poppins_regular, 18),
         show="*"
     )
-    entry_4.place(
+    entry_confirma_senha.place(
         x=489.0,
         y=519.0,
         width=694.0,
         height=56.0
     )
+
+    entries = {
+        "nome": entry_nome,
+        "email": entry_email,
+        "senha": entry_senha,
+        "confirma_senha": entry_confirma_senha
+    }
