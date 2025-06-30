@@ -2,6 +2,7 @@ from tkinter import Button, PhotoImage, Entry, messagebox
 import tela_inicial
 import tools
 from modulos import usercrud
+import tela_menu_principal
 
 def transicao_para_inicial(window, canvas):
     tools.fade_out(
@@ -18,6 +19,7 @@ def tentar_login(window, canvas, email_entry, senha_entry):
 
     if isinstance(resultado, dict):
         tools.custom_messagebox(window,"Login Bem-sucedido", f"Bem-vindo(a) de volta, {resultado['nome']}!")
+        tela_menu_principal.criar_tela_menu_principal(window, canvas, resultado)
     else:
         tools.custom_messagebox(window,"Erro de Login", resultado)
 
