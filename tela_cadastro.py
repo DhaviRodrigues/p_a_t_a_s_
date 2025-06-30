@@ -1,5 +1,6 @@
 from tkinter import Button, PhotoImage, Entry, messagebox
 import tela_inicial
+import tela_login
 import tools
 from modulos import usercrud
 
@@ -10,6 +11,12 @@ def transicao_para_inicial(window, canvas):
         window,
         canvas,
         lambda: tela_inicial.criar_tela_inicial(window, canvas)
+    )
+def transicao_para_login(window, canvas):
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_login.criar_tela_login(window, canvas)
     )
 
 def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
@@ -30,7 +37,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
-def tentar_cadastro(entries,canvas):
+def tentar_cadastro(entries,canvas,window):
     global user_icon
 
     nome = entries['nome'].get()
@@ -41,12 +48,15 @@ def tentar_cadastro(entries,canvas):
     resultado = usercrud.cadastrar_usuario(nome, email, senha, confirma_senha, user_icon)
 
     if resultado is True:
-        tools.custom_messagebox("Cadastro Concluído", ...)
+        tools.custom_messagebox(window, "Cadastro bem-sucedido, você será redirecionado ao login", resultado)
         
         for entry in entries.values():
             entry.delete(0, 'end')
+        
+        transicao_para_login(window, canvas)
+        
     else:
-        tools.custom_messagebox("Erro de Cadastro", resultado)
+        tools.custom_messagebox(window,"Erro de Cadastro", resultado)
         
         if hasattr(canvas, "selecao_atual_id"):
             canvas.delete(canvas.selecao_atual_id)
@@ -74,7 +84,7 @@ def criar_tela_cadastro(window, canvas):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_cadastro(entries, canvas),
+        command=lambda: tentar_cadastro(entries, canvas, window),
         relief="flat"
     )
     button_1.place(

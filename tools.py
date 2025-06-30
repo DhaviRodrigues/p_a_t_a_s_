@@ -53,36 +53,51 @@ def limpar_tela(canvas):
         widget.destroy()
     canvas.delete("all")
 
-def custom_messagebox(titulo, mensagem):
-    dialog = Toplevel()
+def custom_messagebox(master,titulo, mensagem):
+    dialog = Toplevel(master)
     dialog.title(titulo)
-    dialog.configure(bg="#45312C")
+    dialog.configure(bg="#EADFC8")
+    dialog.resizable(False, False)
 
-    dialog.geometry("400x150")
+    dialog.update_idletasks()
+    
+    width = 400
+    height = 150
+    x = master.winfo_x() + (master.winfo_width() - width) // 2
+    y = master.winfo_y() + (master.winfo_height() - height) // 2
+    dialog.geometry(f'{width}x{height}+{x}+{y}')
 
     label = Label(
         dialog,
         text=mensagem,
         font=("Poppins", 12),
-        fg="#EADFC8",
-        bg="#45312C"
+        fg="#45312C",
+        bg="#EADFC8",
+        wraplength=350,
+        justify='center'
     )
     label.pack(
-        pady=20,
+        pady=(20, 10),
         padx=10
     )
 
     ok_button = Button(
         dialog,
         text="OK",
-        font=("Poppins Bold", 10),
-        width=10,
+        font=("Poppins Black", 12),
+        bg="#45312C",
+        fg="#EADFC8",
+        borderwidth=0,
+        relief="raised",
+        padx=10,
+        pady=3,
+        width=6,
         command=dialog.destroy
     )
     ok_button.pack(
-        pady=10
+        pady=15
     )
     
-    dialog.transient()
+    dialog.transient(master)
     dialog.grab_set()
     dialog.wait_window()

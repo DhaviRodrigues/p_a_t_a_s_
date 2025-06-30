@@ -3,23 +3,23 @@ import tela_inicial
 import tools
 from modulos import usercrud
 
-def _transicao_para_inicial(window, canvas):
+def transicao_para_inicial(window, canvas):
     tools.fade_out(
         window,
         canvas,
         lambda: tela_inicial.criar_tela_inicial(window, canvas)
     )
 
-def _tentar_login(window, canvas, email_entry, senha_entry):
+def tentar_login(window, canvas, email_entry, senha_entry):
     email = email_entry.get()
     senha = senha_entry.get()
 
     resultado = usercrud.fazer_login(email, senha)
 
     if isinstance(resultado, dict):
-        messagebox.showinfo("Login Bem-sucedido", f"Bem-vindo(a) de volta, {resultado['nome']}!")
+        tools.custom_messagebox(window,"Login Bem-sucedido", f"Bem-vindo(a) de volta, {resultado['nome']}!")
     else:
-        messagebox.showerror("Erro de Login", resultado)
+        tools.custom_messagebox(window,"Erro de Login", resultado)
 
 
 def criar_tela_login(window, canvas):
@@ -74,7 +74,7 @@ def criar_tela_login(window, canvas):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: _tentar_login(window, canvas, entry_email, entry_senha),
+        command=lambda: tentar_login(window, canvas, entry_email, entry_senha),
         relief="flat"
     )
     button_1.place(
@@ -110,7 +110,7 @@ def criar_tela_login(window, canvas):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: _transicao_para_inicial(window, canvas),
+        command=lambda: transicao_para_inicial(window, canvas),
         relief="flat"
     )
     button_2.place(

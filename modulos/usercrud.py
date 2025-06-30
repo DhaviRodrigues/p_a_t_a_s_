@@ -24,6 +24,9 @@ def cadastrar_usuario(nome, email, senha, confirma_senha, icone):
     if not nome or not email or not senha or not confirma_senha:
         return "Todos os campos devem ser preenchidos."
 
+    if len(nome) < 40:
+        return "Nome de usuário acima do limite."
+
     if senha != confirma_senha:
         return "As senhas não coincidem."
         
@@ -50,7 +53,7 @@ def cadastrar_usuario(nome, email, senha, confirma_senha, icone):
     usuarios = carregar_dados("usuarios.json")
     for usuario_existente in usuarios:
         if usuario_existente['email'] == email.strip().lower():
-            return "Este email já está a ser utilizado."
+            return "Este email já cadastrado, tente fazer login."
 
     maior_id = -1
     for u in usuarios:
@@ -81,7 +84,6 @@ def fazer_login(email, senha):
 
     for usuario in usuarios:
         if usuario['email'] == email and usuario['senha'] == senha:
-            print(f"--- Login bem-sucedido para {usuario['nome']} ---")
             return usuario
             
     return "Email ou senha incorretos."
