@@ -295,7 +295,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Nome:",
         fill="#44302C",
-        font=(window.font_poppins_black, 24 * -1)
+        font=("Poppins Black", 24 * -1)
     )
 
     canvas.create_text(
@@ -304,7 +304,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Email:",
         fill="#44302C",
-        font=(window.font_poppins_black, 24 * -1)
+        font=("Poppins Black", 24 * -1)
     )
 
     canvas.create_text(
@@ -313,7 +313,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Senha:",
         fill="#44302C",
-        font=(window.font_poppins_black, 24 * -1)
+        font=("Poppins Black", 24 * -1)
     )
 
     canvas.create_text(
@@ -322,7 +322,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Confirme sua senha:",
         fill="#44302C",
-        font=(window.font_poppins_black, 24 * -1)
+        font=("Poppins Black", 24 * -1)
     )
 
     canvas.create_text(
@@ -331,7 +331,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Escolha um ícone \n               de perfil ",
         fill="#EED3B2",
-        font=(window.font_poppins_black, 24 * -1)
+        font=("Poppins Black", 24 * -1)
     )
     
     canvas.create_text(
@@ -340,7 +340,7 @@ def criar_tela_cadastro(window, canvas):
         anchor="nw",
         text="Preencha as informações: ",
         fill="#44312D",
-        font=(window.font_poppins_black, 36 * -1)
+        font=("Poppins Black", 36 * -1)
     )
 
     entry_nome = Entry(
