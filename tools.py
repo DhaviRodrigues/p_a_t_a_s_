@@ -1,5 +1,5 @@
 from pathlib import Path
-from tkinter import Label, PhotoImage
+from tkinter import Label, PhotoImage, Toplevel, Button
 
 def relative_to_assets(subfolder: str, path: str) -> Path:
     output_path = Path(__file__).parent
@@ -52,3 +52,37 @@ def limpar_tela(canvas):
     for widget in canvas.winfo_children():
         widget.destroy()
     canvas.delete("all")
+
+def custom_messagebox(titulo, mensagem):
+    dialog = Toplevel()
+    dialog.title(titulo)
+    dialog.configure(bg="#45312C")
+
+    dialog.geometry("400x150")
+
+    label = Label(
+        dialog,
+        text=mensagem,
+        font=("Poppins", 12),
+        fg="#EADFC8",
+        bg="#45312C"
+    )
+    label.pack(
+        pady=20,
+        padx=10
+    )
+
+    ok_button = Button(
+        dialog,
+        text="OK",
+        font=("Poppins Bold", 10),
+        width=10,
+        command=dialog.destroy
+    )
+    ok_button.pack(
+        pady=10
+    )
+    
+    dialog.transient()
+    dialog.grab_set()
+    dialog.wait_window()

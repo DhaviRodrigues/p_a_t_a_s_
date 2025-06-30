@@ -5,14 +5,14 @@ from modulos import usercrud
 
 user_icon = None
 
-def _transicao_para_inicial(window, canvas):
+def transicao_para_inicial(window, canvas):
     tools.fade_out(
         window,
         canvas,
         lambda: tela_inicial.criar_tela_inicial(window, canvas)
     )
 
-def _selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
+def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     global user_icon
     user_icon = nome_icone
     print(f"Ícone selecionado: {user_icon}")
@@ -30,7 +30,9 @@ def _selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
-def _tentar_cadastro(entries):
+def tentar_cadastro(entries,canvas):
+    global user_icon
+
     nome = entries['nome'].get()
     email = entries['email'].get()
     senha = entries['senha'].get()
@@ -39,12 +41,17 @@ def _tentar_cadastro(entries):
     resultado = usercrud.cadastrar_usuario(nome, email, senha, confirma_senha, user_icon)
 
     if resultado is True:
-        messagebox.showinfo("Cadastro Concluído", f"Bem-vindo(a), {nome}! O seu cadastro foi realizado com sucesso.")
+        tools.custom_messagebox("Cadastro Concluído", ...)
+        
         for entry in entries.values():
             entry.delete(0, 'end')
     else:
-        messagebox.showerror("Erro de Cadastro", resultado)
-
+        tools.custom_messagebox("Erro de Cadastro", resultado)
+        
+        if hasattr(canvas, "selecao_atual_id"):
+            canvas.delete(canvas.selecao_atual_id)
+            delattr(canvas, "selecao_atual_id")
+        user_icon = None
 
 def criar_tela_cadastro(window, canvas):
     tools.limpar_tela(canvas)
@@ -67,7 +74,7 @@ def criar_tela_cadastro(window, canvas):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: _tentar_cadastro(entries),
+        command=lambda: tentar_cadastro(entries, canvas),
         relief="flat"
     )
     button_1.place(
@@ -85,7 +92,7 @@ def criar_tela_cadastro(window, canvas):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: _transicao_para_inicial(window, canvas),
+        command=lambda: transicao_para_inicial(window, canvas),
         relief="flat"
     )
     button_2.place(
@@ -110,7 +117,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_3",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 155.0, 199.0, "image_8.png", "button_3.png")
+        lambda e: selecionar_icone(canvas, 155.0, 199.0, "image_8.png", "button_3.png")
     )
 
     icon_image_4 = PhotoImage(
@@ -126,7 +133,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_4",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 262.0, 199.0, "image_5.png", "button_4.png")
+        lambda e: selecionar_icone(canvas, 262.0, 199.0, "image_5.png", "button_4.png")
     )
 
     icon_image_5 = PhotoImage(
@@ -142,7 +149,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_5",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 369.0, 198.0, "image_7.png", "button_5.png")
+        lambda e: selecionar_icone(canvas, 369.0, 198.0, "image_7.png", "button_5.png")
     )
 
     icon_image_6 = PhotoImage(
@@ -158,7 +165,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_6",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 155.0, 322.0, "image_10.png", "button_6.png")
+        lambda e: selecionar_icone(canvas, 155.0, 322.0, "image_10.png", "button_6.png")
     )
 
     icon_image_7 = PhotoImage(
@@ -174,7 +181,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_7",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 262.0, 322.0, "image_9.png", "button_7.png")
+        lambda e: selecionar_icone(canvas, 262.0, 322.0, "image_9.png", "button_7.png")
     )
 
     icon_image_8 = PhotoImage(
@@ -190,7 +197,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_8",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 370.0, 322.0, "image_6.png", "button_8.png")
+        lambda e: selecionar_icone(canvas, 370.0, 322.0, "image_6.png", "button_8.png")
     )
 
     icon_image_9 = PhotoImage(
@@ -206,7 +213,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_9",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 155.0, 452.0, "image_3.png", "button_9.png")
+        lambda e: selecionar_icone(canvas, 155.0, 452.0, "image_3.png", "button_9.png")
     )
 
     icon_image_10 = PhotoImage(
@@ -222,7 +229,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_10",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 261.0, 452.0, "image_2.png", "button_10.png")
+        lambda e: selecionar_icone(canvas, 261.0, 452.0, "image_2.png", "button_10.png")
     )
 
     icon_image_11 = PhotoImage(
@@ -238,7 +245,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_11",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 370.0, 451.0, "image_4.png", "button_11.png")
+        lambda e: selecionar_icone(canvas, 370.0, 451.0, "image_4.png", "button_11.png")
     )
 
     icon_image_12 = PhotoImage(
@@ -254,7 +261,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_12",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 155.0, 580.0, "image_12.png", "button_12.png")
+        lambda e: selecionar_icone(canvas, 155.0, 580.0, "image_12.png", "button_12.png")
     )
 
     icon_image_13 = PhotoImage(
@@ -270,7 +277,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_13",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 261.0, 580.0, "image_11.png", "button_13.png")
+        lambda e: selecionar_icone(canvas, 261.0, 580.0, "image_11.png", "button_13.png")
     )
 
     icon_image_14 = PhotoImage(
@@ -286,7 +293,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.tag_bind(
         "icon_14",
         "<Button-1>",
-        lambda e: _selecionar_icone(canvas, 370.0, 580.0, "image_13.png", "button_14.png")
+        lambda e: selecionar_icone(canvas, 370.0, 580.0, "image_13.png", "button_14.png")
     )
 
     canvas.create_text(
