@@ -1,8 +1,6 @@
 from usercrud import enviar_email, EMAIL_REMETENTE, SENHA_APP
 
-# --- Constantes ---
-# Defina aqui o email que irá RECEBER as mensagens de feedback.
-# Altere para o seu email de administrador ou o da clínica.
+
 EMAIL_ADMIN = EMAIL_REMETENTE
 
 def solicitar_feedback():
@@ -13,12 +11,11 @@ def solicitar_feedback():
     print("\n--- Portal de Feedback P.A.T.A.S. ---")
     print("A sua opinião é muito importante para nós!")
     
-    # É uma boa prática pedir o nome e o email para poder responder ao utilizador
+
     nome_utilizador = input("Digite o seu nome (opcional): ").strip()
     while True:
         email_utilizador = input("Digite o seu email para contacto: ").strip()
         if email_utilizador:
-            # Verifica se o email parece válido (básico)
             if "@" in email_utilizador and "." in email_utilizador:
                 break
             else:
@@ -46,7 +43,7 @@ def enviar_feedback():
     # 2. Formatar o conteúdo do email que será enviado
     assunto = f"Novo Feedback Recebido de: {nome or 'Utilizador Anónimo'}"
     
-    # O corpo do email (a variável 'info' da sua função original)
+    # O corpo do email (a variável 'info')
     corpo_email = f"""
     Olá, Administrador!
 
