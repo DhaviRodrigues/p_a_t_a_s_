@@ -1,6 +1,5 @@
 import json
 import os
-from time import sleep
 
 class Usuario:
     """Classe que representa um usuário"""
