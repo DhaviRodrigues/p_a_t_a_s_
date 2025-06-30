@@ -4,7 +4,7 @@ from time import sleep
 
 class Usuario:
     """Classe que representa um usuário"""
-    def __init__(self, maior_id, nome, email, senha):
+    def __init__(self, maior_id, nome, email, senha, icone):
         self.id = maior_id
         self.nome = nome
         self.email = email
