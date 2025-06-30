@@ -3,6 +3,7 @@ from pathlib import Path
 import webbrowser
 import tools
 import tela_cadastro
+import tela_login
 
 def _abrir_link_github():
     url = "https://github.com/DhaviRodrigues/p_a_t_a_s_"
@@ -10,6 +11,14 @@ def _abrir_link_github():
 
 def _iniciar_transicao_cadastro(window, canvas):
     callback_function = lambda: tela_cadastro.criar_tela_cadastro(window, canvas)
+    tools.fade_out(
+        window,
+        canvas,
+        callback_function
+    )
+
+def _iniciar_transicao_login(window, canvas):
+    callback_function = lambda: tela_login.criar_tela_login(window, canvas)
     tools.fade_out(
         window,
         canvas,
@@ -60,7 +69,7 @@ def criar_tela_inicial(window, canvas):
         image=canvas.button_img_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_2 clicked"),
+        command=lambda: _iniciar_transicao_login(window, canvas),
         relief="flat"
     )
     button_2.place(

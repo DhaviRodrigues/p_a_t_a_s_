@@ -58,7 +58,7 @@ def cadastrar_usuario(nome, email, senha, confirma_senha, icone):
             maior_id = u['id']
     novo_id = maior_id + 1
     
-    novo_usuario = Usuario(novo_id, nome, email.strip().lower(), senha, icone)
+    novo_usuario = Usuario(novo_id, nome.title().strip(), email.strip().lower(), senha.strip(), icone)
     
     usuarios.append(novo_usuario.converter_para_dicionario())
     salvar_dados("usuarios.json", usuarios)
@@ -73,23 +73,18 @@ def fazer_login():
     
     As informações devem estar presentes no id de algum usuário do "Usuários.json" """
 
-    print("--- Login de Usuário ---")
-    #Carrega os dados dos usuários presentes no "usuários.json" para validar as informações.
-    usuarios = carregar_dados('usuarios.json')
+def fazer_login(email, senha):
+    if not email or not senha:
+        return "Preencha todos os campos."
 
-    email_digitado = input("Digite seu e-mail: ")
-    senha_digitada = input("Digite sua senha: ")
+    usuarios = carregar_dados("usuarios.json")
 
-#Verifica se o email digitado e a senha correspondem a algum usuário existente
     for usuario in usuarios:
-        if usuario['email'] == email_digitado and usuario['senha'] == senha_digitada:
-            print(f"---Login bem-sucedido---")
-            return usuario # Retorna o dicionário do usuário que as informações correspondem
-        print('\n')
-    print("E-mail ou senha incorretos.")
-    print('\n')
-    sleep(1)
-    return None # Retorna nada se o login falhar
+        if usuario['email'] == email and usuario['senha'] == senha:
+            print(f"--- Login bem-sucedido para {usuario['nome']} ---")
+            return usuario
+            
+    return "Email ou senha incorretos."
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos usuários"""
