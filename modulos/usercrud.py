@@ -18,92 +18,50 @@ class Usuario:
             "senha": self.senha
         }
 
-def cadastrar_usuario():
-    """Cadastra um novo usuário a partir dos dados:
-    Nome:
-    Email:
-    Senha:"""
-    
-    print("--- Cadastro de Usuário ---")
-    usuarios = carregar_dados('usuarios.json')
-    #Esse é o primeiro momento em que o arquivo .json é criado, no caso ele irá carregar um dicionários dentro de uma lista "usuarios.json", e caso não exista ele criará.
+def cadastrar_usuario(nome, email, senha, confirma_senha, icone):
+    if not nome or not email or not senha or not confirma_senha:
+        return "Todos os campos devem ser preenchidos."
 
-#Cadastra o nome do usuário
-    while True:
-        nome = input(str("Digite seu nome e sobrenome: ")).strip() #Remove espaços no início e final do texto
-        if nome == '': ##Verifica se o nome está vazio
-            print('Nome não pode estar vazio. Tente novamente.') 
-        elif nome.replace(' ', '').isalpha() == False:  #Verifica se o nome possui apenas letras
-            print('Nome deve conter apenas letras. Tente novamente.')
-        else:
-            break
-#Cadastra o Email do usuário
-    while True:
-        email = input("Digite seu e-mail: ").strip().lower() #Remove espaços no início e final do texto e deixa o email inteiro em minúsculo
+    if senha != confirma_senha:
+        return "As senhas não coincidem."
         
-        email_existe = False
-        for usuario_existente in usuarios: #Verifica se o email já está cadastrado
-            if usuario_existente['email'] == email: #Procura o email no "usuario.json"
-                email_existe = True #Caso encontre retorna o valor True nessa variável
-                break
-        if email_existe: #Caso seja verdade, impedirá a sequência do cadastro
-            print('\n')
-            print("-- O email já está cadastrado, peço que tente executar o login.--")
-            print('\n')
-            return #Encerra a função de cadastrar usuário
-        
-        if not ('@gmail.com' in email or \
-                '@hotmail.com' in email or \
-                '@yahoo.com' in email or \
-                '@outlook.com' in email or \
-                '@ufrpe.br' in email or \
-                'ufpe' in email): # os parenteses servem para agrupar as condições ou seja, ela será avaliada como um bloco e será "True" caso não haja gmail, por exemplo, no email inserido pelo usuário
-                                # caso não fossem agrupadas, nenhum email seria permitido, já que, caso o usuário digitasse @gmail.com seria negado por não ter o @hotmail.com obrigado o usuário a adicionar todos os emails para ser considerado válido
-            print("Formato de e-mail inválido ou domínio não permitido.")
-            continue 
-        else:
-            break 
-#Cadastra a senha
-    while True:
-        senha = input("Digite sua senha (mínimo 8 caracteres): ").strip()
-        if len(senha) < 8:
-            print("A senha deve ter no mínimo 8 caracteres.")
-            continue 
-        confirmar_senha = input("Confirme sua senha: ").strip()
-        if senha != confirmar_senha:
-            print("As senhas não coincidem. Por favor, tente novamente.")
-            continue 
-        else:
-            break 
+    if len(senha) < 8:
+        return "A senha deve ter no mínimo 8 caracteres."
 
-#Cadastra o id do usuário
-    maior_id = -1 # Começa com -1 para garantir que o primeiro ID seja 0 se a lista estiver vazia
-    for id in usuarios: # Percorre a lista para encontrar o maior ID
-        if id['id'] > maior_id:
-            maior_id = id['id'] # Quando um maior id da lista de usuários é encontrado atribuido a "id"
-    id=maior_id + 1 # Soma id +1 para evitar conflitos entre id iguais
-#Cria uma lista com as informações do usuário
+    if len(senha) > 16:
+        return "A senha não pode ter mais de 16 caracteres."
 
-    novo_usuario = Usuario(maior_id, nome, email, senha)
-
-#----------------------------------------#    
-    # novo_usuario = {
-    #     'id': id,
-    #     'nome': nome,
-    #     'email': email,
-    #     'senha': senha
-    # }
-#-----------------------------------------#
+    if icone is None:
+        return "Por favor, escolha um ícone de perfil."
     
-#Adiciona o usuário que foi cadastrado no "usuários json."
+    email_valido = (
+        '@gmail.com' in email or
+        '@hotmail.com' in email or
+        '@yahoo.com' in email or
+        '@outlook.com' in email or
+        '@ufrpe.br' in email or
+        '@ufpe.br' in email
+    )
+    if not email_valido:
+        return "Formato de email inválido ou domínio não permitido."
+        
+    usuarios = carregar_dados("usuarios.json")
+    for usuario_existente in usuarios:
+        if usuario_existente['email'] == email.strip().lower():
+            return "Este email já está a ser utilizado."
+
+    maior_id = -1
+    for u in usuarios:
+        if u['id'] > maior_id:
+            maior_id = u['id']
+    novo_id = maior_id + 1
+    
+    novo_usuario = Usuario(novo_id, nome, email.strip().lower(), senha, icone)
+    
     usuarios.append(novo_usuario.converter_para_dicionario())
-    salvar_dados('usuarios.json', usuarios) # Salva a lista atualizada
-    print("\n")
-    print("--- Usuário cadastrado com sucesso! ---")
-    print('\n')
-    print("Agora que você já possui uma conta, tente fazer o login")
-    sleep(1)
-    print('\n')
+    salvar_dados("usuarios.json", usuarios)
+        
+    return True
 
 def fazer_login():
     """Comando para fazer login do usuário.
