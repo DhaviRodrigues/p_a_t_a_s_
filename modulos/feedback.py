@@ -15,7 +15,14 @@ def solicitar_feedback():
     
     # É uma boa prática pedir o nome e o email para poder responder ao utilizador
     nome_utilizador = input("Digite o seu nome (opcional): ").strip()
-    email_utilizador = input("Digite o seu email para contacto (opcional): ").strip()
+    while True:
+        email_utilizador = input("Digite o seu email para contacto: ").strip()
+        if email_utilizador:
+            # Verifica se o email parece válido (básico)
+            if "@" in email_utilizador and "." in email_utilizador:
+                break
+            else:
+                print("Por favor, digite um email válido.")
 
     # Loop para garantir que a mensagem de feedback não seja vazia
     while True:
@@ -54,10 +61,8 @@ def enviar_feedback():
     "{mensagem_feedback}"
     """
 
-    # 3. Enviar o email usando a função já existente
+    # 3. Envia o email usando a função já existente
     try:
-        # A sua função `enviar_email` pede 4 argumentos.
-        # Como não temos um "código" aqui, passamos uma string vazia.
         enviar_email(
             destinatario=EMAIL_ADMIN,
             codigo="",  # Não aplicável neste caso
@@ -67,10 +72,3 @@ def enviar_feedback():
         print("\nObrigado! O seu feedback foi enviado com sucesso.")
     except Exception as e:
         print(f"\nOcorreu um erro ao tentar enviar o seu feedback: {e}")
-
-
-# --- Bloco de Teste ---
-# Este código só será executado quando você correr o ficheiro 'feedback.py' diretamente.
-# Serve para testar o módulo de forma isolada.
-if __name__ == "__main__":
-    enviar_feedback()
