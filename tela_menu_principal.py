@@ -121,7 +121,7 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
     icon_path = Path(__file__).parent / "perfil_icons" / clean_icon_filename
 
     img = Image.open(icon_path)
-    max_size = (60, 60)
+    max_size = (80, 80)
     img.thumbnail(max_size)
     canvas.user_icon_image = ImageTk.PhotoImage(img)
     canvas.create_image(
