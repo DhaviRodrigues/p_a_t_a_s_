@@ -49,6 +49,7 @@ def tentar_cadastro(entries,canvas,window):
 
     if resultado is True:
         usercrud.criar_usuario(nome, email, senha, user_icon)
+        resultado = "Cadastro realizado com sucesso! Você será redirecionado para a tela de login."
         tools.custom_messagebox(window, "Cadastro Bem-Sucedido", resultado)
         
         for entry in entries.values():

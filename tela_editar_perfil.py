@@ -39,7 +39,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
-def tentar_alteracao(entries,canvas,window):
+def tentar_alteracao(entries,canvas,window,usuario_logado):
     global user_icon
 
     nome = entries['nome'].get()
@@ -50,11 +50,13 @@ def tentar_alteracao(entries,canvas,window):
     resultado = usercrud.validar_usuario(nome, email, senha, confirma_senha, user_icon)
 
     if resultado is True:
-        tools.custom_messagebox(window, "Alterações bem-sucedidas, você será redirecionado para o login", resultado)
+        usercrud.salvar_alteracoes_perfil(usuario_logado)
+        resultado = "Alteração realizada com sucesso! Você será redirecionado para a tela de login."
+        tools.custom_messagebox(window, "Alterações bem-sucedidas", resultado)
         
         for entry in entries.values():
             entry.delete(0, 'end')      
-            
+
         transicao_para_login(window, canvas)
 
     else:
@@ -65,7 +67,7 @@ def tentar_alteracao(entries,canvas,window):
             delattr(canvas, "selecao_atual_id")
         user_icon = None
 
-def criar_tela_cadastro(window, canvas):
+def criar_tela_editar_perfil(window, canvas, usuario_logado):
     tools.limpar_tela(canvas)
     canvas.configure(bg="#EADFC8")
 
@@ -86,7 +88,7 @@ def criar_tela_cadastro(window, canvas):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_alteracao(entries, canvas, window),
+        command=lambda: tentar_alteracao(entries, canvas, window,usuario_logado),
         relief="flat"
     )
     button_1.place(
@@ -104,7 +106,7 @@ def criar_tela_cadastro(window, canvas):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_perfil(window, canvas),
+        command=lambda: transicao_para_perfil(window, canvas, usuario_logado),
         relief="flat"
     )
     button_2.place(
