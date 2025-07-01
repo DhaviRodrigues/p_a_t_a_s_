@@ -3,6 +3,7 @@ from pathlib import Path
 from PIL import Image, ImageTk
 import tools
 import tela_menu_principal
+import tela_editar_perfil
 
 def transicao_para_menu(window, canvas, usuario_logado):
     tools.fade_out(
@@ -86,7 +87,7 @@ def criar_tela_perfil(window, canvas, usuario_logado):
         image=canvas.button_image_1, 
         borderwidth=0, 
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"), 
+        command=lambda: tools.fade_out(window, canvas, lambda: tela_editar_perfil.criar_tela_editar_perfil(window, canvas, usuario_logado)),
         relief="flat"
     )
     button_1.place(

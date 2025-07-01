@@ -2,16 +2,18 @@ from tkinter import Button, PhotoImage, Entry, messagebox
 import tela_inicial
 import tela_login
 import tools
+import tela_perfil
 from modulos import usercrud
 
 user_icon = None
 
-def transicao_para_inicial(window, canvas):
+def transicao_para_perfil(window, canvas, usuario_logado):
     tools.fade_out(
         window,
         canvas,
-        lambda: tela_inicial.criar_tela_inicial(window, canvas)
+        lambda: tela_perfil.criar_tela_perfil(window, canvas, usuario_logado)
     )
+
 def transicao_para_login(window, canvas):
     tools.fade_out(
         window,
@@ -28,7 +30,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
         canvas.delete(canvas.selecao_atual_id)
 
     canvas.imagem_selecionada = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", nome_imagem_selecao)
+        file=tools.relative_to_assets("TelaEditarPerfil", nome_imagem_selecao)
     )
     canvas.selecao_atual_id = canvas.create_image(
         x,
@@ -37,7 +39,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
-def tentar_cadastro(entries,canvas,window):
+def tentar_alteracao(entries,canvas,window):
     global user_icon
 
     nome = entries['nome'].get()
@@ -48,16 +50,15 @@ def tentar_cadastro(entries,canvas,window):
     resultado = usercrud.validar_usuario(nome, email, senha, confirma_senha, user_icon)
 
     if resultado is True:
-        usercrud.criar_usuario(nome, email, senha, user_icon)
-        tools.custom_messagebox(window, "Cadastro Bem-Sucedido", resultado)
+        tools.custom_messagebox(window, "Alterações bem-sucedidas, você será redirecionado para o login", resultado)
         
         for entry in entries.values():
-            entry.delete(0, 'end')
-        
+            entry.delete(0, 'end')      
+            
         transicao_para_login(window, canvas)
-        
+
     else:
-        tools.custom_messagebox(window,"Erro de Cadastro", resultado)
+        tools.custom_messagebox(window,"Erro ao Alterar Informações", resultado)
         
         if hasattr(canvas, "selecao_atual_id"):
             canvas.delete(canvas.selecao_atual_id)
@@ -69,7 +70,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.configure(bg="#EADFC8")
 
     canvas.image_1 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "image_1.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "image_1.png")
     )
     canvas.create_image(
         646.0373306274414,
@@ -78,14 +79,14 @@ def criar_tela_cadastro(window, canvas):
     )
 
     canvas.button_image_1 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_1.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_1.png")
     )
     button_1 = Button(
         canvas,
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_cadastro(entries, canvas, window),
+        command=lambda: tentar_alteracao(entries, canvas, window),
         relief="flat"
     )
     button_1.place(
@@ -96,14 +97,14 @@ def criar_tela_cadastro(window, canvas):
     )
 
     canvas.button_image_2 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_2.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_2.png")
     )
     button_2 = Button(
         canvas,
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_inicial(window, canvas),
+        command=lambda: transicao_para_perfil(window, canvas),
         relief="flat"
     )
     button_2.place(
@@ -116,7 +117,7 @@ def criar_tela_cadastro(window, canvas):
     canvas.icon_images = []
 
     icon_image_3 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_3.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_3.png")
     )
     canvas.icon_images.append(icon_image_3)
     canvas.create_image(
@@ -132,7 +133,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_4 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_4.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_4.png")
     )
     canvas.icon_images.append(icon_image_4)
     canvas.create_image(
@@ -148,7 +149,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_5 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_5.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_5.png")
     )
     canvas.icon_images.append(icon_image_5)
     canvas.create_image(
@@ -164,7 +165,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_6 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_6.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_6.png")
     )
     canvas.icon_images.append(icon_image_6)
     canvas.create_image(
@@ -180,7 +181,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_7 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_7.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_7.png")
     )
     canvas.icon_images.append(icon_image_7)
     canvas.create_image(
@@ -196,7 +197,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_8 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_8.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_8.png")
     )
     canvas.icon_images.append(icon_image_8)
     canvas.create_image(
@@ -212,7 +213,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_9 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_9.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_9.png")
     )
     canvas.icon_images.append(icon_image_9)
     canvas.create_image(
@@ -228,7 +229,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_10 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_10.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_10.png")
     )
     canvas.icon_images.append(icon_image_10)
     canvas.create_image(
@@ -244,7 +245,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_11 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_11.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_11.png")
     )
     canvas.icon_images.append(icon_image_11)
     canvas.create_image(
@@ -260,7 +261,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_12 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_12.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_12.png")
     )
     canvas.icon_images.append(icon_image_12)
     canvas.create_image(
@@ -276,7 +277,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_13 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_13.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_13.png")
     )
     canvas.icon_images.append(icon_image_13)
     canvas.create_image(
@@ -292,7 +293,7 @@ def criar_tela_cadastro(window, canvas):
     )
 
     icon_image_14 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastro", "button_14.png")
+        file=tools.relative_to_assets("TelaEditarPerfil", "button_14.png")
     )
     canvas.icon_images.append(icon_image_14)
     canvas.create_image(

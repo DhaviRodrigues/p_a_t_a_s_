@@ -135,6 +135,6 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
     
     canvas.create_image(
         53.0,
-        45.0,
+        65.0,
         image=canvas.user_icon_image
     )

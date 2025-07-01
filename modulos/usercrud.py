@@ -26,16 +26,16 @@ class Usuario:
             "icone": self.icone
         }
 
-def cadastrar_usuario(nome, email, senha, confirma_senha, icone):
+def validar_usuario(nome, email, senha, confirma_senha, icone):
     if not nome or not email or not senha or not confirma_senha:
         return "Todos os campos devem ser preenchidos."
 
-    if len(nome) < 40:
+    if len(nome) > 40:
         return "Nome de usuário acima do limite."
 
     if senha != confirma_senha:
         return "As senhas não coincidem."
-        
+
     if len(senha) < 8:
         return "A senha deve ter no mínimo 8 caracteres."
 
@@ -44,7 +44,7 @@ def cadastrar_usuario(nome, email, senha, confirma_senha, icone):
 
     if icone is None:
         return "Por favor, escolha um ícone de perfil."
-    
+
     email_valido = (
         '@gmail.com' in email or
         '@hotmail.com' in email or
@@ -55,24 +55,27 @@ def cadastrar_usuario(nome, email, senha, confirma_senha, icone):
     )
     if not email_valido:
         return "Formato de email inválido ou domínio não permitido."
-        
+
     usuarios = carregar_dados("usuarios.json")
     for usuario_existente in usuarios:
         if usuario_existente['email'] == email.strip().lower():
             return "Este email já está a ser utilizado."
+
+    return True
+
+def criar_usuario(nome, email, senha, icone):
+    usuarios = carregar_dados("usuarios.json")
 
     maior_id = -1
     for u in usuarios:
         if u['id'] > maior_id:
             maior_id = u['id']
     novo_id = maior_id + 1
-    
+
     novo_usuario = Usuario(novo_id, nome.title().strip(), email.strip().lower(), senha.strip(), icone)
-    
     usuarios.append(novo_usuario.converter_para_dicionario())
+
     salvar_dados("usuarios.json", usuarios)
-        
-    return True
 
 
 def fazer_login(email, senha):
@@ -94,6 +97,60 @@ def fazer_login(email, senha):
             return usuario
             
     return "Email ou senha incorretos."
+
+
+def salvar_alteracoes_perfil(usuario_atualizado):
+    todos_usuarios = carregar_dados('usuarios.json')
+
+    novo_arquivo_usuarios = []
+    for usuario in todos_usuarios:
+        if usuario['id'] != usuario_atualizado['id']:
+            novo_arquivo_usuarios.append(usuario)
+    
+    novo_arquivo_usuarios.append(usuario_atualizado)
+    
+    salvar_dados('usuarios.json', novo_arquivo_usuarios)
+
+
+def deletar_conta(usuario_logado):
+    """
+    Exclui permanentemente a conta do usuário logado após confirmação da senha e consentimento.
+
+    Requer que a senha atual seja informada e em seguida, solicita confirmação
+    do usuário para excluir a conta. Caso confirmado, remove o usuário do arquivo 'usuarios.json'.
+    """
+    print('\n--- Excluir Conta ---')
+    
+    senha = input(str("Digite sua senha para confirmar a exclusão da conta: ")).strip() #Pede confirmação da senha
+    if senha != usuario_logado['senha']:
+        print('Senha incorreta. Exclusão de conta cancelada.')
+        sleep(2)
+        return False
+    
+    while True:
+        confirmacao = input(str("Tem certeza que deseja EXCLUIR PERMANENTEMENTE sua conta? (S/N): ")).strip().lower() #Confirmação de exclusão
+        if confirmacao == 's':
+            break
+        elif confirmacao == 'n':
+            print('Exclusão de conta cancelada.')
+            sleep(2)
+            return False
+        else:
+            print('Resposta inválida. Por favor, digite "s" para sim ou "n" para não.')
+            sleep(1)
+
+    arquivo_usuario = carregar_dados('usuarios.json')
+    
+    novo_arquivo_usuarios = []
+    for usuarios in arquivo_usuario:
+        if usuarios['id'] != usuario_logado['id']:#Exclui o usuario da lista
+            novo_arquivo_usuarios.append(usuarios) #Cria uma lista sem o usario logado
+    
+    salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
+    
+    print('\nSua conta foi excluída com sucesso. Você será deslogado.')
+    sleep(2)
+    return True
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos usuários"""
