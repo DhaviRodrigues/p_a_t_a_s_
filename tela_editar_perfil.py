@@ -50,6 +50,12 @@ def tentar_alteracao(entries,canvas,window,usuario_logado):
     resultado = usercrud.validar_usuario(nome, email, senha, confirma_senha, user_icon)
 
     if resultado is True:
+
+        usuario_logado['nome'] = nome
+        usuario_logado['email'] = email
+        usuario_logado['senha'] = senha
+        usuario_logado['icone'] = user_icon
+
         usercrud.salvar_alteracoes_perfil(usuario_logado)
         resultado = "Alteração realizada com sucesso! Você será redirecionado para a tela de login."
         tools.custom_messagebox(window, "Alterações bem-sucedidas", resultado)

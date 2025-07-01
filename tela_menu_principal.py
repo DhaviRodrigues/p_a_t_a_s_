@@ -109,7 +109,7 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
 
     canvas.create_text(
         109.0,
-        20.0,
+        15.0,
         anchor="nw",
         text="Ver\nPerfil",
         fill="#44312D",

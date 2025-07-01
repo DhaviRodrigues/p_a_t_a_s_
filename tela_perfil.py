@@ -4,6 +4,7 @@ from PIL import Image, ImageTk
 import tools
 import tela_menu_principal
 import tela_editar_perfil
+import tela_inicial
 
 def transicao_para_menu(window, canvas, usuario_logado):
     tools.fade_out(
@@ -11,6 +12,12 @@ def transicao_para_menu(window, canvas, usuario_logado):
         canvas,
         lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, usuario_logado)
     )
+
+def transicao_para_logout(window, canvas):
+    tools.fade_out(
+        window, 
+        canvas, 
+        lambda: tela_inicial.criar_tela_inicial(window, canvas))
 
 def criar_tela_perfil(window, canvas, usuario_logado):
     tools.limpar_tela(canvas)
@@ -123,7 +130,7 @@ def criar_tela_perfil(window, canvas, usuario_logado):
         image=canvas.button_image_3, 
         borderwidth=0, 
         highlightthickness=0,
-        command=lambda: print("button_3 clicked"), 
+        command=lambda: transicao_para_logout(window, canvas), 
         relief="flat"
     )
     button_3.place(
