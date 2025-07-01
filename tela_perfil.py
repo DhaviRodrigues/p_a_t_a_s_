@@ -5,6 +5,7 @@ import tools
 import tela_menu_principal
 import tela_editar_perfil
 import tela_inicial
+from modulos import usercrud
 
 def transicao_para_menu(window, canvas, usuario_logado):
     tools.fade_out(
@@ -41,11 +42,17 @@ def criar_tela_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 32 * -1)
     )
     
+    nome_usuario = usuario_logado.get("nome", "")
+    if len(nome_usuario) > 28:
+        nome_perfil = nome_usuario[:28] + "..."
+    else:
+        nome_perfil = nome_usuario
+
     canvas.create_text(
         630.0,
         156.2,
         anchor="nw",
-        text=usuario_logado.get("nome", ""),
+        text=nome_perfil,
         fill="#44312D",
         font=("Poppins", 32 * -1)
     )
@@ -59,11 +66,17 @@ def criar_tela_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 32 * -1)
     )
     
+    email_usuario = usuario_logado.get("email", "")
+    if len(email_usuario) > 28:
+        email_perfil = email_usuario[:28] + "..."
+    else:
+        email_perfil = email_usuario
+
     canvas.create_text(
         630.0,
         231.2,
         anchor="nw",
-        text=usuario_logado.get("email", ""),
+        text=email_perfil,
         fill="#44312D",
         font=("Poppins", 32 * -1)
     )
@@ -112,7 +125,7 @@ def criar_tela_perfil(window, canvas, usuario_logado):
         image=canvas.button_image_2, 
         borderwidth=0, 
         highlightthickness=0,
-        command=lambda: print("button_2 clicked"), 
+        command=lambda: confirmar_e_deletar_conta(window, canvas, usuario_logado), 
         relief="flat"
     )
     button_2.place(
@@ -198,3 +211,20 @@ def criar_tela_perfil(window, canvas, usuario_logado):
         252.0,
         image=canvas.user_icon_image
     )
+
+def confirmar_e_deletar_conta(window, canvas, usuario_logado):
+    resposta = tools.custom_askyesno(
+        window,
+        "Confirmar Exclusão", 
+        "Tem a certeza de que deseja excluir a sua conta permanentemente? Esta ação não pode ser desfeita."
+    )
+
+    if resposta: 
+        sucesso = usercrud.deletar_conta(usuario_logado)
+        if sucesso:
+            tools.custom_messagebox(
+                window, 
+                "Conta Excluída", 
+                "A sua conta foi excluída com sucesso. Será redirecionado para a tela inicial."
+            )
+            transicao_para_logout(window, canvas)

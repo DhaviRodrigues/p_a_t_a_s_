@@ -51,8 +51,8 @@ def tentar_alteracao(entries,canvas,window,usuario_logado):
 
     if resultado is True:
 
-        usuario_logado['nome'] = nome
-        usuario_logado['email'] = email
+        usuario_logado['nome'] = nome.strip().title()
+        usuario_logado['email'] = email.strip().lower()
         usuario_logado['senha'] = senha
         usuario_logado['icone'] = user_icon
 

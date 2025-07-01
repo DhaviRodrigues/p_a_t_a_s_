@@ -1,5 +1,5 @@
 from pathlib import Path
-from tkinter import Label, PhotoImage, Toplevel, Button
+from tkinter import Label, PhotoImage, Toplevel, Button, Frame
 
 def relative_to_assets(subfolder: str, path: str) -> Path:
     output_path = Path(__file__).parent
@@ -101,3 +101,80 @@ def custom_messagebox(master,titulo, mensagem):
     dialog.transient(master)
     dialog.grab_set()
     dialog.wait_window()
+
+def custom_yn(master, titulo, mensagem):
+    """
+    Cria uma caixa de diálogo Sim/Não personalizada.
+    """
+    dialog = Toplevel(master)
+    dialog.title(titulo)
+    dialog.configure(bg="#EADFC8")
+    dialog.resizable(False, False)
+
+    dialog.result = False
+
+    dialog.update_idletasks()
+    
+    width = 400
+    height = 150
+    x = master.winfo_x() + (master.winfo_width() - width) // 2
+    y = master.winfo_y() + (master.winfo_height() - height) // 2
+    dialog.geometry(f'{width}x{height}+{x}+{y}')
+
+    label = Label(
+        dialog,
+        text=mensagem,
+        font=("Poppins", 12),
+        fg="#45312C",
+        bg="#EADFC8",
+        wraplength=380,
+        justify='center'
+    )
+    label.pack(pady=(20, 10), padx=20, expand=True, fill='both')
+
+    button_frame = Frame(dialog, bg="#EADFC8")
+    button_frame.pack(pady=(0, 20))
+
+    def on_sim():
+        dialog.result = True
+        dialog.destroy()
+
+    def on_nao():
+        dialog.result = False
+        dialog.destroy()
+
+    sim_button = Button(
+        button_frame,
+        text="Sim",
+        font=("Poppins Black", 12),
+        bg="#45312C",
+        fg="#EADFC8",
+        borderwidth=0,
+        relief="raised",
+        padx=10,
+        pady=3,
+        width=8,
+        command=on_sim
+    )
+    sim_button.pack(side='left', padx=(0, 15))
+
+    nao_button = Button(
+        button_frame,
+        text="Não",
+        font=("Poppins Black", 12),
+        bg="#45312C",
+        fg="#EADFC8",
+        borderwidth=0,
+        relief="raised",
+        padx=10,
+        pady=3,
+        width=8,
+        command=on_nao
+    )
+    nao_button.pack(side='left')
+    
+    dialog.transient(master)
+    dialog.grab_set()
+    master.wait_window(dialog)
+    
+    return dialog.result

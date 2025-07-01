@@ -111,34 +111,10 @@ def salvar_alteracoes_perfil(usuario_atualizado):
     
     salvar_dados('usuarios.json', novo_arquivo_usuarios)
 
-
 def deletar_conta(usuario_logado):
     """
-    Exclui permanentemente a conta do usuário logado após confirmação da senha e consentimento.
-
-    Requer que a senha atual seja informada e em seguida, solicita confirmação
-    do usuário para excluir a conta. Caso confirmado, remove o usuário do arquivo 'usuarios.json'.
+    Exclui a conta do usuário do arquivo JSON.
     """
-    print('\n--- Excluir Conta ---')
-    
-    senha = input(str("Digite sua senha para confirmar a exclusão da conta: ")).strip() #Pede confirmação da senha
-    if senha != usuario_logado['senha']:
-        print('Senha incorreta. Exclusão de conta cancelada.')
-        sleep(2)
-        return False
-    
-    while True:
-        confirmacao = input(str("Tem certeza que deseja EXCLUIR PERMANENTEMENTE sua conta? (S/N): ")).strip().lower() #Confirmação de exclusão
-        if confirmacao == 's':
-            break
-        elif confirmacao == 'n':
-            print('Exclusão de conta cancelada.')
-            sleep(2)
-            return False
-        else:
-            print('Resposta inválida. Por favor, digite "s" para sim ou "n" para não.')
-            sleep(1)
-
     arquivo_usuario = carregar_dados('usuarios.json')
     
     novo_arquivo_usuarios = []
@@ -147,9 +123,6 @@ def deletar_conta(usuario_logado):
             novo_arquivo_usuarios.append(usuarios) #Cria uma lista sem o usario logado
     
     salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
-    
-    print('\nSua conta foi excluída com sucesso. Você será deslogado.')
-    sleep(2)
     return True
 
 def carregar_dados(arquivo):
