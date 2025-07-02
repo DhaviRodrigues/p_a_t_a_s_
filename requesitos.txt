@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS usuarios (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nome VARCHAR(40) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
-    senha VARCHAR(255) NOT NULL, 
+    senha VARCHAR(16) NOT NULL, 
     icone VARCHAR(255),
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS animais (
     sexo CHAR(1) NOT NULL, -- 'M' ou 'F'
     idade VARCHAR(50) NOT NULL, -- Ex: "8 meses", "2 anos"
     informacoes TEXT,
-    status VARCHAR(20) NOT NULL DEFAULT 'Em adoção', -- 'Em adoção', 'Em tratamento', 'Adotado'
+    status VARCHAR(20) NOT NULL DEFAULT 'Em adocao', -- 'Em adocao', 'Em tratamento', 'Adotado'
     data_cadastro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 ) ENGINE=InnoDB;
 
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS pedidos (
     usuario_id INT NOT NULL,
     mensagem TEXT, -- A mensagem escrita pelo usuário
     data_pedido TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status_pedido VARCHAR(20) NOT NULL DEFAULT 'Em análise', -- 'Em análise', 'Aprovado', 'Recusado'
+    status_pedido VARCHAR(20) NOT NULL DEFAULT 'Em analise', -- 'Em analise', 'Aprovado', 'Recusado'
     FOREIGN KEY (animal_id) REFERENCES animais(id),
     FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
 ) ENGINE=InnoDB;
