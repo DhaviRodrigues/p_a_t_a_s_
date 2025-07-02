@@ -16,14 +16,16 @@ class Usuario:
         self.email = email
         self.senha = senha
         self.icone = icone
-    
+        self.adm = False
+
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
         return {
             "id": self.id,
             "nome": self.nome,
             "email": self.email,
             "senha": self.senha,
-            "icone": self.icone
+            "icone": self.icone,
+             "adm": self.adm
         }
 
 def validar_usuario(nome, email, senha, confirma_senha, icone):
