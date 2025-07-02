@@ -3,6 +3,17 @@ from pathlib import Path
 from PIL import Image, ImageTk
 import tools
 import tela_perfil
+import tela_feedback
+
+def transicao_para_feedback(window, canvas, usuario_logado):
+    """
+    Inicia a transição para a tela de feedback.
+    """
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_feedback.criar_tela_feedback(window, canvas, usuario_logado)
+    )
 
 def criar_tela_menu_principal(window, canvas, usuario_logado):
     tools.limpar_tela(canvas)
@@ -17,15 +28,15 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
         image=canvas.image_bg
     )
 
-    canvas.button_adotar = PhotoImage(
+    canvas.button_feedback = PhotoImage(
         file=tools.relative_to_assets("TelaMenuPrincipal", "button_1.png")
     )
     button_1 = Button(
         canvas,
-        image=canvas.button_adotar,
+        image=canvas.button_feedback,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão Adotar clicado"),
+        command=lambda: tela_feedback.criar_tela_feedback(window, canvas, usuario_logado),
         relief="flat"
     )
     button_1.place(
@@ -35,15 +46,15 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
         height=168.0
     )
 
-    canvas.button_tratamento = PhotoImage(
+    canvas.button_adocao = PhotoImage(
         file=tools.relative_to_assets("TelaMenuPrincipal", "button_2.png")
     )
     button_2 = Button(
         canvas,
-        image=canvas.button_tratamento,
+        image=canvas.button_adocao,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão Tratamento clicado"),
+        command=lambda: print("Botão Adoção clicado"),
         relief="flat"
     )
     button_2.place(
@@ -53,15 +64,15 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
         height=168.0
     )
 
-    canvas.button_editar_perfil = PhotoImage(
+    canvas.button_tratamento = PhotoImage(
         file=tools.relative_to_assets("TelaMenuPrincipal", "button_3.png")
     )
     button_3 = Button(
         canvas,
-        image=canvas.button_editar_perfil,
+        image=canvas.button_tratamento,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão Editar Perfil clicado"),
+        command=lambda: print("Botão Tratamento clicado"),
         relief="flat"
     )
     button_3.place(
