@@ -15,7 +15,7 @@ def tentar_login(window, canvas, email_entry, senha_entry):
     email = email_entry.get()
     senha = senha_entry.get()
 
-    resultado = usercrud.fazer_login(email, senha)
+    resultado = usercrud.Usuario.fazer_login(email, senha)
 
     if isinstance(resultado, dict):
         tools.custom_messagebox(window,"Login Bem-sucedido", f"Bem-vindo(a) de volta, {resultado['nome']}!")

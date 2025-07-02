@@ -213,14 +213,14 @@ def criar_tela_perfil(window, canvas, usuario_logado):
     )
 
 def confirmar_e_deletar_conta(window, canvas, usuario_logado):
-    resposta = tools.custom_askyesno(
+    resposta = tools.custom_yn(
         window,
         "Confirmar Exclusão", 
         "Tem a certeza de que deseja excluir a sua conta permanentemente? Esta ação não pode ser desfeita."
     )
 
     if resposta: 
-        sucesso = usercrud.deletar_conta(usuario_logado)
+        sucesso = usercrud.Usuario.deletar_conta(usuario_logado)
         if sucesso:
             tools.custom_messagebox(
                 window, 

@@ -45,10 +45,10 @@ def tentar_cadastro(entries,canvas,window):
     senha = entries['senha'].get()
     confirma_senha = entries['confirma_senha'].get()
 
-    resultado = usercrud.validar_usuario(nome, email, senha, confirma_senha, user_icon)
+    resultado = usercrud.Usuario.validar_usuario(nome, email, senha, confirma_senha, user_icon)
 
     if resultado is True:
-        usercrud.criar_usuario(nome, email, senha, user_icon)
+        usercrud.Usuario.criar_usuario(nome, email, senha, user_icon)
         resultado = "Cadastro realizado com sucesso! Você será redirecionado para a tela de login."
         tools.custom_messagebox(window, "Cadastro Bem-Sucedido", resultado)
         
@@ -60,10 +60,6 @@ def tentar_cadastro(entries,canvas,window):
     else:
         tools.custom_messagebox(window,"Erro de Cadastro", resultado)
         
-        if hasattr(canvas, "selecao_atual_id"):
-            canvas.delete(canvas.selecao_atual_id)
-            delattr(canvas, "selecao_atual_id")
-        user_icon = None
 
 def criar_tela_cadastro(window, canvas):
     tools.limpar_tela(canvas)

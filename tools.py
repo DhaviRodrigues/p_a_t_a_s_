@@ -102,9 +102,18 @@ def custom_messagebox(master,titulo, mensagem):
     dialog.grab_set()
     dialog.wait_window()
 
+def sim_ou_nao(dialog, resultado):
+    """
+    Função auxiliar que define o resultado e fecha a janela.
+    Por não estar dentro de custom_yn, ela não é aninhada.
+    """
+    dialog.result = resultado
+    dialog.destroy()
+
 def custom_yn(master, titulo, mensagem):
     """
-    Cria uma caixa de diálogo Sim/Não personalizada.
+    Cria uma caixa de diálogo Sim/Não, delegando a ação dos botões
+    para uma função auxiliar externa.
     """
     dialog = Toplevel(master)
     dialog.title(titulo)
@@ -135,14 +144,6 @@ def custom_yn(master, titulo, mensagem):
     button_frame = Frame(dialog, bg="#EADFC8")
     button_frame.pack(pady=(0, 20))
 
-    def on_sim():
-        dialog.result = True
-        dialog.destroy()
-
-    def on_nao():
-        dialog.result = False
-        dialog.destroy()
-
     sim_button = Button(
         button_frame,
         text="Sim",
@@ -152,9 +153,9 @@ def custom_yn(master, titulo, mensagem):
         borderwidth=0,
         relief="raised",
         padx=10,
-        pady=3,
+        pady=10,
         width=8,
-        command=on_sim
+        command=lambda: sim_ou_nao(dialog, True)
     )
     sim_button.pack(side='left', padx=(0, 15))
 
@@ -167,11 +168,19 @@ def custom_yn(master, titulo, mensagem):
         borderwidth=0,
         relief="raised",
         padx=10,
-        pady=3,
+        pady=10,
         width=8,
-        command=on_nao
+        command=lambda: sim_ou_nao(dialog, False)
     )
     nao_button.pack(side='left')
+
+    width = 400
+    height = dialog.winfo_reqheight() 
+    
+    x = master.winfo_x() + (master.winfo_width() - width) // 2
+    y = master.winfo_y() + (master.winfo_height() - height) // 2
+    
+    dialog.geometry(f'{width}x{height}+{x}+{y}')
     
     dialog.transient(master)
     dialog.grab_set()

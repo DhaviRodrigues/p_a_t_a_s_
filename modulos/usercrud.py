@@ -28,104 +28,104 @@ class Usuario:
              "adm": self.adm
         }
 
-def validar_usuario(nome, email, senha, confirma_senha, icone):
-    if not nome or not email or not senha or not confirma_senha:
-        return "Todos os campos devem ser preenchidos."
+    def validar_usuario(nome, email, senha, confirma_senha, icone):
+        if not nome or not email or not senha or not confirma_senha:
+            return "Todos os campos devem ser preenchidos."
 
-    if len(nome) > 40:
-        return "Nome de usuário acima do limite."
+        if len(nome) > 40:
+            return "Nome de usuário acima do limite."
 
-    if senha != confirma_senha:
-        return "As senhas não coincidem."
+        if senha != confirma_senha:
+            return "As senhas não coincidem."
 
-    if len(senha) < 8:
-        return "A senha deve ter no mínimo 8 caracteres."
+        if len(senha) < 8:
+            return "A senha deve ter no mínimo 8 caracteres."
 
-    if len(senha) > 16:
-        return "A senha não pode ter mais de 16 caracteres."
+        if len(senha) > 16:
+            return "A senha não pode ter mais de 16 caracteres."
 
-    if icone is None:
-        return "Por favor, escolha um ícone de perfil."
+        if icone is None:
+            return "Por favor, escolha um ícone de perfil."
 
-    email_valido = (
-        '@gmail.com' in email or
-        '@hotmail.com' in email or
-        '@yahoo.com' in email or
-        '@outlook.com' in email or
-        '@ufrpe.br' in email or
-        '@ufpe.br' in email
-    )
-    if not email_valido:
-        return "Formato de email inválido ou domínio não permitido."
+        email_valido = (
+            '@gmail.com' in email or
+            '@hotmail.com' in email or
+            '@yahoo.com' in email or
+            '@outlook.com' in email or
+            '@ufrpe.br' in email or
+            '@ufpe.br' in email
+        )
+        if not email_valido:
+            return "Formato de email inválido ou domínio não permitido."
 
-    usuarios = carregar_dados("usuarios.json")
-    for usuario_existente in usuarios:
-        if usuario_existente['email'] == email.strip().lower():
-            return "Este email já está a ser utilizado."
+        usuarios = carregar_dados("usuarios.json")
+        for usuario_existente in usuarios:
+            if usuario_existente['email'] == email.strip().lower():
+                return "Este email já está a ser utilizado."
 
-    return True
+        return True
 
-def criar_usuario(nome, email, senha, icone):
-    usuarios = carregar_dados("usuarios.json")
+    def criar_usuario(nome, email, senha, icone):
+        usuarios = carregar_dados("usuarios.json")
 
-    maior_id = -1
-    for u in usuarios:
-        if u['id'] > maior_id:
-            maior_id = u['id']
-    novo_id = maior_id + 1
+        maior_id = -1
+        for u in usuarios:
+            if u['id'] > maior_id:
+                maior_id = u['id']
+        novo_id = maior_id + 1
 
-    novo_usuario = Usuario(novo_id, nome.title().strip(), email.strip().lower(), senha.strip(), icone)
-    usuarios.append(novo_usuario.converter_para_dicionario())
+        novo_usuario = Usuario(novo_id, nome.title().strip(), email.strip().lower(), senha.strip(), icone)
+        usuarios.append(novo_usuario.converter_para_dicionario())
 
-    salvar_dados("usuarios.json", usuarios)
-
-
-def fazer_login(email, senha):
-    """Comando para fazer login do usuário.
-    Informações requisitadas:
-    email:
-    senha:
-    
-    As informações devem estar presentes no id de algum usuário do "Usuários.json" 
-    """
-    if not email or not senha:
-        return "Preencha todos os campos."
-
-    usuarios = carregar_dados("usuarios.json")
-
-    for usuario in usuarios:
-        if usuario['email'] == email and usuario['senha'] == senha:
-            print(f"--- Login bem-sucedido para {usuario['nome']} ---")
-            return usuario
-            
-    return "Email ou senha incorretos."
+        salvar_dados("usuarios.json", usuarios)
 
 
-def salvar_alteracoes_perfil(usuario_atualizado):
-    todos_usuarios = carregar_dados('usuarios.json')
+    def fazer_login(email, senha):
+        """Comando para fazer login do usuário.
+        Informações requisitadas:
+        email:
+        senha:
+        
+        As informações devem estar presentes no id de algum usuário do "Usuários.json" 
+        """
+        if not email or not senha:
+            return "Preencha todos os campos."
 
-    novo_arquivo_usuarios = []
-    for usuario in todos_usuarios:
-        if usuario['id'] != usuario_atualizado['id']:
-            novo_arquivo_usuarios.append(usuario)
-    
-    novo_arquivo_usuarios.append(usuario_atualizado)
-    
-    salvar_dados('usuarios.json', novo_arquivo_usuarios)
+        usuarios = carregar_dados("usuarios.json")
 
-def deletar_conta(usuario_logado):
-    """
-    Exclui a conta do usuário do arquivo JSON.
-    """
-    arquivo_usuario = carregar_dados('usuarios.json')
-    
-    novo_arquivo_usuarios = []
-    for usuarios in arquivo_usuario:
-        if usuarios['id'] != usuario_logado['id']:#Exclui o usuario da lista
-            novo_arquivo_usuarios.append(usuarios) #Cria uma lista sem o usario logado
-    
-    salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
-    return True
+        for usuario in usuarios:
+            if usuario['email'] == email and usuario['senha'] == senha:
+                print(f"--- Login bem-sucedido para {usuario['nome']} ---")
+                return usuario
+                
+        return "Email ou senha incorretos."
+
+
+    def salvar_alteracoes_perfil(usuario_atualizado):
+        todos_usuarios = carregar_dados('usuarios.json')
+
+        novo_arquivo_usuarios = []
+        for usuario in todos_usuarios:
+            if usuario['id'] != usuario_atualizado['id']:
+                novo_arquivo_usuarios.append(usuario)
+        
+        novo_arquivo_usuarios.append(usuario_atualizado)
+        
+        salvar_dados('usuarios.json', novo_arquivo_usuarios)
+
+    def deletar_conta(usuario_logado):
+        """
+        Exclui a conta do usuário do arquivo JSON.
+        """
+        arquivo_usuario = carregar_dados('usuarios.json')
+        
+        novo_arquivo_usuarios = []
+        for usuarios in arquivo_usuario:
+            if usuarios['id'] != usuario_logado['id']:#Exclui o usuario da lista
+                novo_arquivo_usuarios.append(usuarios) #Cria uma lista sem o usario logado
+        
+        salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
+        return True
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos usuários"""
@@ -177,16 +177,14 @@ def enviar_email(destinatario, codigo, info, assunto):
     except Exception as e:
         print(" Erro ao enviar email:", e)
 
-# --- A SUA FUNÇÃO, AGORA CORRIGIDA E MELHORADA ---
-
-def redefinir_senha():
+def recuperar_senha():
     """
     Permite ao utilizador redefinir a sua senha através de verificação por e-mail.
     """
     usuarios = carregar_dados('usuarios.json') 
     print("\n=== Redefinir Senha ===")
     
-    email = "" # ### NOVO ### Inicializa a variável de email fora do loop
+    email = ""
     while True:
         email = input("Digite seu e-mail: ").strip().lower()
         
@@ -197,13 +195,12 @@ def redefinir_senha():
                 break
         
         if email_existe:
-            break #Sai do loop se o email for encontrado
+            break 
         else:
             print('\n-- O email não está cadastrado, se dirija para a área de cadastro ou digite outro email.--\n')
-            # Opcional: perguntar se quer tentar de novo ou sair
             continuar = input("Deseja tentar com outro email? (s/n): ").lower()
             if continuar != 's' or continuar != 'sim':
-                return # Encerra a função se o utilizador não quiser continuar
+                return
 
     # Envia código de verificação
     codigo = random.randint(100000, 999999)

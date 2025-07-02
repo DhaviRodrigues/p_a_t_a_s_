@@ -1,16 +1,18 @@
 [
     {
-        "id": 0,
-        "nome": "Dhavi",
-        "email": "123",
-        "senha": "123",
-        "icone": "button_8.png"
-    },
-    {
         "id": 1,
         "nome": "jeferson",
         "email": "jeferson.rodrigues2@gmail.com",
         "senha": "jeferson123",
-        "icone": "button_9.png"
+        "icone": "button_9.png",
+        "adm": false
+    },
+    {
+        "id": 2,
+        "nome": "Dhavi",
+        "email": "123",
+        "senha": "123",
+        "icone": "button_8.png",
+        "adm": false
     }
 ]
