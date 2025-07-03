@@ -1,8 +1,9 @@
-from tkinter import Button, PhotoImage, Entry, messagebox
+from tkinter import Button, PhotoImage, Entry
 import tela_inicial
+import tela_menu_principal
+import tela_menu_adm
 import tools
 from modulos import usercrud
-import tela_menu_principal
 
 def transicao_para_inicial(window, canvas):
     tools.fade_out(
@@ -18,15 +19,28 @@ def tentar_login(window, canvas, email_entry, senha_entry):
     resultado = usercrud.Usuario.fazer_login(email, senha)
 
     if isinstance(resultado, dict):
-        tools.custom_messagebox(window,"Login Bem-sucedido", f"Bem-vindo(a) de volta, {resultado['nome']}!")
-        tela_menu_principal.criar_tela_menu_principal(window, canvas, resultado)
+        if resultado.get("adm") is True:
+            tools.fade_out(
+                window,
+                canvas,
+                lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas, resultado)
+            )
+        else:
+            tools.fade_out(
+                window,
+                canvas,
+                lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, resultado)
+            )
     else:
-        tools.custom_messagebox(window,"Erro de Login", resultado)
-
+        tools.custom_messagebox(
+            window,
+            "Erro de Login",
+            resultado
+        )
 
 def criar_tela_login(window, canvas):
     tools.limpar_tela(canvas)
-    canvas.configure(bg = "#FFFFFF")
+    canvas.configure(bg="#FFFFFF")
 
     canvas.image_1 = PhotoImage(
         file=tools.relative_to_assets("TelaLogin", "image_1.png")
@@ -76,7 +90,12 @@ def criar_tela_login(window, canvas):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_login(window, canvas, entry_email, entry_senha),
+        command=lambda: tentar_login(
+            window,
+            canvas,
+            entry_email,
+            entry_senha
+        ),
         relief="flat"
     )
     button_1.place(

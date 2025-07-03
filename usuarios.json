@@ -13,6 +13,6 @@
         "email": "123",
         "senha": "123",
         "icone": "button_8.png",
-        "adm": false
+        "adm": true
     }
 ]
