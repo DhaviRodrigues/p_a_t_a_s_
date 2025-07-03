@@ -1,6 +1,7 @@
 from tkinter import Button, PhotoImage
 import tools
 import tela_inicial
+import tela_cadastrar_animal
 
 def transicao_para_inicial(window, canvas):
     tools.fade_out(
@@ -30,7 +31,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=lambda: tools.fade_out(window, canvas, lambda: tela_cadastrar_animal.criar_tela_cadastrar_animal(window, canvas, usuario_logado)),
         relief="flat"
     )
     button_1.place(

@@ -22,94 +22,36 @@ class Animal:
             "informacoes": self.informacoes
         }
 
-def cadastrar_animal():
-    """Cadastra um novo animal a partir dos dados:
-    Nome:
-    Espécie:
-    Sexo:
-    Idade: ex: 8 meses ou 2 anos
-    Outras informações e caraterísticas"""
-    print("--- Cadastro de animais ---")
+def validar_animal(nome, especie, sexo, idade):
+    """Valida os dados de entrada para o cadastro de um novo animal."""
+    if not nome:
+        return 'O nome não pode estar vazio.'
+    if not nome.replace(' ', '').isalpha():
+        return 'O nome deve conter apenas letras e espaços.'
+    if not especie:
+        return 'A espécie não pode estar vazia.'
+    if sexo is None or sexo.upper() not in ['M', 'F']:
+        return 'O sexo deve ser selecionado (M ou F).'
+    if not idade:
+        return 'A idade não pode estar vazia.'
+    if not idade.replace(' ', '').isalnum():
+        return 'A idade deve conter apenas letras, espaços e números.'
+    return True
 
-    # Dependendo da resposta do "tipo_cadastro" o animal será posto em 2 arquivos json diferentes, um pra animais em adoção e outro pra animais em tratamento
-    while True:
-        tipo_cadastro = input("Cadastrar animal para 'tratamento' ou 'adocao'? ").strip().lower()
-        if tipo_cadastro == 'tratamento':
-            nome_arquivo = 'animais_tratamento.json'
-            break
-        elif tipo_cadastro == 'adocao':
-            nome_arquivo= 'animais_adocao.json'
-            break
-        else:
-            print("Opção inválida. Por favor, digite 'tratamento' ou 'adocao'.")
-            sleep(1)
-
+def criar_animal(nome, especie, sexo, idade, info, nome_arquivo):
+    """Cria um novo objeto Animal e o salva no arquivo JSON apropriado."""
     animais = carregar_dados(nome_arquivo)
-    #Esse é o primeiro momento em que o arquivo .json é criado, no caso ele irá carregar um dicionários dentro de uma lista "animais.json_tramento/adoção", e caso não exista ele criará.
+    
+    maior_id = -1
+    for animal in animais:
+        if animal.get('id', -1) > maior_id:
+            maior_id = animal['id']
+    novo_id = maior_id + 1
 
-#Cadastra o nome do animal
-    while True:
-        nome = input(str("Digite o nome ou apelido do pet: "))
-        if nome == '':
-            print('Nome não pode estar vazio. Tente novamente.')
-        elif nome.replace(' ', '').isalpha() == False: #Permite apenas que espaços e letras sejam inseridos
-            print('Nome deve conter apenas letras e espaços. Tente novamente.')
-        else:
-            break
-#Cadastra a espécie do animal
-    while True:
-        especie = input("Digite a espécie do animal (Exemplo: Cão Doméstico (Canis lupus familiaris) ou apenas 'gato'): ").strip()
-        if especie == '':
-            print('A espécie não pode estar vazia. Tente novamente.')
-        else:
-            break
-
-#Cadastra o sexo do animal
-    while True:
-        sexo = str(input('Informe o sexo do animal [M/F]: ')).strip().upper()[0]
-        if sexo != 'M' and sexo != "F": #Permite apenas que M ou F seja inserido
-            print('Digite um valor válido. Tente novamente.')
-        else:
-            break
-
-#Cadastra a idade do animal
-    while True:
-        idade = str(input("Digite a idade do animal (Ex: 8 meses, 2 Anos ou 2 anos e 8 meses)): ")).strip()
-        if idade == '':
-            print('A idade não pode estar vazia. Tente novamente.')
-        elif idade.replace(' ', '').isalnum() == False: #Perimite apenas letras e números
-            print('A idade deve conter apenas letras, espaços e números. Tente novamente.')
-        else:
-            break
-
-#Cadastra outras informações
-    info = str(input("Insira informações sobre o animal, tramento, castração etc. Caso não queria, apenas aperte a tecla ENTER: ")).strip()
-    # Não há loop while True nem validação de conteúdo. Aceita o que for digitado ou vazio.
-
-#Cadastra o id do animal
-    maior_id = -1 # Começa com -1 para garantir que o primeiro ID seja 0 se a lista estiver vazia
-    for id in animais: # Percorre a lista para encontrar o maior ID
-        if id['id'] > maior_id:
-            maior_id = id['id']
-#Cria uma lista com as informações do animal
-
-    novo_animal = Animal(id, nome, especie, sexo, idade, info) # Cria uma instância da classe Animal com os dados fornecidos
-    # novo_animal = {
-    #     'id': maior_id,
-    #     'nome': nome,
-    #     'sexo': sexo,
-    #     'especie': especie,
-    #     'idade': idade,
-    #     'informacoes': info
-    # }
-
-#Adiciona o animal que foi cadastrado
-    animais.append(novo_animal.converter_para_dicionario()) #Adiciona o dicionário "novo_animal" a lista "animais/adocao/tratamento.json"
-    salvar_dados(nome_arquivo, animais) # Salva no arquivo
-    print('\n')
-    print("PET cadastrado com sucesso!")
-    print("|||Caso deseje editar alguma informação, isso será possível no menu de opções administrativas|||")
-    print('\n')
+    novo_animal = Animal(novo_id, nome.strip(), especie, sexo, idade, info)
+    
+    animais.append(novo_animal.converter_para_dicionario())
+    salvar_dados(nome_arquivo, animais)
 
 def lista_animais_tratamento():
     """ Imprime uma lista dos animais que estão em processo de tratamento."""
