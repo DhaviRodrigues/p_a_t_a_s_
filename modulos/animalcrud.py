@@ -1,16 +1,19 @@
 import json
 import os
 from time import sleep
+import shutil
+from pathlib import Path
 
 class Animal:
     """Classe que representa um animal"""
-    def __init__(self, id, nome, especie, sexo, idade, informacoes):
+    def __init__(self, id, nome, especie, sexo, idade, informacoes, foto):
         self.id = id
         self.nome = nome
         self.especie = especie
         self.sexo = sexo
         self.idade = idade
         self.informacoes = informacoes
+        self.foto = foto
     
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
         return {
@@ -19,39 +22,59 @@ class Animal:
             "especie": self.especie,
             "sexo": self.sexo,
             "idade": self.idade,
-            "informacoes": self.informacoes
+            "informacoes": self.informacoes,
+            "foto": self.foto
         }
 
-def validar_animal(nome, especie, sexo, idade):
-    """Valida os dados de entrada para o cadastro de um novo animal."""
-    if not nome:
-        return 'O nome não pode estar vazio.'
-    if not nome.replace(' ', '').isalpha():
-        return 'O nome deve conter apenas letras e espaços.'
-    if not especie:
-        return 'A espécie não pode estar vazia.'
-    if sexo is None or sexo.upper() not in ['M', 'F']:
-        return 'O sexo deve ser selecionado (M ou F).'
-    if not idade:
-        return 'A idade não pode estar vazia.'
-    if not idade.replace(' ', '').isalnum():
-        return 'A idade deve conter apenas letras, espaços e números.'
-    return True
+    def validar_animal(nome, especie, sexo, idade):
+        """Valida os dados de entrada para o cadastro de um novo animal."""
+        if not nome:
+            return 'O nome não pode estar vazio.'
+        if not nome.replace(' ', '').isalpha():
+            return 'O nome deve conter apenas letras e espaços.'
+        if not especie:
+            return 'A espécie não pode estar vazia.'
+        if sexo is None or sexo.upper() not in ['M', 'F']:
+            return 'O sexo deve ser selecionado (M ou F).'
+        if not idade:
+            return 'A idade não pode estar vazia.'
+        if not idade.replace(' ', '').isalnum():
+            return 'A idade deve conter apenas letras, espaços e números.'
+        return True
 
-def criar_animal(nome, especie, sexo, idade, info, nome_arquivo):
-    """Cria um novo objeto Animal e o salva no arquivo JSON apropriado."""
-    animais = carregar_dados(nome_arquivo)
-    
-    maior_id = -1
-    for animal in animais:
-        if animal.get('id', -1) > maior_id:
-            maior_id = animal['id']
-    novo_id = maior_id + 1
+    def criar_animal(nome, especie, sexo, idade, info, tipo_cadastro, caminho_imagem_original):
+        nome_arquivo_json = f"animais_{tipo_cadastro}.json"
+        animais = carregar_dados(nome_arquivo_json)
 
-    novo_animal = Animal(novo_id, nome.strip(), especie, sexo, idade, info)
-    
-    animais.append(novo_animal.converter_para_dicionario())
-    salvar_dados(nome_arquivo, animais)
+        maior_foto_id = 0
+        pasta_fotos = Path("fotos_animais")
+        pasta_fotos.mkdir(exist_ok=True)
+        for fotos in pasta_fotos.glob("*.png"):
+            try:
+                id_foto = int(fotos.stem)
+                if id_foto > maior_foto_id:
+                    maior_foto_id = id_foto
+            except ValueError:
+                continue
+        novo_nome_foto = f"{maior_foto_id + 1}.png"
+        caminho_destino_foto = pasta_fotos / novo_nome_foto
+
+        try:
+            shutil.copy(caminho_imagem_original, caminho_destino_foto)
+        except Exception as e:
+            print(f"Erro ao copiar a imagem: {e}")
+            return
+
+        maior_id = -1
+        for animal in animais:
+            if animal.get('id', -1) > maior_id:
+                maior_id = animal['id']
+        novo_id = maior_id + 1
+
+        novo_animal = Animal(novo_id, nome.strip(), especie, sexo, idade, info, novo_nome_foto)
+        
+        animais.append(novo_animal.converter_para_dicionario())
+        salvar_dados(nome_arquivo_json, animais)
 
 def lista_animais_tratamento():
     """ Imprime uma lista dos animais que estão em processo de tratamento."""

@@ -200,11 +200,13 @@ def criar_tela_perfil(window, canvas, usuario_logado):
 
     user_icon_filename = usuario_logado.get("icone", "button_3.png")
     clean_icon_filename = user_icon_filename.replace("button_", "icon_")
+    
     icon_path = Path(__file__).parent / "perfil_icons" / clean_icon_filename
     
     img = Image.open(icon_path)
-    resized_img = img.resize((257, 257), Image.Resampling.LANCZOS)
-    canvas.user_icon_image = ImageTk.PhotoImage(resized_img)
+    max_size = (257, 257)
+    img.thumbnail(max_size)
+    canvas.user_icon_image = ImageTk.PhotoImage(img)
     
     canvas.create_image(
         302.0,
@@ -213,14 +215,14 @@ def criar_tela_perfil(window, canvas, usuario_logado):
     )
 
 def confirmar_e_deletar_conta(window, canvas, usuario_logado):
-    resposta = tools.custom_yn(
+    resposta = tools.custom_askyesno(
         window,
         "Confirmar Exclusão", 
         "Tem a certeza de que deseja excluir a sua conta permanentemente? Esta ação não pode ser desfeita."
     )
 
     if resposta: 
-        sucesso = usercrud.Usuario.deletar_conta(usuario_logado)
+        sucesso = usercrud.deletar_conta(usuario_logado)
         if sucesso:
             tools.custom_messagebox(
                 window, 

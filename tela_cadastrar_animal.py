@@ -1,10 +1,13 @@
-from tkinter import Button, PhotoImage, Entry, Text
+from tkinter import Button, PhotoImage, Entry, Text, filedialog
+from pathlib import Path
+from PIL import Image, ImageTk
 import tools
 import tela_menu_adm
 from modulos import animalcrud
 
 sexo_selecionado = None
 tipo_cadastro_selecionado = None
+caminho_imagem_animal = None
 
 def transicao_para_menu_adm(window, canvas, usuario_logado):
     tools.fade_out(
@@ -13,10 +16,40 @@ def transicao_para_menu_adm(window, canvas, usuario_logado):
         lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas, usuario_logado)
     )
 
+def selecionar_imagem_animal(canvas):
+    global caminho_imagem_animal
+    
+    caminho_imagem_animal = filedialog.askopenfilename(
+        title="Selecione a imagem do animal",
+        filetypes=[("Ficheiros de Imagem", "*.png *.jpg *.jpeg")]
+    )
+
+    if not caminho_imagem_animal:
+        return
+
+    imagem_referencia = Image.open(tools.relative_to_assets("TelaCadastrarAnimal", "image_7.png"))
+    largura_referencia, altura_referencia = imagem_referencia.size
+
+    img = Image.open(caminho_imagem_animal)
+    img_redimensionada = img.resize((largura_referencia, altura_referencia))
+
+    canvas.imagem_preview_animal = ImageTk.PhotoImage(img_redimensionada)
+
+    if hasattr(canvas, "preview_id"):
+        canvas.delete(canvas.preview_id)
+    if hasattr(canvas, "image_7_id"):
+        canvas.delete(canvas.image_7_id)
+
+    canvas.preview_id = canvas.create_image(
+        146.0,
+        468.0,
+        image=canvas.imagem_preview_animal
+    )
+    canvas.tag_raise(canvas.preview_id)
+
 def selecionar_sexo(canvas, x, y, imagem_selecao, valor):
     global sexo_selecionado
     sexo_selecionado = valor
-    print(f"Sexo selecionado: {sexo_selecionado}")
 
     if hasattr(canvas, "selecao_sexo_id"):
         canvas.delete(canvas.selecao_sexo_id)
@@ -25,16 +58,14 @@ def selecionar_sexo(canvas, x, y, imagem_selecao, valor):
         file=tools.relative_to_assets("TelaCadastrarAnimal", imagem_selecao)
     )
     canvas.selecao_sexo_id = canvas.create_image(
-        x, 
-        y, 
+        x,
+        y,
         image=canvas.imagem_selecao_sexo
     )
-    canvas.tag_raise(canvas.selecao_sexo_id)
 
 def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, valor):
     global tipo_cadastro_selecionado
     tipo_cadastro_selecionado = valor
-    print(f"Tipo de cadastro: {tipo_cadastro_selecionado}")
     
     if hasattr(canvas, "selecao_tipo_id"):
         canvas.delete(canvas.selecao_tipo_id)
@@ -43,11 +74,10 @@ def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, valor):
         file=tools.relative_to_assets("TelaCadastrarAnimal", imagem_selecao)
     )
     canvas.selecao_tipo_id = canvas.create_image(
-        x, 
-        y, 
+        x,
+        y,
         image=canvas.imagem_selecao_tipo
     )
-    canvas.tag_raise(canvas.selecao_tipo_id)
 
 def tentar_cadastrar_animal(entries, window, canvas):
     nome = entries["nome"].get()
@@ -55,11 +85,12 @@ def tentar_cadastrar_animal(entries, window, canvas):
     info = entries["info"].get("1.0", "end-1c")
     especie = "Não especificado"
 
-    resultado_validacao = animalcrud.validar_animal(
-        nome, 
-        especie, 
-        sexo_selecionado, 
-        idade
+    resultado_validacao = animalcrud.Animal.validar_animal(
+        nome,
+        especie,
+        sexo_selecionado,
+        idade,
+        caminho_imagem_animal
     )
 
     if resultado_validacao is not True:
@@ -70,11 +101,18 @@ def tentar_cadastrar_animal(entries, window, canvas):
         tools.custom_messagebox(window, "Erro de Validação", "Selecione o tipo de cadastro (Tratamento ou Adoção).")
         return
 
-    nome_arquivo = f"animais_{tipo_cadastro_selecionado}.json"
-    animalcrud.criar_animal(nome, especie, sexo_selecionado, idade, info, nome_arquivo)
+    animalcrud.Animal.criar_animal(
+        nome, 
+        especie, 
+        sexo_selecionado, 
+        idade, 
+        info, 
+        tipo_cadastro_selecionado,
+        caminho_imagem_animal
+    )
 
     tools.custom_messagebox(window, "Sucesso", "Animal cadastrado com sucesso!")
-    
+
     for widget in entries.values():
         if isinstance(widget, Entry):
             widget.delete(0, 'end')
@@ -85,6 +123,8 @@ def tentar_cadastrar_animal(entries, window, canvas):
         canvas.delete(canvas.selecao_sexo_id)
     if hasattr(canvas, "selecao_tipo_id"):
         canvas.delete(canvas.selecao_tipo_id)
+    if hasattr(canvas, "preview_id"):
+        canvas.delete(canvas.preview_id)
 
 def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
     tools.limpar_tela(canvas)
@@ -145,8 +185,8 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
     )
 
     entries = {
-        "nome": entry_nome, 
-        "idade": entry_idade, 
+        "nome": entry_nome,
+        "idade": entry_idade,
         "info": text_info
     }
 
@@ -167,7 +207,43 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
         width=371.0,
         height=78.0
     )
+
+    canvas.button_image_2 = PhotoImage(
+        file=tools.relative_to_assets("TelaCadastrarAnimal", "button_2.png")
+    )
+    button_inserir_imagem = Button(
+        canvas,
+        image=canvas.button_image_2,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: selecionar_imagem_animal(canvas),
+        relief="flat"
+    )
+    button_inserir_imagem.place(
+        x=52.0,
+        y=326.0,
+        width=187.875,
+        height=36.0
+    )
     
+    canvas.image_6 = PhotoImage(
+        file=tools.relative_to_assets("TelaCadastrarAnimal", "image_6.png")
+    )
+    canvas.create_image(
+        146.0,
+        467.0,
+        image=canvas.image_6
+    )
+
+    canvas.image_7_img = PhotoImage(
+        file=tools.relative_to_assets("TelaCadastrarAnimal", "image_7.png")
+    )
+    canvas.image_7_id = canvas.create_image(
+        146.0,
+        468.0,
+        image=canvas.image_7_img
+    )
+
     canvas.button_image_3 = PhotoImage(
         file=tools.relative_to_assets("TelaCadastrarAnimal", "button_3.png")
     )
@@ -186,12 +262,12 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
         height=102.0
     )
 
-    canvas.button_image_4 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastrarAnimal", "button_4.png")
+    canvas.button_image_macho = PhotoImage(
+        file=tools.relative_to_assets("TelaCadastrarAnimal", "button_5.png")
     )
     button_macho = Button(
         canvas,
-        image=canvas.button_image_4,
+        image=canvas.button_image_macho,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: selecionar_sexo(canvas, 865.0, 206.0, "image_2.png", "M"),
@@ -204,12 +280,12 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
         height=51.0
     )
 
-    canvas.button_image_5 = PhotoImage(
-        file=tools.relative_to_assets("TelaCadastrarAnimal", "button_5.png")
+    canvas.button_image_femea = PhotoImage(
+        file=tools.relative_to_assets("TelaCadastrarAnimal", "button_4.png")
     )
     button_femea = Button(
         canvas,
-        image=canvas.button_image_5,
+        image=canvas.button_image_femea,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: selecionar_sexo(canvas, 955.0, 206.0, "image_3.png", "F"),
@@ -222,36 +298,36 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
         height=51.0
     )
 
-    canvas.button_image_6 = PhotoImage(
+    canvas.button_image_adocao = PhotoImage(
         file=tools.relative_to_assets("TelaCadastrarAnimal", "button_6.png")
     )
-    button_tratamento = Button(
+    button_adocao = Button(
         canvas,
-        image=canvas.button_image_6,
+        image=canvas.button_image_adocao,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: selecionar_tipo_cadastro(canvas, 1087.0, 206.0, "image_5.png", "tratamento"),
+        command=lambda: selecionar_tipo_cadastro(canvas, 1087.0, 206.0, "image_5.png", "adocao"),
         relief="flat"
     )
-    button_tratamento.place(
+    button_adocao.place(
         x=1051.0,
         y=181.0,
         width=73.0,
         height=51.0
     )
 
-    canvas.button_image_7 = PhotoImage(
+    canvas.button_image_tratamento = PhotoImage(
         file=tools.relative_to_assets("TelaCadastrarAnimal", "button_7.png")
     )
-    button_adocao = Button(
+    button_tratamento = Button(
         canvas,
-        image=canvas.button_image_7,
+        image=canvas.button_image_tratamento,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: selecionar_tipo_cadastro(canvas, 1170.0, 206.0, "image_4.png", "adocao"),
+        command=lambda: selecionar_tipo_cadastro(canvas, 1170.0, 206.0, "image_4.png", "tratamento"),
         relief="flat"
     )
-    button_adocao.place(
+    button_tratamento.place(
         x=1134.0,
         y=181.0,
         width=73.0,

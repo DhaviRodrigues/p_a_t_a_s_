@@ -4,6 +4,8 @@ tkinter
 pillow
 webbrowser
 tkextrafont
+shutil
+pathlib
 
 _________________________________________________________________________
 
