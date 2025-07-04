@@ -1,9 +1,9 @@
 from tkinter import Button, PhotoImage
 from pathlib import Path
 import webbrowser
-import tools
-import tela_cadastro
-import tela_login
+from telas import tools
+from telas import tela_cadastro
+from telas import tela_login
 
 def _abrir_link_github():
     url = "https://github.com/DhaviRodrigues/p_a_t_a_s_"

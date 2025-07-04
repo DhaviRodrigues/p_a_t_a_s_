@@ -1,6 +1,6 @@
 from tkinter import Button, PhotoImage
-import tools
-import tela_menu_principal
+from telas import tools
+from telas import tela_menu_principal
 
 def transicao_para_menu_principal(window, canvas, usuario_logado):
     tools.fade_out(window, canvas, lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, usuario_logado))

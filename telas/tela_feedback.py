@@ -1,6 +1,6 @@
 from tkinter import Button, Canvas, Entry, PhotoImage, Text
-import tools
-import tela_menu_principal
+from telas import tools
+from telas import tela_menu_principal
 
 def transicao_para_menu(window, canvas, usuario_logado):
     """

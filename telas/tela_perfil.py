@@ -2,9 +2,9 @@ from tkinter import Button, PhotoImage
 from pathlib import Path
 from PIL import Image, ImageTk
 import tools
-import tela_menu_principal
-import tela_editar_perfil
-import tela_inicial
+from telas import tela_menu_principal
+from telas import tela_editar_perfil
+from telas import tela_inicial
 from modulos import usercrud
 
 def transicao_para_menu(window, canvas, usuario_logado):
