@@ -108,8 +108,8 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
         height=168.0
     )
     
-    canvas.button_image_2 = PhotoImage(
-    file=tools.relative_to_assets("TelaMenuPricipal", "button_4.png")
+    canvas.button_image_4 = PhotoImage(
+    file=tools.relative_to_assets("TelaMenuPrincipal", "button_4.png")
 
     )
     button_voltar = Button(
