@@ -1,4 +1,4 @@
-from tkinter import Button, PhotoImage, Text
+from tkinter import Button, PhotoImage
 import tools
 import tela_menu_principal
 
@@ -44,7 +44,7 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         image=button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão de Doação 2 clicado"),
+        command=lambda: print("button_2 clicked"),
         relief="flat"
     )
     button_2.place(
@@ -62,7 +62,7 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         image=button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão de Doação 3 clicado"),
+        command=lambda: print("button_3 clicked"),
         relief="flat"
     )
     button_3.place(
@@ -80,7 +80,7 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         image=button_image_4,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão de Doação 4 clicado"),
+        command=lambda: print("button_4 clicked"),
         relief="flat"
     )
     button_4.place(

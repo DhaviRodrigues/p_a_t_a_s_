@@ -155,12 +155,12 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
     )
 
     canvas.create_text(
-        521.0,
-        14.0,
+        576.0,
+        25.0,
         anchor="nw",
         text="Menu",
         fill="#EED3B2",
-        font=("Poppins Black", 79 * -1)
+        font=("Poppins Black", 45 * -1)
     )
 
     canvas.create_text(

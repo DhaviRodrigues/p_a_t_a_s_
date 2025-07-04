@@ -1,7 +1,7 @@
 from tkinter import Tk, Canvas, PhotoImage
 from pathlib import Path
 from tkextrafont import Font
-import tela_inicial
+from telas import tela_inicial
 
 window = Tk()
 window.title("P.A.T.A.S")
