@@ -1,7 +1,7 @@
 from tkinter import Button, PhotoImage
 from pathlib import Path
 from PIL import Image, ImageTk
-import tools
+from telas import tools
 from telas import tela_menu_principal
 from telas import tela_editar_perfil
 from telas import tela_inicial
