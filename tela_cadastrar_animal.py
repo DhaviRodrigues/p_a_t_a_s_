@@ -83,7 +83,7 @@ def tentar_cadastrar_animal(entries, window, canvas):
     nome = entries["nome"].get()
     idade = entries["idade"].get()
     info = entries["info"].get("1.0", "end-1c")
-    especie = "Não especificado"
+    especie = entries["especie"].get()
 
     resultado_validacao = animalcrud.Animal.validar_animal(
         nome,
@@ -148,12 +148,26 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
         font=("Poppins", 18)
     )
     entry_nome.place(
-        x=254.0,
+        x=70.0,
         y=176.0,
-        width=333.0,
+        width=270.0,
         height=56.0
     )
-
+    entry_especie = Entry(
+        canvas, 
+        bd=0, 
+        bg="#FFFFFF", 
+        fg="#000716",
+        highlightthickness=0, 
+        font=("Poppins", 18)
+    )
+    entry_especie.place(
+        x=380.0, 
+        y=176.0, 
+        width=200.0, 
+        height=56.0
+    )
+    
     entry_idade = Entry(
         canvas,
         bd=0,
@@ -257,7 +271,7 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
     )
     button_voltar.place(
         x=93.0,
-        y=74.0,
+        y=50.0,
         width=106.7,
         height=102.0
     )
@@ -335,11 +349,19 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
     )
 
     canvas.create_text(
-        254.0,
+        70.0,
         150.0,
         anchor="nw",
         text="Nome do animal:",
         fill="#44302C",
+        font=("Poppins Black", 20 * -1)
+    )
+    canvas.create_text(
+        380.0, 
+        150.0, 
+        anchor="nw", 
+        text="Espécie:",
+        fill="#44302C", 
         font=("Poppins Black", 20 * -1)
     )
 
@@ -372,7 +394,7 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
 
     canvas.create_text(
         391.0,
-        83.0,
+        50.0,
         anchor="nw",
         text="Preencha as informações: ",
         fill="#44312D",
