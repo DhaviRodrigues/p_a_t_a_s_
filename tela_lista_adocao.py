@@ -1,4 +1,4 @@
-from tkinter import Button, PhotoImage, messagebox
+from tkinter import Button, PhotoImage, messagebox, Frame, Canvas, Scrollbar
 from pathlib import Path
 from PIL import Image, ImageTk
 import tools
@@ -10,7 +10,7 @@ def transicao_para_menu_principal(window,canvas,usuario_logado):
 
 def criar_tela_lista_adocao(window,canvas,usuario_logado):
     tools.limpar_tela(canvas)
-    canvas.configure(bg="#FFFFFF")
+    canvas.configure(bg="#44312D")
 
     canvas.image_1 = PhotoImage(
         file=tools.relative_to_assets("TelaListaAdocao", "image_1.png")
@@ -37,11 +37,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu_principal(
-            window,
-            canvas,
-            usuario_logado
-        ),
+        command=lambda: transicao_para_menu_principal(window, canvas, usuario_logado),
         relief="flat"
     )
     button_voltar.place(
@@ -51,13 +47,44 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         height=89.0
     )
 
+    main_frame = Frame(canvas, bg="#44312D", bd=0, highlightthickness=0)
+    main_frame.place(x=32, y=120, width=1227, height=580)
+
+    canvas_lista = Canvas(
+        main_frame,
+        bg="#44312D",
+        bd=0,
+        highlightthickness=0
+    )
+    frame_cards = Frame(
+        canvas_lista,
+        bg="#44312D"
+    )
+
+    scrollbar = Scrollbar(
+        main_frame,
+        orient="vertical",
+        command=canvas_lista.yview
+    )
+    canvas_lista.configure(
+        yscrollcommand=scrollbar.set
+    )
+
+    scrollbar.pack(side="right", fill="y")
+    canvas_lista.pack(side="left", fill="both", expand=True)
+    canvas_lista.create_window((0, 0), window=frame_cards, anchor="nw")
+
+    def onFrameConfigure(event):
+        canvas_lista.configure(
+            scrollregion=canvas_lista.bbox("all")
+        )
+
+    frame_cards.bind("<Configure>", onFrameConfigure)
+    
     animais_para_adocao = animalcrud.carregar_dados("animais_adocao.json")
     
     canvas.lista_imagens_botoes = []
     canvas.lista_imagens_animais = []
-
-    posicao_y_inicial = 120.0
-    espacamento_vertical = 237.0
 
     if not animais_para_adocao:
         canvas.create_text(
@@ -70,68 +97,97 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         )
         return
 
-    for i, animal in enumerate(animais_para_adocao):
-        y_atual = posicao_y_inicial + (i * espacamento_vertical)
+    placeholder_path = tools.relative_to_assets("TelaListaAdocao", "image_2.png")
+    placeholder_pil = Image.open(placeholder_path)
+    largura_ref, altura_ref = placeholder_pil.size
+    canvas.placeholder_tk = ImageTk.PhotoImage(placeholder_pil)
 
+    for animal in animais_para_adocao:
         img_botao = PhotoImage(
             file=tools.relative_to_assets("TelaListaAdocao", "button_1.png")
         )
         canvas.lista_imagens_botoes.append(img_botao)
         
+        card_frame = Frame(
+            frame_cards,
+            width=1227,
+            height=217,
+            bg="#44312D"
+        )
+        card_frame.pack(pady=10)
+
+        card_canvas = Canvas(
+            card_frame,
+            width=1227,
+            height=217,
+            bg="#44312D",
+            highlightthickness=0
+        )
+        card_canvas.pack()
+
         tag_card = f"card_{animal.get('id')}"
-        canvas.create_image(
-            (32.0 + 1227.0) / 2,
-            y_atual + (217.0 / 2),
+        card_canvas.create_image(
+            1227 / 2,
+            217 / 2,
             image=img_botao,
             tags=(tag_card,)
         )
         
-        canvas.tag_bind(
+        card_canvas.tag_bind(
             tag_card,
             "<Button-1>",
             lambda e, id=animal.get('id'): print(f"Card do animal ID {id} clicado")
         )
 
+        card_canvas.create_image(
+            124.0,
+            109,
+            image=canvas.placeholder_tk
+        )
+
         caminho_foto = Path(__file__).parent / "fotos_animais" / animal.get("foto", "")
         if caminho_foto.exists():
             img = Image.open(caminho_foto)
-            img.thumbnail((200, 200))
-            img_tk = ImageTk.PhotoImage(img)
+            img_redimensionada = img.resize(
+                (largura_ref, altura_ref),
+                Image.Resampling.LANCZOS
+            )
+            img_tk = ImageTk.PhotoImage(img_redimensionada)
             canvas.lista_imagens_animais.append(img_tk)
             
-            canvas.create_image(
-                156.0,
-                y_atual + 109,
+            card_canvas.create_image(
+                124.0,
+                109,
                 image=img_tk
             )
 
-        canvas.create_text(
-            304.0,
-            y_atual + 30,
+        card_canvas.create_text(
+            272.0,
+            30,
             anchor="nw",
             text=f"Nome: {animal.get('nome', '')}",
             fill="#44312D",
             font=("Poppins Black", 32 * -1)
         )
-        canvas.create_text(
-            304.0,
-            y_atual + 69,
+        card_canvas.create_text(
+            272.0,
+            69,
             anchor="nw",
             text=f"Espécie: {animal.get('especie', '')}",
             fill="#44312D",
             font=("Poppins Black", 32 * -1)
         )
-        canvas.create_text(
-            304.0,
-            y_atual + 107,
+        card_canvas.create_text(
+            272.0,
+            107,
             anchor="nw",
             text=f"Sexo: {animal.get('sexo', '')}",
             fill="#44312D",
             font=("Poppins Black", 32 * -1)
         )
-        canvas.create_text(
-            304.0,
-            y_atual + 145,
+        card_canvas.create_text(
+            272.0,
+            145,
             anchor="nw",
             text=f"Idade: {animal.get('idade', '')}",
             fill="#44312D",

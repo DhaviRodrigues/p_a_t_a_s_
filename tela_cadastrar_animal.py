@@ -201,7 +201,8 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
     entries = {
         "nome": entry_nome,
         "idade": entry_idade,
-        "info": text_info
+        "info": text_info,
+        "especie": entry_especie
     }
 
     canvas.button_image_1 = PhotoImage(
@@ -389,7 +390,7 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
         anchor="nw",
         text="ex(8meses/2anos)",
         fill="#44302C",
-        font=("Poppins ExtraLight", 10 * -1)
+        font=("Poppins Black", 12 * -1)
     )
 
     canvas.create_text(
@@ -414,7 +415,7 @@ def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
         1015.0,
         150.0,
         anchor="nw",
-        text="Animal / Tratamento:",
+        text="Adoção / Tratamento:",
         fill="#44302C",
         font=("Poppins Black", 20 * -1)
     )
