@@ -5,7 +5,7 @@ import tools
 import tela_menu_principal
 from modulos import animalcrud
 
-def transicao_para_menu(window,canvas,usuario_logado):
+def transicao_para_menu_principal(window,canvas,usuario_logado):
     tools.fade_out(window,canvas,lambda: tela_menu_principal.criar_tela_menu_principal(window,canvas,usuario_logado))
 
 def criar_tela_lista_adocao(window,canvas,usuario_logado):
@@ -37,7 +37,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu(
+        command=lambda: transicao_para_menu_principal(
             window,
             canvas,
             usuario_logado
@@ -78,19 +78,18 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         )
         canvas.lista_imagens_botoes.append(img_botao)
         
-        animal_card = Button(
-            canvas,
+        tag_card = f"card_{animal.get('id')}"
+        canvas.create_image(
+            (32.0 + 1227.0) / 2,
+            y_atual + (217.0 / 2),
             image=img_botao,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda id=animal.get('id'): print(f"Card do animal ID {id} clicado"),
-            relief="flat"
+            tags=(tag_card,)
         )
-        animal_card.place(
-            x=32.0,
-            y=y_atual,
-            width=1227.0,
-            height=217.0
+        
+        canvas.tag_bind(
+            tag_card,
+            "<Button-1>",
+            lambda e, id=animal.get('id'): print(f"Card do animal ID {id} clicado")
         )
 
         caminho_foto = Path(__file__).parent / "fotos_animais" / animal.get("foto", "")

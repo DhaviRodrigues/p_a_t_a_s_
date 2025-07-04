@@ -8,24 +8,19 @@ from modulos import animalcrud
 def transicao_para_menu_principal(window,canvas,usuario_logado):
     tools.fade_out(window,canvas,lambda: tela_menu_principal.criar_tela_menu_principal(window,canvas,usuario_logado))
 
-def criar_tela_lista_tratamento(
-    window,
-    canvas,
-    usuario_logado
-):
+def criar_tela_lista_tratamento(window,canvas,usuario_logado):
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
 
     canvas.image_1 = PhotoImage(
-        file=tools.relative_to_assets("TelaListaAdocao", "image_1.png")
-    )
+        file=tools.relative_to_assets("TelaListaTratamento", "image_1.png"))
     canvas.create_image(
         646.0,
         365.0,
         image=canvas.image_1
     )
     canvas.create_text(
-        319.0,
+        460.0,
         33.0,
         anchor="nw",
         text="Animais em Tratamento",
@@ -34,14 +29,19 @@ def criar_tela_lista_tratamento(
     )
 
     canvas.button_image_2 = PhotoImage(
-        file=tools.relative_to_assets("TelaListaAdocao", "button_2.png")
-    )
+        file=tools.relative_to_assets("TelaListaTratamento", "button_2.png"))
     button_voltar = Button(
         canvas,
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu_principal(window,canvas,usuario_logado),relief="flat")
+        command=lambda: transicao_para_menu_principal(
+            window,
+            canvas,
+            usuario_logado
+        ),
+        relief="flat"
+    )
     button_voltar.place(
         x=1155.0,
         y=19.0,
@@ -72,23 +72,22 @@ def criar_tela_lista_tratamento(
         y_atual = posicao_y_inicial + (i * espacamento_vertical)
 
         img_botao = PhotoImage(
-            file=tools.relative_to_assets("TelaListaAdocao", "button_1.png")
+            file=tools.relative_to_assets("TelaListaTratamento", "button_1.png")
         )
         canvas.lista_imagens_botoes.append(img_botao)
         
-        animal_card = Button(
-            canvas,
+        tag_card = f"card_{animal.get('id')}"
+        canvas.create_image(
+            (32.0 + 1227.0) / 2,
+            y_atual + (217.0 / 2),
             image=img_botao,
-            borderwidth=0,
-            highlightthickness=0,
-            command=lambda id=animal.get('id'): print(f"Card do animal ID {id} clicado"),
-            relief="flat"
+            tags=(tag_card,)
         )
-        animal_card.place(
-            x=32.0,
-            y=y_atual,
-            width=1227.0,
-            height=217.0
+        
+        canvas.tag_bind(
+            tag_card,
+            "<Button-1>",
+            lambda e, id=animal.get('id'): print(f"Card do animal ID {id} clicado")
         )
 
         caminho_foto = Path(__file__).parent / "fotos_animais" / animal.get("foto", "")

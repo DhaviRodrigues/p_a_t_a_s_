@@ -4,6 +4,8 @@ from PIL import Image, ImageTk
 import tools
 import tela_perfil
 import tela_feedback
+import tela_lista_adocao
+import tela_lista_tratamento
 
 def transicao_para_feedback(window, canvas, usuario_logado):
     """
@@ -13,6 +15,26 @@ def transicao_para_feedback(window, canvas, usuario_logado):
         window,
         canvas,
         lambda: tela_feedback.criar_tela_feedback(window, canvas, usuario_logado)
+    )
+
+def transicao_para_lista_adocao(window, canvas, usuario_logado):
+    """
+    Inicia a transição para a tela de feedback.
+    """
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_lista_adocao.criar_tela_lista_adocao(window, canvas, usuario_logado)
+    )
+
+def transicao_para_lista_tratamento(window, canvas, usuario_logado):
+    """
+    Inicia a transição para a tela de feedback.
+    """
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_lista_tratamento.criar_tela_lista_tratamento(window, canvas, usuario_logado)
     )
 
 def criar_tela_menu_principal(window, canvas, usuario_logado):
@@ -54,7 +76,7 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
         image=canvas.button_adocao,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão Adoção clicado"),
+        command=lambda: tela_lista_adocao.criar_tela_lista_adocao(window, canvas, usuario_logado),
         relief="flat"
     )
     button_2.place(
@@ -72,7 +94,7 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
         image=canvas.button_tratamento,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão Tratamento clicado"),
+        command=lambda: tela_lista_tratamento.criar_tela_lista_tratamento(window, canvas, usuario_logado),
         relief="flat"
     )
     button_3.place(
