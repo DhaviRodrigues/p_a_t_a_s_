@@ -6,6 +6,7 @@ import tela_perfil
 import tela_feedback
 import tela_lista_adocao
 import tela_lista_tratamento
+import tela_doacao
 
 def transicao_para_feedback(window, canvas, usuario_logado):
     """
@@ -36,6 +37,9 @@ def transicao_para_lista_tratamento(window, canvas, usuario_logado):
         canvas,
         lambda: tela_lista_tratamento.criar_tela_lista_tratamento(window, canvas, usuario_logado)
     )
+
+def transicao_para_doacao(window, canvas, usuario_logado):
+    tools.fade_out(window, canvas, lambda: tela_doacao.criar_tela_doacao(window, canvas, usuario_logado))
 
 def criar_tela_menu_principal(window, canvas, usuario_logado):
     tools.limpar_tela(canvas)
@@ -102,6 +106,25 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
         y=545.0,
         width=164.0,
         height=168.0
+    )
+    
+    canvas.button_image_2 = PhotoImage(
+    file=tools.relative_to_assets("TelaMenuPricipal", "button_4.png")
+
+    )
+    button_voltar = Button(
+        canvas,
+        image=canvas.button_image_4,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: transicao_para_doacao(window, canvas, usuario_logado),
+        relief="flat"
+    )
+    button_voltar.place(
+        x=1155.0,
+        y=19.0,
+        width=90.0,
+        height=89.0
     )
 
     canvas.image_2 = PhotoImage(
