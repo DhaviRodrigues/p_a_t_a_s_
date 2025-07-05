@@ -7,7 +7,7 @@ Senha APP: pxys ogwp crlw foar
 # P.A.T.A.S. - Plataforma de Apoio ao Tratamento e Adoção Solidária 🐾
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/DhaviRodrigues/p_a_t_a_s_/main/telas/TKassets/logo2.png" width="400" alt="P.A.T.A.S. Logo">
+  <img src="https://raw.githubusercontent.com/DhaviRodrigues/p_a_t_a_s_/main/telas/TKassets/logopatas.png" width="400" alt="P.A.T.A.S. Logo">
 </p>
 
 <p align="center">
