@@ -91,9 +91,3 @@ Para executar o P.A.T.A.S. no seu ambiente local, siga os passos abaixo.
     ```bash
     python gui_main.py
     ```
-
----
-
-## 📂 Estrutura do Projeto
-
-O código está organizado para separar a interface (`telas`) da lógica de negócio (`modulos`), facilitando a manutenção e a escalabilidade.
