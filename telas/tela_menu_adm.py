@@ -1,9 +1,8 @@
 from tkinter import Button, PhotoImage
 import tools
-import tela_inicial
-import tela_cadastrar_animal
 
 def transicao_para_inicial(window, canvas):
+    from telas import tela_inicial
     tools.fade_out(
         window,
         canvas,
@@ -11,6 +10,7 @@ def transicao_para_inicial(window, canvas):
     )
 
 def criar_tela_menu_adm(window, canvas, usuario_logado):
+    from telas import tela_cadastrar_animal
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
 

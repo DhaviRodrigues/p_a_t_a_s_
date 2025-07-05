@@ -2,16 +2,12 @@ from tkinter import Button, PhotoImage
 from pathlib import Path
 from PIL import Image, ImageTk
 import tools
-import tela_perfil
-import tela_feedback
-import tela_lista_adocao
-import tela_lista_tratamento
-import tela_doacao
 
 def transicao_para_feedback(window, canvas, usuario_logado):
     """
     Inicia a transição para a tela de feedback.
     """
+    from telas import tela_feedback
     tools.fade_out(
         window,
         canvas,
@@ -22,6 +18,7 @@ def transicao_para_lista_adocao(window, canvas, usuario_logado):
     """
     Inicia a transição para a tela de feedback.
     """
+    from telas import tela_lista_adocao
     tools.fade_out(
         window,
         canvas,
@@ -32,6 +29,7 @@ def transicao_para_lista_tratamento(window, canvas, usuario_logado):
     """
     Inicia a transição para a tela de feedback.
     """
+    from telas import tela_lista_tratamento
     tools.fade_out(
         window,
         canvas,
@@ -39,9 +37,15 @@ def transicao_para_lista_tratamento(window, canvas, usuario_logado):
     )
 
 def transicao_para_doacao(window, canvas, usuario_logado):
+    from telas import tela_doacao
     tools.fade_out(window, canvas, lambda: tela_doacao.criar_tela_doacao(window, canvas, usuario_logado))
 
 def criar_tela_menu_principal(window, canvas, usuario_logado):
+    from telas import tela_perfil
+    from telas import tela_lista_adocao
+    from telas import tela_lista_tratamento 
+    from telas import tela_feedback
+    
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
 

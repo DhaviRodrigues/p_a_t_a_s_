@@ -2,12 +2,10 @@ from tkinter import Button, PhotoImage
 from pathlib import Path
 from PIL import Image, ImageTk
 import tools
-import tela_menu_principal
-import tela_editar_perfil
-import tela_inicial
-from modulos import usercrud
 
 def transicao_para_menu(window, canvas, usuario_logado):
+    from telas import tela_menu_principal
+    
     tools.fade_out(
         window,
         canvas,
@@ -15,12 +13,17 @@ def transicao_para_menu(window, canvas, usuario_logado):
     )
 
 def transicao_para_logout(window, canvas):
+    from telas import tela_inicial
+    
     tools.fade_out(
         window, 
         canvas, 
         lambda: tela_inicial.criar_tela_inicial(window, canvas))
 
 def criar_tela_perfil(window, canvas, usuario_logado):
+    from telas import tela_editar_perfil
+    from modulos import usercrud
+
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
 

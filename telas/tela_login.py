@@ -1,11 +1,8 @@
 from tkinter import Button, PhotoImage, Entry
-import tela_inicial
-import tela_menu_principal
-import tela_menu_adm
 import tools
-from modulos import usercrud
 
 def transicao_para_inicial(window, canvas):
+    from telas import tela_inicial
     tools.fade_out(
         window,
         canvas,
@@ -13,6 +10,10 @@ def transicao_para_inicial(window, canvas):
     )
 
 def tentar_login(window, canvas, email_entry, senha_entry):
+    from telas import tela_menu_adm
+    from telas import tela_menu_principal
+    from modulos import usercrud
+    
     email = email_entry.get()
     senha = senha_entry.get()
 

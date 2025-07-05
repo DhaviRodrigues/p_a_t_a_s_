@@ -1,11 +1,11 @@
 import sys
 import os
 from pathlib import Path
-project_root = Path(__file__).parent
-sys.path.insert(0, str(project_root))
-
 from tkinter import Tk, Canvas, PhotoImage
 from tkextrafont import Font
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+
 from telas import tela_inicial
 
 window = Tk()
@@ -25,7 +25,7 @@ except Exception as e:
     window.font_poppins_regular = ("Arial", 18)
     window.font_poppins_black = ("Arial", 24, "bold")
 
-icon_path = Path(__file__).parent / "TKassets" / "pata_256.png"
+icon_path = Path(__file__).parent / "telas" / "TKassets" / "pata_256.png"
 icon = PhotoImage(
     file=icon_path
 )

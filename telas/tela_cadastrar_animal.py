@@ -1,15 +1,16 @@
 from tkinter import Button, PhotoImage, Entry, Text, filedialog
 from pathlib import Path
 from PIL import Image, ImageTk
-import tools
-import tela_menu_adm
 from modulos import animalcrud
+from telas import tools
 
 sexo_selecionado = None
 tipo_cadastro_selecionado = None
 caminho_imagem_animal = None
 
 def transicao_para_menu_adm(window, canvas, usuario_logado):
+    
+    from telas import tela_menu_adm
     tools.fade_out(
         window,
         canvas,
@@ -17,6 +18,7 @@ def transicao_para_menu_adm(window, canvas, usuario_logado):
     )
 
 def selecionar_imagem_animal(canvas):
+    
     global caminho_imagem_animal
     
     caminho_imagem_animal = filedialog.askopenfilename(
@@ -48,6 +50,7 @@ def selecionar_imagem_animal(canvas):
     canvas.tag_raise(canvas.preview_id)
 
 def selecionar_sexo(canvas, x, y, imagem_selecao, valor):
+    
     global sexo_selecionado
     sexo_selecionado = valor
 
@@ -64,6 +67,7 @@ def selecionar_sexo(canvas, x, y, imagem_selecao, valor):
     )
 
 def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, valor):
+    
     global tipo_cadastro_selecionado
     tipo_cadastro_selecionado = valor
     
@@ -80,6 +84,7 @@ def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, valor):
     )
 
 def tentar_cadastrar_animal(entries, window, canvas):
+    
     nome = entries["nome"].get()
     idade = entries["idade"].get()
     info = entries["info"].get("1.0", "end-1c")
@@ -127,6 +132,7 @@ def tentar_cadastrar_animal(entries, window, canvas):
         canvas.delete(canvas.preview_id)
 
 def criar_tela_cadastrar_animal(window, canvas, usuario_logado):
+    
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
 

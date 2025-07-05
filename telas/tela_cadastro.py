@@ -1,18 +1,20 @@
 from tkinter import Button, PhotoImage, Entry, messagebox
-import tela_inicial
-import tela_login
-import tools
 from modulos import usercrud
+from telas import tools
 
 user_icon = None
 
 def transicao_para_inicial(window, canvas):
+    from telas import tela_inicial
+    
     tools.fade_out(
         window,
         canvas,
         lambda: tela_inicial.criar_tela_inicial(window, canvas)
     )
 def transicao_para_login(window, canvas):
+    from telas import tela_login
+    
     tools.fade_out(
         window,
         canvas,
@@ -20,6 +22,7 @@ def transicao_para_login(window, canvas):
     )
 
 def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
+    
     global user_icon
     user_icon = nome_icone
     print(f"Ícone selecionado: {user_icon}")
@@ -38,6 +41,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     canvas.tag_raise(canvas.selecao_atual_id)
 
 def tentar_cadastro(entries,canvas,window):
+    
     global user_icon
 
     nome = entries['nome'].get()
@@ -62,6 +66,7 @@ def tentar_cadastro(entries,canvas,window):
         
 
 def criar_tela_cadastro(window, canvas):
+    
     tools.limpar_tela(canvas)
     canvas.configure(bg="#EADFC8")
 

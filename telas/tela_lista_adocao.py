@@ -2,13 +2,13 @@ from tkinter import Button, PhotoImage, messagebox, Frame, Canvas, Scrollbar
 from pathlib import Path
 from PIL import Image, ImageTk
 import tools
-import tela_menu_principal
-from modulos import animalcrud
 
 def transicao_para_menu_principal(window,canvas,usuario_logado):
+    from telas import tela_menu_principal
     tools.fade_out(window,canvas,lambda: tela_menu_principal.criar_tela_menu_principal(window,canvas,usuario_logado))
 
 def criar_tela_lista_adocao(window,canvas,usuario_logado):
+    from modulos import animalcrud
     tools.limpar_tela(canvas)
     canvas.configure(bg="#44312D")
 

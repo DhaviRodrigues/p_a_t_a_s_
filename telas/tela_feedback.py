@@ -1,11 +1,11 @@
 from tkinter import Button, Canvas, Entry, PhotoImage, Text
 import tools
-import tela_menu_principal
 
 def transicao_para_menu(window, canvas, usuario_logado):
     """
     Inicia a transição de volta para a tela do menu principal.
     """
+    from telas import tela_menu_principal
     callback_function = lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, usuario_logado)
     
     tools.fade_out(
@@ -27,7 +27,6 @@ def criar_tela_feedback(window, canvas, usuario_logado):
         image=canvas.image_bg
     )
 
-    # Botão para voltar
     canvas.button_voltar = PhotoImage(
         file=tools.relative_to_assets("TelaFeedback", "button_1.png")
     )
@@ -64,7 +63,6 @@ def criar_tela_feedback(window, canvas, usuario_logado):
         height=98.41
     )
     
-    # --- Resto da UI ---
     canvas.create_text(
         100.0,
         190.0,
