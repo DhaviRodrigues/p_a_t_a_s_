@@ -226,7 +226,7 @@ def confirmar_e_deletar_conta(window, canvas, usuario_logado):
     )
 
     if resposta: 
-        sucesso = usercrud.deletar_conta(usuario_logado)
+        sucesso = usercrud.Usuario.deletar_conta(usuario_logado)
         if sucesso:
             tools.custom_messagebox(
                 window, 
