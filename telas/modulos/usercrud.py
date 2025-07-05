@@ -1,6 +1,5 @@
 import json
 import os
-from time import sleep
 import smtplib
 from email.message import EmailMessage
 import random
@@ -126,6 +125,24 @@ class Usuario:
         
         salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
         return True
+
+    def email_existe(email):
+        """Comando para verificar se o email já existe no sistema.
+        Informações requisitadas:
+        email:
+        senha:
+        
+        As informações devem estar presentes no id de algum usuário do "Usuários.json" 
+        """
+        if not email:
+            return "Preencha todos os campos."
+
+        usuarios = carregar_dados("usuarios.json")
+
+        for usuario in usuarios:
+            if usuario['email'] == email.strip().lower():
+                return usuario
+            
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos usuários"""
