@@ -1,6 +1,7 @@
 from tkinter import Button, PhotoImage
 from pathlib import Path
 import webbrowser
+from telas import tools
 
 def _abrir_link_github():
     url = "https://github.com/DhaviRodrigues/p_a_t_a_s_"
@@ -8,7 +9,7 @@ def _abrir_link_github():
 
 def _iniciar_transicao_cadastro(window, canvas):
     from telas import tela_cadastro
-    from telas import tools
+    
     callback_function = lambda: tela_cadastro.criar_tela_cadastro(window, canvas)
     tools.fade_out(
         window,
@@ -18,7 +19,7 @@ def _iniciar_transicao_cadastro(window, canvas):
 
 def _iniciar_transicao_login(window, canvas):
     from telas import tela_login
-    from telas import tools
+    
     callback_function = lambda: tela_login.criar_tela_login(window, canvas)
     tools.fade_out(
         window,
@@ -27,7 +28,7 @@ def _iniciar_transicao_login(window, canvas):
     )
 
 def criar_tela_inicial(window, canvas):
-    from telas import tools
+    
     tools.limpar_tela(canvas)
     canvas.configure(bg="#45312C")
 

@@ -39,7 +39,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     canvas.tag_raise(canvas.selecao_atual_id)
 
 def tentar_alteracao(entries,canvas,window,usuario_logado):
-    from modulos import usercrud
+    from .modulos import usercrud
     
     global user_icon
 

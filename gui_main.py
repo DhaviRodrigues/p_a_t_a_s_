@@ -13,8 +13,8 @@ window.title("P.A.T.A.S")
 window.geometry("1280x720")
 
 try:
-    font_path_regular = Path(__file__).parent / "fonts" / "Poppins-Regular.ttf"
-    font_path_black = Path(__file__).parent / "fonts" / "Poppins-Black.ttf"
+    font_path_regular = Path(__file__).parent / "telas" / "fonts" / "Poppins-Regular.ttf"
+    font_path_black = Path(__file__).parent / "telas"/ "fonts" / "Poppins-Black.ttf"
     
     window.font_poppins_regular = Font(file=font_path_regular, family="Poppins")
     window.font_poppins_black = Font(file=font_path_black, family="Poppins Black")

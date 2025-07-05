@@ -1,5 +1,5 @@
 from tkinter import Button, PhotoImage, Entry
-import tools
+from telas import tools
 
 def transicao_para_inicial(window, canvas):
     from telas import tela_inicial
@@ -12,7 +12,7 @@ def transicao_para_inicial(window, canvas):
 def tentar_login(window, canvas, email_entry, senha_entry):
     from telas import tela_menu_adm
     from telas import tela_menu_principal
-    from modulos import usercrud
+    from .modulos import usercrud
     
     email = email_entry.get()
     senha = senha_entry.get()

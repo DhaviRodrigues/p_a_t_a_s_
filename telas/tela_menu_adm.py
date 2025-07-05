@@ -1,5 +1,5 @@
 from tkinter import Button, PhotoImage
-import tools
+from telas import tools
 
 def transicao_para_inicial(window, canvas):
     from telas import tela_inicial

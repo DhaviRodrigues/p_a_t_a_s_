@@ -1,5 +1,5 @@
 from tkinter import Button, Canvas, Entry, PhotoImage, Text
-import tools
+from telas import tools
 
 def transicao_para_menu(window, canvas, usuario_logado):
     """

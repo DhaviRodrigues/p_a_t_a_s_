@@ -1,7 +1,7 @@
 from tkinter import Button, PhotoImage
 from pathlib import Path
 from PIL import Image, ImageTk
-import tools
+from telas import tools
 
 def transicao_para_menu(window, canvas, usuario_logado):
     from telas import tela_menu_principal

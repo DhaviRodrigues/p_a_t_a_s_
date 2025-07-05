@@ -1,5 +1,5 @@
 from tkinter import Button, PhotoImage, Entry, messagebox
-from modulos import usercrud
+from .modulos import usercrud
 from telas import tools
 
 user_icon = None

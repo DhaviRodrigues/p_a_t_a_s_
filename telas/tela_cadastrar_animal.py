@@ -1,7 +1,7 @@
 from tkinter import Button, PhotoImage, Entry, Text, filedialog
 from pathlib import Path
 from PIL import Image, ImageTk
-from modulos import animalcrud
+from .modulos import animalcrud
 from telas import tools
 
 sexo_selecionado = None
