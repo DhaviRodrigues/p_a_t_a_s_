@@ -22,7 +22,7 @@ Senha APP: pxys ogwp crlw foar
 
 ## 📖 Sobre o Projeto
 
-O **P.A.T.A.S.** nasceu para resolver um problema central enfrentado por ONGs e projetos voluntários de resgate animal: a falta de uma ferramenta centralizada e acessível para gerir o fluxo de animais. A plataforma oferece uma solução tecnológica robusta, construída em Python, que permite o controlo total sobre o registo de animais, o acompanhamento do seu estado de saúde e a sua eventual disponibilização para uma adoção responsável.
+O **P.A.T.A.S.** nasceu para resolver um problema central enfrentado por ONGs e projetos voluntários de resgate animal: a falta de uma ferramenta centralizada e acessível para gerir o fluxo de animais. A plataforma oferece uma solução tecnológica robusta, construída em Python, que permite o controle total sobre o registo de animais, o acompanhamento do seu estado de saúde e a sua eventual disponibilização para uma adoção responsável.
 
 Com uma interface gráfica intuitiva, o objetivo é otimizar o trabalho dos voluntários e criar uma ponte transparente e de confiança com a comunidade de adotantes.
 
@@ -38,7 +38,7 @@ Com uma interface gráfica intuitiva, o objetivo é otimizar o trabalho dos volu
     - Canal para **relatar dúvidas e erros**.
 
 ### 💼 Para Administradores
-- **Painel de Controlo:** Um menu administrativo exclusivo com ferramentas de gestão.
+- **Painel de Controle:** Um menu administrativo exclusivo com ferramentas de gestão.
 - **Cadastro de Animais:** Formulário detalhado para registar novos animais, incluindo:
     - Nome, idade e espécie.
     - Seleção de sexo (M/F).
@@ -75,19 +75,19 @@ Para executar o P.A.T.A.S. no seu ambiente local, siga os passos abaixo.
     git clone [https://github.com/DhaviRodrigues/p_a_t_a_s_.git](https://github.com/DhaviRodrigues/p_a_t_a_s_.git)
     ```
 
-2.  **Navegue para a pasta do projeto:**
+2.  **Instale as bibliotecas:**
+    O ficheiro `requesitos.txt` contém todas as bibliotecas necessária:
     ```bash
-    cd p_a_t_a_s_-1
-    ```
+    pillow
+    webbrowser
+    tkextrafont
+    shutil
+    pathlib
 
-3.  **Instale as dependências:**
-    O ficheiro `requesitos.txt` contém todas as bibliotecas necessárias. Instale-as com o seguinte comando:
-    ```bash
-    pip install -r requesitos.txt
     ```
 
 4.  **Execute a aplicação:**
-    Para iniciar a interface gráfica, execute o `gui_main.py` a partir da pasta raiz do projeto.
+    Para iniciar a interface gráfica, execute o `gui_main.py` em **modo administrador** a partir da pasta raiz do projeto, ou adicione a pasta ao workspace do VS Code e inicie o `gui_main.py`.
     ```bash
     python gui_main.py
     ```
