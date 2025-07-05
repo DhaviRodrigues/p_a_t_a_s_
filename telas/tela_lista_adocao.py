@@ -1,8 +1,8 @@
 from tkinter import Button, PhotoImage, messagebox, Frame, Canvas, Scrollbar
 from pathlib import Path
 from PIL import Image, ImageTk
-from telas import tools
-from telas import tela_menu_principal
+import tools
+import tela_menu_principal
 from modulos import animalcrud
 
 def transicao_para_menu_principal(window,canvas,usuario_logado):

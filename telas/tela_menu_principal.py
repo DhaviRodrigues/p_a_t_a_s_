@@ -1,12 +1,12 @@
 from tkinter import Button, PhotoImage
 from pathlib import Path
 from PIL import Image, ImageTk
-from telas import tools
-from telas import tela_perfil
-from telas import tela_feedback
-from telas import tela_lista_adocao
-from telas import tela_lista_tratamento
-from telas import tela_doacao
+import tools
+import tela_perfil
+import tela_feedback
+import tela_lista_adocao
+import tela_lista_tratamento
+import tela_doacao
 
 def transicao_para_feedback(window, canvas, usuario_logado):
     """

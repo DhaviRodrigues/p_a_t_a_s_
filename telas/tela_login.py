@@ -1,8 +1,8 @@
 from tkinter import Button, PhotoImage, Entry
-from telas import tela_inicial
-from telas import tela_menu_principal
-from telas import tela_menu_adm
-from telas import tools
+import tela_inicial
+import tela_menu_principal
+import tela_menu_adm
+import tools
 from modulos import usercrud
 
 def transicao_para_inicial(window, canvas):

@@ -1,7 +1,7 @@
 from tkinter import Button, PhotoImage
-from telas import tools
-from telas import tela_inicial
-from telas import tela_cadastrar_animal
+import tools
+import tela_inicial
+import tela_cadastrar_animal
 
 def transicao_para_inicial(window, canvas):
     tools.fade_out(

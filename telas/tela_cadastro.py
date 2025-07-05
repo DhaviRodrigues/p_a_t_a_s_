@@ -1,7 +1,7 @@
 from tkinter import Button, PhotoImage, Entry, messagebox
-from telas import tela_inicial
-from telas import tela_login
-from telas import tools
+import tela_inicial
+import tela_login
+import tools
 from modulos import usercrud
 
 user_icon = None

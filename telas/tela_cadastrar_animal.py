@@ -1,8 +1,8 @@
 from tkinter import Button, PhotoImage, Entry, Text, filedialog
 from pathlib import Path
 from PIL import Image, ImageTk
-from telas import tools
-from telas import tela_menu_adm
+import tools
+import tela_menu_adm
 from modulos import animalcrud
 
 sexo_selecionado = None
