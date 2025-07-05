@@ -22,7 +22,7 @@ def transicao_para_logout(window, canvas):
 
 def criar_tela_perfil(window, canvas, usuario_logado):
     from telas import tela_editar_perfil
-    from modulos import usercrud
+    from .modulos import usercrud
 
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
