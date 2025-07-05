@@ -218,7 +218,7 @@ def criar_tela_perfil(window, canvas, usuario_logado):
     )
 
 def confirmar_e_deletar_conta(window, canvas, usuario_logado):
-    from modulos import usercrud
+    from .modulos import usercrud
     resposta = tools.custom_yn(
         window,
         "Confirmar Exclusão", 
