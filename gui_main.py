@@ -1,10 +1,10 @@
 import sys
 import os
-
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from pathlib import Path
+project_root = Path(__file__).parent
+sys.path.insert(0, str(project_root))
 
 from tkinter import Tk, Canvas, PhotoImage
-from pathlib import Path
 from tkextrafont import Font
 from telas import tela_inicial
 
