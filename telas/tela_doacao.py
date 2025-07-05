@@ -1,5 +1,6 @@
-from tkinter import Button, PhotoImage
+from tkinter import Button, PhotoImage, Text
 from telas import tools
+
 
 def transicao_para_menu_principal(window, canvas, usuario_logado):
     from telas import tela_menu_principal
@@ -18,12 +19,14 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         image=canvas.image_1
     )
 
-    button_image_1 = PhotoImage(
+    # --- CORREÇÃO APLICADA A TODOS OS BOTÕES ---
+    # Guarda a imagem no canvas para que não seja apagada
+    canvas.button_image_1 = PhotoImage(
         file=tools.relative_to_assets("TelaDoacao", "button_1.png")
     )
     button_1 = Button(
         canvas,
-        image=button_image_1,
+        image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: transicao_para_menu_principal(window, canvas, usuario_logado),
@@ -36,12 +39,12 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         height=114.0
     )
 
-    button_image_2 = PhotoImage(
+    canvas.button_image_2 = PhotoImage(
         file=tools.relative_to_assets("TelaDoacao", "button_2.png")
     )
     button_2 = Button(
         canvas,
-        image=button_image_2,
+        image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: print("button_2 clicked"),
@@ -54,12 +57,12 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         height=75.0
     )
 
-    button_image_3 = PhotoImage(
+    canvas.button_image_3 = PhotoImage(
         file=tools.relative_to_assets("TelaDoacao", "button_3.png")
     )
     button_3 = Button(
         canvas,
-        image=button_image_3,
+        image=canvas.button_image_3,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: print("button_3 clicked"),
@@ -72,12 +75,12 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         height=75.0
     )
 
-    button_image_4 = PhotoImage(
+    canvas.button_image_4 = PhotoImage(
         file=tools.relative_to_assets("TelaDoacao", "button_4.png")
     )
     button_4 = Button(
         canvas,
-        image=button_image_4,
+        image=canvas.button_image_4,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: print("button_4 clicked"),
@@ -90,20 +93,20 @@ def criar_tela_doacao(window, canvas, usuario_logado):
         height=75.0
     )
 
-    image_image_2 = PhotoImage(
+    canvas.image_2 = PhotoImage(
         file=tools.relative_to_assets("TelaDoacao", "image_2.png")
     )
     canvas.create_image(
         874.0,
         594.0,
-        image=image_image_2
+        image=canvas.image_2
     )
 
-    image_image_3 = PhotoImage(
+    canvas.image_3 = PhotoImage(
         file=tools.relative_to_assets("TelaDoacao", "image_3.png")
     )
     canvas.create_image(
         874.0,
         252.0,
-        image=image_image_3
+        image=canvas.image_3
     )

@@ -8,7 +8,7 @@ def transicao_para_menu_principal(window,canvas,usuario_logado):
     tools.fade_out(window,canvas,lambda: tela_menu_principal.criar_tela_menu_principal(window,canvas,usuario_logado))
 
 def criar_tela_lista_adocao(window,canvas,usuario_logado):
-    from modulos import animalcrud
+    from .modulos import animalcrud
     tools.limpar_tela(canvas)
     canvas.configure(bg="#44312D")
 

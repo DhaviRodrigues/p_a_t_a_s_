@@ -8,9 +8,9 @@ def transicao_para_menu_principal(window, canvas, usuario_logado):
     tools.fade_out(window, canvas, lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, usuario_logado))
 
 def criar_tela_lista_tratamento(window, canvas, usuario_logado):
-    from modulos import animalcrud
+    from .modulos import animalcrud
     tools.limpar_tela(canvas)
-    canvas.configure(bg="#FFFFFF")
+    canvas.configure(bg="#44312D")
 
     canvas.image_1 = PhotoImage(
         file=tools.relative_to_assets("TelaListaAdocao", "image_1.png")
@@ -21,7 +21,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         image=canvas.image_1
     )
     canvas.create_text(
-        319.0,
+        449.0,
         33.0,
         anchor="nw",
         text="Animais em Tratamento",
@@ -47,19 +47,19 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         height=89.0
     )
 
-    main_frame = Frame(canvas, bg="#FFFFFF", bd=0, highlightthickness=0)
+    main_frame = Frame(canvas, bg="#44312D", bd=0, highlightthickness=0)
     main_frame.place(x=32, y=120, width=1227, height=580)
 
     canvas_lista = Canvas(
         main_frame,
-        bg="#FFFFFF",
+        bg="#44312D",
         bd=0,
         highlightthickness=0
     )
     
     frame_cards = Frame(
         canvas_lista,
-        bg="#FFFFFF"
+        bg="#44312D"
     )
 
     scrollbar = Scrollbar(
@@ -91,7 +91,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         label_vazio = Label(
             frame_cards,
             text="Não há animais em tratamento no momento.",
-            bg="#FFFFFF",
+            bg="#44312D",
             fg="#44312D",
             font=("Poppins", 24)
         )
@@ -113,7 +113,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
             frame_cards,
             width=1227,
             height=217,
-            bg="#FFFFFF"
+            bg="#44312D"
         )
         card_frame.pack(pady=10)
 
@@ -121,7 +121,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
             card_frame,
             width=1227,
             height=217,
-            bg="#FFFFFF",
+            bg="#44312D",
             highlightthickness=0
         )
         card_canvas.pack()
