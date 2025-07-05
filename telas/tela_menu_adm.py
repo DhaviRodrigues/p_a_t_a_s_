@@ -1,4 +1,4 @@
-from tkinter import Button, PhotoImage
+from tkinter import Button, PhotoImage, Entry
 from telas import tools
 
 def transicao_para_inicial(window, canvas):
@@ -16,6 +16,19 @@ def transicao_para_cadastrar_animal(window, canvas, usuario_logado):
         canvas,
         lambda: tela_cadastrar_animal.criar_tela_cadastrar_animal(window, canvas, usuario_logado)
     )
+
+def tentar_alterar_status_adm(entry_widget, novo_status, window):
+    from .modulos import usercrud
+
+    email = entry_widget.get()
+    resultado = usercrud.alterar_status_adm(email, novo_status)
+
+    if "sucesso" in resultado:
+        tools.custom_messagebox(window, "Operação Concluída", resultado)
+    else:
+        tools.custom_messagebox(window, "Erro", resultado)
+    
+    entry_widget.delete(0, 'end')
 
 def criar_tela_menu_adm(window, canvas, usuario_logado):
     tools.limpar_tela(canvas)
@@ -83,7 +96,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_3 clicked"),
+        command=lambda: tentar_alterar_status_adm(entry_remover_adm, False, window),
         relief="flat"
     )
     button_3.place(
@@ -209,7 +222,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_10,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_10 clicked"),
+        command=lambda: tentar_alterar_status_adm(entry_adicionar_adm, True, window),
         relief="flat"
     )
     button_10.place(
@@ -217,4 +230,52 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         y=657.0,
         width=147.75509643554688,
         height=48.020408630371094
+    )
+
+    entry_image_1 = PhotoImage(
+        file=tools.relative_to_assets("TelaMenuAdm", "entry_1.png")
+    )
+    entry_bg_1 = canvas.create_image(
+        1108.0,
+        394.0,
+        image=entry_image_1
+    )
+
+    entry_adicionar_adm = Entry(
+        canvas,
+        bd=0,
+        bg="#FFFFFF",
+        fg="#000716",
+        highlightthickness=0,
+        font=("Poppins", 14)
+    )
+    entry_adicionar_adm.place(
+        x=995.0,
+        y=365.0,
+        width=226.0,
+        height=56.0
+    )
+
+    entry_image_2 = PhotoImage(
+        file=tools.relative_to_assets("TelaMenuAdm", "entry_2.png")
+    )
+    entry_bg_2 = canvas.create_image(
+        1108.0,
+        619.0,
+        image=entry_image_2
+    )
+
+    entry_remover_adm = Entry(
+        canvas,
+        bd=0,
+        bg="#FFFFFF",
+        fg="#000716",
+        highlightthickness=0,
+        font=("Poppins", 14)
+    )
+    entry_remover_adm.place(
+        x=995.0,
+        y=590.0,
+        width=226.0,
+        height=56.0
     )

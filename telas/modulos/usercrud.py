@@ -126,22 +126,29 @@ class Usuario:
         salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
         return True
 
-    def email_existe(email):
-        """Comando para verificar se o email já existe no sistema.
-        Informações requisitadas:
-        email:
-        senha:
-        
-        As informações devem estar presentes no id de algum usuário do "Usuários.json" 
-        """
+    def alterar_status_adm(email, novo_status):
+        """Encontra um usuário por email e altera seu status de administrador."""
         if not email:
-            return "Preencha todos os campos."
+            return "O campo de email não pode estar vazio."
 
         usuarios = carregar_dados("usuarios.json")
-
+        
+        usuario_encontrado = False
         for usuario in usuarios:
             if usuario['email'] == email.strip().lower():
-                return usuario
+                usuario['adm'] = novo_status
+                usuario_encontrado = True
+                break
+
+        if not usuario_encontrado:
+            return f"Nenhum usuário encontrado com o email: {email}"
+
+        salvar_dados("usuarios.json", usuarios)
+        
+        if novo_status is True:
+            return f"O usuário {email} foi promovido a administrador com sucesso."
+        else:
+            return f"O usuário {email} foi removido de administrador com sucesso."
             
 
 def carregar_dados(arquivo):
