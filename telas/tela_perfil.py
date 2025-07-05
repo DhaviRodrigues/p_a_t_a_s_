@@ -5,7 +5,7 @@ import tools
 
 def transicao_para_menu(window, canvas, usuario_logado):
     from telas import tela_menu_principal
-    
+
     tools.fade_out(
         window,
         canvas,
@@ -218,6 +218,7 @@ def criar_tela_perfil(window, canvas, usuario_logado):
     )
 
 def confirmar_e_deletar_conta(window, canvas, usuario_logado):
+    from modulos import usercrud
     resposta = tools.custom_askyesno(
         window,
         "Confirmar Exclusão", 
