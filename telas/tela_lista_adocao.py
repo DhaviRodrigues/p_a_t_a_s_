@@ -157,7 +157,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
             tags=(tag_card,)
         )
 
-        caminho_foto = Path(__file__).parent.parent / "fotos_animais" / todos_animais.get("foto", "")
+        caminho_foto = Path(__file__).parent / "fotos_animais" / todos_animais.get("foto", "")
         if caminho_foto.exists():
             img = Image.open(caminho_foto)
             img_redimensionada = img.resize(
