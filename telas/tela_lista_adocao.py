@@ -1,16 +1,21 @@
-from tkinter import Button, PhotoImage, messagebox, Frame, Canvas, Scrollbar
+from tkinter import Button, PhotoImage, messagebox, Frame, Canvas, Scrollbar, Label
 from pathlib import Path
 from PIL import Image, ImageTk
 from telas import tools
 
 def transicao_para_menu_principal(window,canvas,usuario_logado):
     from telas import tela_menu_principal
+
     tools.fade_out(window,canvas,lambda: tela_menu_principal.criar_tela_menu_principal(window,canvas,usuario_logado))
 
 def criar_tela_lista_adocao(window,canvas,usuario_logado):
+    from telas import tela_info_pet_adocao
     from .modulos import animalcrud
+
     tools.limpar_tela(canvas)
-    canvas.configure(bg="#44312D")
+    canvas.configure(
+        bg="#44312D"
+    )
 
     canvas.image_1 = PhotoImage(
         file=tools.relative_to_assets("TelaListaAdocao", "image_1.png")
@@ -47,8 +52,18 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         height=89.0
     )
 
-    main_frame = Frame(canvas, bg="#44312D", bd=0, highlightthickness=0)
-    main_frame.place(x=32, y=120, width=1227, height=580)
+    main_frame = Frame(
+        canvas,
+        bg="#44312D",
+        bd=0,
+        highlightthickness=0
+    )
+    main_frame.place(
+        x=32,
+        y=120,
+        width=1227,
+        height=580
+    )
 
     canvas_lista = Canvas(
         main_frame,
@@ -87,14 +102,14 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
     canvas.lista_imagens_animais = []
 
     if not animais_para_adocao:
-        canvas.create_text(
-            640,
-            360,
+        label_vazio = Label(
+            frame_cards,
             text="Não há animais para adoção no momento.",
-            fill="#44312D",
-            font=("Poppins", 24),
-            anchor="center"
+            bg="#44312D",
+            fg="#FFFFFF",
+            font=("Poppins", 24)
         )
+        label_vazio.pack(pady=200)
         return
 
     placeholder_path = tools.relative_to_assets("TelaListaAdocao", "image_2.png")
@@ -102,7 +117,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
     largura_ref, altura_ref = placeholder_pil.size
     canvas.placeholder_tk = ImageTk.PhotoImage(placeholder_pil)
 
-    for animal in animais_para_adocao:
+    for todos_animais in animais_para_adocao:
         img_botao = PhotoImage(
             file=tools.relative_to_assets("TelaListaAdocao", "button_1.png")
         )
@@ -125,7 +140,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         )
         card_canvas.pack()
 
-        tag_card = f"card_{animal.get('id')}"
+        tag_card = f"card_{todos_animais.get('id')}"
         card_canvas.create_image(
             1227 / 2,
             217 / 2,
@@ -133,19 +148,16 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
             tags=(tag_card,)
         )
         
-        card_canvas.tag_bind(
-            tag_card,
-            "<Button-1>",
-            lambda e, id=animal.get('id'): print(f"Card do animal ID {id} clicado")
-        )
+        card_canvas.tag_bind(tag_card, "<Button-1>", lambda e, animal=todos_animais: tools.fade_out(window, canvas, lambda: tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal)))
 
         card_canvas.create_image(
             124.0,
             109,
-            image=canvas.placeholder_tk
+            image=canvas.placeholder_tk,
+            tags=(tag_card,)
         )
 
-        caminho_foto = Path(__file__).parent / "fotos_animais" / animal.get("foto", "")
+        caminho_foto = Path(__file__).parent.parent / "fotos_animais" / todos_animais.get("foto", "")
         if caminho_foto.exists():
             img = Image.open(caminho_foto)
             img_redimensionada = img.resize(
@@ -158,38 +170,43 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
             card_canvas.create_image(
                 124.0,
                 109,
-                image=img_tk
+                image=img_tk,
+                tags=(tag_card,)
             )
 
         card_canvas.create_text(
             272.0,
             30,
             anchor="nw",
-            text=f"Nome: {animal.get('nome', '')}",
+            text=f"Nome: {todos_animais.get('nome', '')}",
             fill="#44312D",
-            font=("Poppins Black", 32 * -1)
+            font=("Poppins Black", 32 * -1),
+            tags=(tag_card,)
         )
         card_canvas.create_text(
             272.0,
             69,
             anchor="nw",
-            text=f"Espécie: {animal.get('especie', '')}",
+            text=f"Espécie: {todos_animais.get('especie', '')}",
             fill="#44312D",
-            font=("Poppins Black", 32 * -1)
+            font=("Poppins Black", 32 * -1),
+            tags=(tag_card,)
         )
         card_canvas.create_text(
             272.0,
             107,
             anchor="nw",
-            text=f"Sexo: {animal.get('sexo', '')}",
+            text=f"Sexo: {todos_animais.get('sexo', '')}",
             fill="#44312D",
-            font=("Poppins Black", 32 * -1)
+            font=("Poppins Black", 32 * -1),
+            tags=(tag_card,)
         )
         card_canvas.create_text(
             272.0,
             145,
             anchor="nw",
-            text=f"Idade: {animal.get('idade', '')}",
+            text=f"Idade: {todos_animais.get('idade', '')}",
             fill="#44312D",
-            font=("Poppins Black", 32 * -1)
+            font=("Poppins Black", 32 * -1),
+            tags=(tag_card,)
         )
