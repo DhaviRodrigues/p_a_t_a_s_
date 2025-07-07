@@ -9,6 +9,15 @@ def transicao_para_inicial(window, canvas):
         lambda: tela_inicial.criar_tela_inicial(window, canvas)
     )
 
+def transicao_para_redefinir_senha(window, canvas):
+    from telas import tela_redefinir_senha_pt1
+    """Função para fazer a transição para a tela de redefinição de senha."""
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_redefinir_senha_pt1.criar_tela_redefinir_senha_pt1(window, canvas)
+    )
+
 def tentar_login(window, canvas, email_entry, senha_entry):
     from telas import tela_menu_adm
     from telas import tela_menu_principal
@@ -177,7 +186,7 @@ def criar_tela_login(window, canvas):
         image=canvas.button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Esqueceu a senha? clicado"),
+         command=lambda: transicao_para_redefinir_senha(window, canvas),
         relief="flat"
     )
     button_3.place(

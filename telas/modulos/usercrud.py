@@ -149,7 +149,19 @@ class Usuario:
             return f"O usuário {email} foi promovido a administrador com sucesso."
         else:
             return f"O usuário {email} foi removido de administrador com sucesso."
+    
+    def email_existe(email):
+        """Verifica se um email já está cadastrado no sistema."""
+
+        if not email:
+            return "O campo de email não pode estar vazio."
             
+        usuarios = carregar_dados("usuarios.json")
+        for usuario in usuarios:
+            if usuario.get('email') == email.strip().lower():
+                return True
+
+        return "O email não está cadastrado."
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos usuários"""
