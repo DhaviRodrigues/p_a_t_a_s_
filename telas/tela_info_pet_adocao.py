@@ -1,4 +1,4 @@
-from tkinter import Button, PhotoImage
+from tkinter import Button, PhotoImage, Label
 from pathlib import Path
 from PIL import Image, ImageTk
 from telas import tools
@@ -59,6 +59,23 @@ def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
         text=f"Idade: {animal_clicado.get('idade', '')}",
         fill="#44312D",
         font=("Poppins Black", 30 * -1)
+    )
+
+    info_label = Label(
+        canvas,
+        text=animal_clicado.get('informacoes', 'Nenhuma informação adicional.'),
+        font=("Poppins", 15),
+        fg="#44312D",
+        bg="#EED3B2", 
+        wraplength=920,
+        justify="left",
+        anchor="nw"
+    )
+    info_label.place(
+        x=120.0,
+        y=400.0,
+        width=920.0,
+        height=250.0 
     )
 
     canvas.create_text(
