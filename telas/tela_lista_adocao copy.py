@@ -1,21 +1,24 @@
-from tkinter import Button, PhotoImage, Frame, Canvas, Scrollbar, Label
+from tkinter import Button, PhotoImage, messagebox, Frame, Canvas, Scrollbar, Label
 from pathlib import Path
 from PIL import Image, ImageTk
 from telas import tools
 
-def transicao_para_menu_principal(window, canvas, usuario_logado):
+def transicao_para_menu_principal(window,canvas,usuario_logado):
     from telas import tela_menu_principal
-    tools.fade_out(window, canvas, lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, usuario_logado))
 
-def criar_tela_lista_tratamento(window, canvas, usuario_logado):
+    tools.fade_out(window,canvas,lambda: tela_menu_principal.criar_tela_menu_principal(window,canvas,usuario_logado))
+
+def criar_tela_lista_adocao(window,canvas,usuario_logado):
+    from telas import tela_info_pet_adocao
     from .modulos import animalcrud
-    from telas import tela_info_pet_tratamento
 
     tools.limpar_tela(canvas)
-    canvas.configure(bg="#44312D")
+    canvas.configure(
+        bg="#44312D"
+    )
 
     canvas.image_1 = PhotoImage(
-        file=tools.relative_to_assets("TelaListaTratamento", "image_1.png")
+        file=tools.relative_to_assets("TelaListaAdocao", "image_1.png")
     )
     canvas.create_image(
         646.0,
@@ -23,16 +26,16 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         image=canvas.image_1
     )
     canvas.create_text(
-        449.0,
+        319.0,
         33.0,
         anchor="nw",
-        text="Animais em Tratamento",
+        text="Animais Disponíveis Para Adoção",
         fill="#EED3B2",
         font=("Poppins Black", 35 * -1)
     )
 
     canvas.button_image_2 = PhotoImage(
-        file=tools.relative_to_assets("TelaListaTratamento", "button_2.png")
+        file=tools.relative_to_assets("TelaListaAdocao", "button_2.png")
     )
     button_voltar = Button(
         canvas,
@@ -49,8 +52,18 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         height=89.0
     )
 
-    main_frame = Frame(canvas, bg="#44312D", bd=0, highlightthickness=0)
-    main_frame.place(x=32, y=120, width=1227, height=580)
+    main_frame = Frame(
+        canvas,
+        bg="#44312D",
+        bd=0,
+        highlightthickness=0
+    )
+    main_frame.place(
+        x=32,
+        y=120,
+        width=1227,
+        height=580
+    )
 
     canvas_lista = Canvas(
         main_frame,
@@ -58,7 +71,6 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         bd=0,
         highlightthickness=0
     )
-    
     frame_cards = Frame(
         canvas_lista,
         bg="#44312D"
@@ -83,31 +95,31 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         )
 
     frame_cards.bind("<Configure>", onFrameConfigure)
-
-    animais_em_tratamento = animalcrud.carregar_dados("animais_tratamento.json")
+    
+    animais_para_adocao = animalcrud.carregar_dados("animais_adocao.json")
     
     canvas.lista_imagens_botoes = []
     canvas.lista_imagens_animais = []
 
-    if not animais_em_tratamento:
+    if not animais_para_adocao:
         label_vazio = Label(
             frame_cards,
-            text="Não há animais em tratamento no momento.",
+            text="Não há animais para adoção no momento.",
             bg="#44312D",
-            fg="#44312D",
+            fg="#FFFFFF",
             font=("Poppins", 24)
         )
         label_vazio.pack(pady=200)
         return
 
-    placeholder_path = tools.relative_to_assets("TelaListaTratamento", "image_2.png")
+    placeholder_path = tools.relative_to_assets("TelaListaAdocao", "image_2.png")
     placeholder_pil = Image.open(placeholder_path)
     largura_ref, altura_ref = placeholder_pil.size
     canvas.placeholder_tk = ImageTk.PhotoImage(placeholder_pil)
 
-    for todos_animais in animais_em_tratamento:
+    for todos_animais in animais_para_adocao:
         img_botao = PhotoImage(
-            file=tools.relative_to_assets("TelaListaTratamento", "button_1.png")
+            file=tools.relative_to_assets("TelaListaAdocao", "button_1.png")
         )
         canvas.lista_imagens_botoes.append(img_botao)
         
@@ -136,7 +148,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
             tags=(tag_card,)
         )
         
-        card_canvas.tag_bind(tag_card, "<Button-1>", lambda e, animal=todos_animais: tools.fade_out(window, canvas, lambda: tela_info_pet_tratamento.criar_tela_info_pet_tratametno(window, canvas, usuario_logado, animal)))
+        card_canvas.tag_bind(tag_card, "<Button-1>", lambda e, animal=todos_animais: tools.fade_out(window, canvas, lambda: tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal)))
 
         card_canvas.create_image(
             124.0,
