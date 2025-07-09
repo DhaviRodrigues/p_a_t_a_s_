@@ -18,7 +18,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
     )
 
     canvas.image_1 = PhotoImage(
-        file=tools.relative_to_assets("TelaListaAdocao", "image_1.png")
+        file=tools.relative_to_assets("TelaListaAnimais", "image_1.png")
     )
     canvas.create_image(
         646.0,
@@ -35,7 +35,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
     )
 
     canvas.button_image_2 = PhotoImage(
-        file=tools.relative_to_assets("TelaListaAdocao", "button_2.png")
+        file=tools.relative_to_assets("TelaListaAnimais", "button_2.png")
     )
     button_voltar = Button(
         canvas,
@@ -112,14 +112,14 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         label_vazio.pack(pady=200)
         return
 
-    placeholder_path = tools.relative_to_assets("TelaListaAdocao", "image_2.png")
+    placeholder_path = tools.relative_to_assets("TelaListaAnimais", "image_2.png")
     placeholder_pil = Image.open(placeholder_path)
     largura_ref, altura_ref = placeholder_pil.size
     canvas.placeholder_tk = ImageTk.PhotoImage(placeholder_pil)
 
     for todos_animais in animais_para_adocao:
         img_botao = PhotoImage(
-            file=tools.relative_to_assets("TelaListaAdocao", "button_1.png")
+            file=tools.relative_to_assets("TelaListaAnimais", "button_1.png")
         )
         canvas.lista_imagens_botoes.append(img_botao)
         

@@ -45,7 +45,7 @@ def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
 
     canvas.image_1 = PhotoImage(
         file=tools.relative_to_assets(
-            "TelaInfoPetAdocao",
+            "TelaInfoPet",
             "image_1.png"
         )
     )
@@ -119,7 +119,7 @@ def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
 
     canvas.button_image_1 = PhotoImage(
         file=tools.relative_to_assets(
-            "TelaInfoPetAdocao",
+            "TelaInfoPet",
             "button_1.png"
         )
     )
@@ -140,7 +140,7 @@ def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
 
     canvas.button_image_2 = PhotoImage(
         file=tools.relative_to_assets(
-            "TelaInfoPetAdocao",
+            "TelaInfoPet",
             "button_2.png"
         )
     )
@@ -160,7 +160,7 @@ def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
     )
 
     placeholder_path = tools.relative_to_assets(
-        "TelaInfoPetAdocao",
+        "TelaInfoPet",
         "image_2.png"
     )
     placeholder_pil = Image.open(placeholder_path)
@@ -175,7 +175,7 @@ def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
 
     caminho_foto = Path(__file__).parent / "fotos_animais" / animal_clicado.get("foto", "")
     if caminho_foto.exists():
-        placeholder_pil = Image.open(tools.relative_to_assets("TelaInfoPetAdocao", "image_2.png"))
+        placeholder_pil = Image.open(tools.relative_to_assets("TelaInfoPet", "image_2.png"))
         largura_ref, altura_ref = placeholder_pil.size
 
         img = Image.open(caminho_foto)

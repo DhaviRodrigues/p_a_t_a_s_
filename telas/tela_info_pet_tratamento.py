@@ -13,16 +13,16 @@ def criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal_clicad
         bg="#FFFFFF"
     )
 
-    canvas.image_1 = PhotoImage(
+    canvas.image_4 = PhotoImage(
         file=tools.relative_to_assets(
-            "TelaInfoPetTratamento",
-            "image_1.png"
+            "TelaInfoPet",
+            "image_4.png"
         )
     )
     canvas.create_image(
         646.0,
         365.0,
-        image=canvas.image_1
+        image=canvas.image_4
     )
 
     canvas.create_text(
@@ -87,15 +87,15 @@ def criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal_clicad
         height=250.0 
     )
 
-    canvas.button_image_1 = PhotoImage(
+    canvas.button_image_4 = PhotoImage(
         file=tools.relative_to_assets(
-            "TelaInfoPetAdocao",
+            "TelaInfoPet",
             "button_1.png"
         )
     )
     button_1 = Button(
         canvas,
-        image=canvas.button_image_1,
+        image=canvas.button_image_4,
         borderwidth=0,
         highlightthickness=0,
         command=lambda: transicao_para_lista_tratamento(window, canvas, usuario_logado),
@@ -109,7 +109,7 @@ def criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal_clicad
     )
 
     placeholder_path = tools.relative_to_assets(
-        "TelaInfoPetAdocao",
+        "TelaInfoPet",
         "image_2.png"
     )
     placeholder_pil = Image.open(placeholder_path)
@@ -124,7 +124,7 @@ def criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal_clicad
 
     caminho_foto = Path(__file__).parent / "fotos_animais" / animal_clicado.get("foto", "")
     if caminho_foto.exists():
-        placeholder_pil = Image.open(tools.relative_to_assets("TelaInfoPetAdocao", "image_2.png"))
+        placeholder_pil = Image.open(tools.relative_to_assets("TelaInfoPet", "image_2.png"))
         largura_ref, altura_ref = placeholder_pil.size
 
         img = Image.open(caminho_foto)
