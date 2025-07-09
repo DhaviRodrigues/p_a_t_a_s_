@@ -14,6 +14,12 @@ def tentar_adotar(window, canvas, animal_clicado, usuario_logado):
             "Adoção Pendente",
             "Você já possui um pedido de adoção pendente.\n Para mais informações, veja seu perfil."
         )
+    elif animal_clicado.get('processo_adoacao', True):
+        tools.custom_messagebox(
+            window,
+            "Adoção Pendente",
+            "Este animal já está em processo de adoção.\n Caso queira, adote outro animal."
+        )
     else:
         resposta = tools.custom_yn(
             window,

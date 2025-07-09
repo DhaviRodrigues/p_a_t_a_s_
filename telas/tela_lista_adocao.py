@@ -183,15 +183,48 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
             font=("Poppins Black", 32 * -1),
             tags=(tag_card,)
         )
-        card_canvas.create_text(
-            272.0,
-            69,
-            anchor="nw",
-            text=f"Espécie: {todos_animais.get('especie', '')}",
-            fill="#44312D",
-            font=("Poppins Black", 32 * -1),
-            tags=(tag_card,)
-        )
+
+        if not todos_animais.get("processo_adoacao", False):
+            card_canvas.create_text(
+                730,
+                145,
+                anchor="nw",
+                text=f"Pet disponível para adoção",
+                fill="#44312D",
+                font=("Poppins Black", 24 * -1),
+                tags=(tag_card,)
+            )
+        else:
+            card_canvas.create_text(
+                730.0,
+                145,
+                anchor="nw",
+                text=f"O Pet já está em processo de adoção",
+                fill="#44312D",
+                font=("Poppins Black", 24 * -1),
+                tags=(tag_card,)
+            )
+
+            card_canvas.create_text(
+                272.0,
+                69,
+                anchor="nw",
+                text=f"Espécie: {todos_animais.get('especie', '')}",
+                fill="#44312D",
+                font=("Poppins Black", 32 * -1),
+                tags=(tag_card,)
+            )
+
+            card_canvas.create_text(
+                272.0,
+                69,
+                anchor="nw",
+                text=f"Espécie: {todos_animais.get('especie', '')}",
+                fill="#44312D",
+                font=("Poppins Black", 32 * -1),
+                tags=(tag_card,)
+            )
+
         card_canvas.create_text(
             272.0,
             107,
