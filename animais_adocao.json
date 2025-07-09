@@ -6,7 +6,8 @@
             "sexo": "M",
             "idade": "2 anos",
             "informacoes": "Suspiro passou por um procedimento de desobstru\u00e7\u00e3o do ducto naso lacrimal, depois vai passar pela orquiectomia e pronto pra ado\u00e7\u00e3o!",
-            "foto": "1.png"
+            "foto": "1.png",
+            "processo_adoacao": true
       },
       {
             "id": 1,
@@ -15,7 +16,8 @@
             "sexo": "F",
             "idade": "4 meses",
             "informacoes": "Castrada e extremamente d\u00f3cil, esperando por uma fam\u00edlia.",
-            "foto": "4.png"
+            "foto": "4.png",
+            "processo_adoacao": false
       },
       {
             "id": 2,
@@ -24,7 +26,8 @@
             "sexo": "F",
             "idade": "2 meses",
             "informacoes": "Vacinada, desparasitada, castra\u00e7\u00e3o garantida na idade certa.",
-            "foto": "5.png"
+            "foto": "5.png",
+            "processo_adoacao": false
       },
       {
             "id": 3,
@@ -33,6 +36,7 @@
             "sexo": "M",
             "idade": "2 anos",
             "informacoes": "Vamos ajudar ele a achar um lar com muito amor!Castrado e extremamente carinhoso.",
-            "foto": "6.png"
+            "foto": "6.png",
+            "processo_adoacao": false
       }
 ]

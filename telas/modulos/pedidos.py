@@ -34,6 +34,7 @@ class Pedidos:
         processo = "Em análise, verifique sempre seu email."
         novo_pedido = Pedidos(id_mensagem, animal_clicado['nome'], animal_clicado['id'], usuario_logado['id'], usuario_logado['nome'], usuario_logado['email'], processo)
         usuario_logado['pedido'] = True
+        animal_clicado['processo_adoacao'] = True
 
             # novo_pedido = {
             #     'id_mensagem': id_mensagem,

@@ -14,7 +14,8 @@ class Animal:
         self.idade = idade
         self.informacoes = informacoes
         self.foto = foto
-    
+        self.processo_adoacao = False
+
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
         return {
             "id": self.id,
@@ -23,7 +24,8 @@ class Animal:
             "sexo": self.sexo,
             "idade": self.idade,
             "informacoes": self.informacoes,
-            "foto": self.foto
+            "foto": self.foto,
+            "processo_doacao": self.processo_adoacao
         }
 
     def validar_animal(nome, especie, sexo, idade, foto):
