@@ -2,13 +2,14 @@ import json
 
 class Pedidos:
     """Classe que representa um pedido de adoção"""
-    def __init__(self, id_mensagem, nome_animal, id_animal, id_usuario, nome_usuario, email_usuario):
+    def __init__(self, id_mensagem, nome_animal, id_animal, id_usuario, nome_usuario, email_usuario, processo):
         self.id_mensagem = id_mensagem
         self.nome_animal = nome_animal
         self.id_animal = id_animal
         self.id_usuario = id_usuario
         self.nome_usuario = nome_usuario
         self.email_usuario = email_usuario
+        self.processo = processo
 
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
         return {
@@ -17,7 +18,8 @@ class Pedidos:
             "id_animal": self.id_animal,
             "id_usuario": self.id_usuario,
             "nome_usuario": self.nome_usuario,
-            "email_usuario": self.email_usuario
+            "email_usuario": self.email_usuario,
+            "processo": self.processo
         }
 
 
@@ -29,8 +31,8 @@ class Pedidos:
             if pedido_existente['id_mensagem'] > maior_id_atual:
                 maior_id_atual = pedido_existente['id_mensagem']
         id_mensagem = maior_id_atual + 1
-
-        novo_pedido = Pedidos(id_mensagem, animal_clicado['nome'], animal_clicado['id'], usuario_logado['id'], usuario_logado['nome'], usuario_logado['email'])
+        processo = "Em análise, verifique sempre seu email."
+        novo_pedido = Pedidos(id_mensagem, animal_clicado['nome'], animal_clicado['id'], usuario_logado['id'], usuario_logado['nome'], usuario_logado['email'], processo)
         usuario_logado['pedido'] = True
 
             # novo_pedido = {
