@@ -4,7 +4,7 @@ P.A.T.A.S. é um acrônimo para Plataforma de Apoio ao Tratamento e Adoção Sol
 Senha APP: pxys ogwp crlw foar 
 -> Necessario para criar o chat bot de envio de email
 <p align="center">
-# P.A.T.A.S. - Plataforma de Apoio ao Tratamento e Adoção Solidária 🐾
+## P.A.T.A.S. - Plataforma de Apoio ao Tratamento e Adoção Solidária 🐾
 
 <p align="center">
   <img src="https://raw.githubusercontent.com/DhaviRodrigues/p_a_t_a_s_/main/telas/TKassets/logopatas.png" width="400" alt="P.A.T.A.S. Logo">
