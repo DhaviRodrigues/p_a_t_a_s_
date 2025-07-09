@@ -1,7 +1,6 @@
 import json
-import os
-from time import sleep
 import shutil
+from time import sleep
 from pathlib import Path
 
 class Animal:
@@ -80,49 +79,6 @@ class Animal:
         animais.append(novo_animal.converter_para_dicionario())
         salvar_dados(nome_arquivo_json, animais)
 
-def lista_animais_tratamento():
-    """ Imprime uma lista dos animais que estão em processo de tratamento."""
-    print("\n--- Animais em Processo de Tratamento ---")
-    animais_tratamento = carregar_dados('animais_tratamento.json') # Carrega os dados do arquivo 'animais_tratamento.json'
-
-    if not animais_tratamento: #Caso não jaka animais em tratamento, ele irá imprimir a mensagem abaixo
-        print("Não há animais cadastrados em tratamento no momento.")
-        sleep(2)
-        return
-
-    for animal in animais_tratamento: #Imprime uma lista com os animais em tratamento
-        print("-" * 30)
-        print(f"ID: {animal.get('id')}")
-        print(f"Nome: {animal.get('nome')}")
-        print(f"Espécie: {animal.get('especie')}")
-        print(f"Sexo: {animal.get('sexo')}")
-        print(f"Idade: {animal.get('idade')}")
-        if animal.get('informações'):
-            print(f"Informações: {animal.get('informações')}")
-        print("-" * 30)
-    sleep(3)
-
-def lista_animais_adocao():
-    """ Imprime uma lista dos animais que estão em processo de adoçao."""
-    print("\n--- Animais em Processo de Adoção ---")
-    animais_adocao = carregar_dados('animais_adocao.json') # Carrega os dados do arquivo 'animais_adocao.json'
-
-    if not animais_adocao: #Caso não jaka animais em tratamento, ele irá imprimir a mensagem abaixo
-        print("Não há animais cadastrados em adoção no momento.")
-        sleep(2)
-        return
-
-    for animal in animais_adocao: #Imprime uma lista com os animais em tratamento
-        print("-" * 30)
-        print(f"ID: {animal.get('id')}")
-        print(f"Nome: {animal.get('nome')}")
-        print(f"Espécie: {animal.get('especie')}")
-        print(f"Sexo: {animal.get('sexo')}")
-        print(f"Idade: {animal.get('idade')}")
-        if animal.get('informações'):
-            print(f"Informações: {animal.get('informações')}")
-        print("-" * 30)
-    sleep(3)
 
 def editar_animal_adocao():
     """Permite que o administrador possa editar livrimente as informações dos animais em adoção"""
