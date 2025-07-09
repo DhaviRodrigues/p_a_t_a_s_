@@ -1,7 +1,16 @@
 from usercrud import enviar_email, EMAIL_REMETENTE, SENHA_APP
 
-
 EMAIL_ADMIN = EMAIL_REMETENTE
+
+class Feedback:
+    """
+    Módulo de Feedback do P.A.T.A.S.
+    
+    Este módulo permite que os utilizadores enviem feedback sobre o sistema.
+    Ele recolhe informações como nome, email e mensagem de feedback,
+    e envia um email para o administrador do sistema.
+    """
+
 
 def solicitar_feedback():
     """

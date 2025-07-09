@@ -7,6 +7,36 @@ def transicao_para_lista_adocao(window, canvas, usuario_logado):
     from telas import tela_lista_adocao
     tools.fade_out(window, canvas, lambda: tela_lista_adocao.criar_tela_lista_adocao(window, canvas, usuario_logado))
 
+def tentar_adotar(window, canvas, animal_clicado, usuario_logado):
+    if usuario_logado.get('pedido', True):
+        tools.custom_messagebox(
+            window,
+            "Adoção Pendente",
+            "Você já possui um pedido de adoção pendente.\n Para mais informações, veja seu perfil."
+        )
+    else:
+        resposta = tools.custom_yn(
+            window,
+            "Confirmar Pedido de Adoção", 
+            "Tem a certeza de que deseja adotar este animal?"
+        )
+        if resposta:
+            from .modulos import pedidos
+            pedidos.Pedidos.criar_pedido_adocao(animal_clicado, usuario_logado)
+            if pedidos.Pedidos.criar_pedido_adocao:
+                tools.custom_messagebox(
+                    window,
+                    "Pedido Enviado",
+                    "O seu pedido de adoção foi enviado com sucesso!\nVeja mais informações no seu perfil."
+                )
+            else:
+                tools.custom_messagebox(
+                    window,
+                    "Erro",
+                    "Ocorreu um erro ao enviar o pedido de adoção. Por favor, tente novamente mais tarde\n\n Peço que nos envie uma mensagem relatando o erro."
+                )
+
+
 def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
     tools.limpar_tela(canvas)
     canvas.configure(
@@ -119,7 +149,7 @@ def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão Adotar clicado"),
+        command=lambda: tentar_adotar(window, canvas, animal_clicado, usuario_logado),
         relief="flat"
     )
     button_2.place(

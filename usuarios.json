@@ -5,7 +5,8 @@
         "email": "jeferson.rodrigues2@gmail.com",
         "senha": "jeferson123",
         "icone": "button_9.png",
-        "adm": false
+        "adm": false,
+        "pedido": false
     },
     {
         "id": 2,
@@ -13,7 +14,8 @@
         "email": "123",
         "senha": "123",
         "icone": "button_8.png",
-        "adm": true
+        "adm": true,
+        "pedido": false
     },
     {
         "id": 3,
@@ -21,7 +23,8 @@
         "email": "1234",
         "senha": "1234",
         "icone": "button_8.png",
-        "adm": false
+        "adm": false,
+        "pedido": true
     },
         {
         "id": 4,
@@ -29,6 +32,7 @@
         "email": "dhavirodrigues2@gmail.com",
         "senha": "patas123",
         "icone": "button_8.png",
-        "adm": false
+        "adm": false,
+        "pedido": false
     }
 ]

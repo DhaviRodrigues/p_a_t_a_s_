@@ -1,8 +1,6 @@
 from time import sleep
 import usercrud
 import animalcrud
-import artes
-import editarperfil
 import pedidos
 
 def menu_user_crud():

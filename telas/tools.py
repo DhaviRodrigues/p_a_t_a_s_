@@ -62,7 +62,7 @@ def custom_messagebox(master,titulo, mensagem):
     dialog.update_idletasks()
     
     width = 400
-    height = 150
+    height = 200
     x = master.winfo_x() + (master.winfo_width() - width) // 2
     y = master.winfo_y() + (master.winfo_height() - height) // 2
     dialog.geometry(f'{width}x{height}+{x}+{y}')
