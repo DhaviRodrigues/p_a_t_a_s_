@@ -14,7 +14,26 @@ def transicao_para_menu(window, canvas, usuario_logado):
         callback_function
     )
 
+def tentar_enviar_feedback(entry_assunto, entry_mensagem, usuario_logado, window):
+    from .modulos import feedback
+
+    assunto = entry_assunto.get()
+    mensagem = entry_mensagem.get("1.0", "end-1c")
+
+    if not assunto:
+         tools.custom_messagebox(window, "Erro de envio", "Você precisa preencher o assunto.")
+    elif not mensagem:
+         tools.custom_messagebox(window, "Erro de envio", "Você precisa escrever alguma mensagem.")
+    else:
+        feedback.enviar_feedback(entry_assunto,entry_mensagem,usuario_logado)
+        tools.custom_messagebox(window, "Envio bem-sucedido", "O email foi enviado, responderemos assim que possível.")
+
+        entry_assunto.delete(0, "end")
+        entry_mensagem.delete("1.0", "end")
+        
 def criar_tela_feedback(window, canvas, usuario_logado):
+    from .modulos import feedback
+
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
 
@@ -53,7 +72,7 @@ def criar_tela_feedback(window, canvas, usuario_logado):
         image=canvas.button_enviar,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("Botão 'Enviar' clicado."),
+        command=lambda: tentar_enviar_feedback(entry_assunto, entry_mensagem, usuario_logado, window),
         relief="flat"
     )
     button_2.place(

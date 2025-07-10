@@ -1,4 +1,4 @@
-from usercrud import enviar_email, EMAIL_REMETENTE, SENHA_APP
+from .usercrud import enviar_email, EMAIL_REMETENTE, SENHA_APP
 
 EMAIL_ADMIN = EMAIL_REMETENTE
 
@@ -12,31 +12,8 @@ class Feedback:
     """
 
 
-def solicitar_feedback():
-    """
-    Esta função interage com o utilizador no terminal para recolher uma mensagem de feedback.
-    A função garante que o utilizador não envie uma mensagem vazia.
-    """
 
-    nome_utilizador = input("Digite o seu nome (opcional): ").strip()
-    while True:
-        email_utilizador = input("Digite o seu email para contacto: ").strip()
-        if email_utilizador:
-            if "@" in email_utilizador and "." in email_utilizador:
-                break
-            else:
-                print("Por favor, digite um email válido.")
-
-    # Loop para garantir que a mensagem de feedback não seja vazia
-    while True:
-        mensagem = input("Digite a sua mensagem de feedback: ").strip()
-        if mensagem:
-            return nome_utilizador, email_utilizador, mensagem
-        else:
-            print("Por favor, digite uma mensagem antes de enviar.")
-
-
-def enviar_feedback():
+def enviar_feedback(entry_assunto,entry_mensagem,usuario_logado):
     """
     Função principal do módulo. Orquestra a recolha e o envio do feedback.
     
@@ -44,7 +21,11 @@ def enviar_feedback():
     formata e envia o email para o administrador do sistema.
     """
     # 1. Recolher a informação do utilizador
-    nome, email_contato, mensagem_feedback = solicitar_feedback()
+
+    assunto=entry_assunto
+    mensagem_feedback=entry_mensagem
+    nome = usuario_logado.get("nome")
+    email_contato=usuario_logado.get("email")
 
     # 2. Formatar o conteúdo do email que será enviado
     assunto = f"Novo Feedback Recebido de: {nome or 'Utilizador Anónimo'}"
