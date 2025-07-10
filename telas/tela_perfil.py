@@ -14,15 +14,17 @@ def transicao_para_menu(window, canvas, usuario_logado):
 
 def transicao_para_logout(window, canvas):
     from telas import tela_inicial
-    
+
+
     tools.fade_out(
         window, 
         canvas, 
         lambda: tela_inicial.criar_tela_inicial(window, canvas))
 
-def criar_tela_perfil(window, canvas, usuario_logado):
+def criar_tela_perfil(window, canvas, usuario_logado,):
     from telas import tela_editar_perfil
     from .modulos import usercrud
+    from telas import tela_pedido_usuario
 
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
@@ -164,7 +166,7 @@ def criar_tela_perfil(window, canvas, usuario_logado):
         image=canvas.button_image_4, 
         borderwidth=0, 
         highlightthickness=0,
-        command=lambda: print("button_4 clicked"), 
+        command=lambda: tools.fade_out(window, canvas, lambda: tela_pedido_usuario.criar_tela_pedido_usuario(window, canvas, usuario_logado,)),
         relief="flat"
     )
     button_4.place(

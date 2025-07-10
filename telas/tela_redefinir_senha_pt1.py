@@ -3,8 +3,8 @@ from telas import tools
 from telas import tela_login
 import random
 
-def transicao_para_login(window, canvas):
-    tools.fade_out(window, canvas, lambda: tela_login.criar_tela_login(window, canvas, None))
+def transicao_para_login(window, canvas,):
+    tools.fade_out(window, canvas, lambda: tela_login.criar_tela_login(window, canvas,))
 
 def tentar_enviar_codigo(entry_email, window):
     from .modulos import usercrud
