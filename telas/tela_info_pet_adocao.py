@@ -3,11 +3,14 @@ from pathlib import Path
 from PIL import Image, ImageTk
 from telas import tools
 
+
 def transicao_para_lista_adocao(window, canvas, usuario_logado):
     from telas import tela_lista_adocao
     tools.fade_out(window, canvas, lambda: tela_lista_adocao.criar_tela_lista_adocao(window, canvas, usuario_logado))
 
 def tentar_adotar(window, canvas, animal_clicado, usuario_logado):
+    from .modulos import pedidos
+
     if usuario_logado.get('pedido', True):
         tools.custom_messagebox(
             window,
@@ -27,7 +30,7 @@ def tentar_adotar(window, canvas, animal_clicado, usuario_logado):
             "Tem a certeza de que deseja adotar este animal?"
         )
         if resposta:
-            from .modulos import pedidos
+
             pedidos.Pedidos.criar_pedido_adocao(animal_clicado, usuario_logado)
             if pedidos.Pedidos.criar_pedido_adocao:
                 tools.custom_messagebox(

@@ -15,11 +15,22 @@ def transicao_para_menu(window, canvas, usuario_logado):
 def transicao_para_logout(window, canvas):
     from telas import tela_inicial
 
-
     tools.fade_out(
         window, 
         canvas, 
         lambda: tela_inicial.criar_tela_inicial(window, canvas))
+
+
+def verificar_pedido_adocao(window,canvas, usuario_logado):
+    from .modulos import pedidos
+    from telas import tela_pedido_usuario
+
+    if usuario_logado.get("pedido") == False:
+        tools.custom_messagebox(window, "Erro na visualização do pedido", "Você ainda não possui um pedido de adoção ativo.")
+
+    else:
+        tools.fade_out(window, canvas, lambda: tela_pedido_usuario.criar_tela_pedido_usuario(window, canvas, usuario_logado,))
+
 
 def criar_tela_perfil(window, canvas, usuario_logado,):
     from telas import tela_editar_perfil
@@ -158,6 +169,7 @@ def criar_tela_perfil(window, canvas, usuario_logado,):
         height=115.0
     )
 
+
     canvas.button_image_4 = PhotoImage(
         file=tools.relative_to_assets("TelaPerfil", "button_4.png")
     )
@@ -166,7 +178,7 @@ def criar_tela_perfil(window, canvas, usuario_logado,):
         image=canvas.button_image_4, 
         borderwidth=0, 
         highlightthickness=0,
-        command=lambda: tools.fade_out(window, canvas, lambda: tela_pedido_usuario.criar_tela_pedido_usuario(window, canvas, usuario_logado,)),
+        command=lambda: verificar_pedido_adocao(window, canvas, usuario_logado),
         relief="flat"
     )
     button_4.place(

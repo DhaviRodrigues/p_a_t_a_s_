@@ -17,9 +17,6 @@ def solicitar_feedback():
     Esta função interage com o utilizador no terminal para recolher uma mensagem de feedback.
     A função garante que o utilizador não envie uma mensagem vazia.
     """
-    print("\n--- Portal de Feedback P.A.T.A.S. ---")
-    print("A sua opinião é muito importante para nós!")
-    
 
     nome_utilizador = input("Digite o seu nome (opcional): ").strip()
     while True:

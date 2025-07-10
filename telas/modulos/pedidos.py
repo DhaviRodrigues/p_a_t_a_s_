@@ -1,4 +1,7 @@
 import json
+from . import usercrud
+from . import animalcrud
+
 
 class Pedidos:
     """Classe que representa um pedido de adoção"""
@@ -33,8 +36,23 @@ class Pedidos:
         id_mensagem = maior_id_atual + 1
         processo = "Em análise, verifique sempre seu email."
         novo_pedido = Pedidos(id_mensagem, animal_clicado['nome'], animal_clicado['id'], usuario_logado['id'], usuario_logado['nome'], usuario_logado['email'], processo)
+        
+        todos_usuarios = usercrud.carregar_dados("usuarios.json")
+        for usuario in todos_usuarios:
+            if usuario.get("id") == usuario_logado['id']:
+                usuario["pedido"] = True
+                break
+        usercrud.salvar_dados("usuarios.json", todos_usuarios)
         usuario_logado['pedido'] = True
-        animal_clicado['processo_adoacao'] = True
+
+
+        todos_animais = animalcrud.carregar_dados("animais_adocao.json")
+        for animal in todos_animais:
+            if animal.get("id") == animal_clicado['id']:
+                animal["processo_adoacao"] = True
+                break
+        animalcrud.salvar_dados("animais_adocao.json", todos_animais)
+
 
             # novo_pedido = {
             #     'id_mensagem': id_mensagem,

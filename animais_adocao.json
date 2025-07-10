@@ -7,7 +7,7 @@
             "idade": "2 anos",
             "informacoes": "Suspiro passou por um procedimento de desobstru\u00e7\u00e3o do ducto naso lacrimal, depois vai passar pela orquiectomia e pronto pra ado\u00e7\u00e3o!",
             "foto": "1.png",
-            "processo_adoacao": false
+            "processo_adoacao": true
       },
       {
             "id": 1,
@@ -17,7 +17,7 @@
             "idade": "4 meses",
             "informacoes": "Castrada e extremamente d\u00f3cil, esperando por uma fam\u00edlia.",
             "foto": "4.png",
-            "processo_adoacao": false
+            "processo_adoacao": true
       },
       {
             "id": 2,

@@ -24,15 +24,15 @@
         "senha": "1234",
         "icone": "button_8.png",
         "adm": false,
-        "pedido": false
+        "pedido": true
     },
-        {
+    {
         "id": 4,
         "nome": "Dhavi",
         "email": "dhavirodrigues2@gmail.com",
         "senha": "patas123",
         "icone": "button_8.png",
         "adm": false,
-        "pedido": false
+        "pedido": true
     }
 ]
