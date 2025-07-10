@@ -25,12 +25,12 @@ def tentar_enviar_feedback(entry_assunto, entry_mensagem, usuario_logado, window
     elif not mensagem:
          tools.custom_messagebox(window, "Erro de envio", "Você precisa escrever alguma mensagem.")
     else:
-        feedback.enviar_feedback(entry_assunto,entry_mensagem,usuario_logado)
+        feedback.Feedback.enviar_feedback(entry_assunto,entry_mensagem,usuario_logado)
         tools.custom_messagebox(window, "Envio bem-sucedido", "O email foi enviado, responderemos assim que possível.")
 
         entry_assunto.delete(0, "end")
         entry_mensagem.delete("1.0", "end")
-        
+
 def criar_tela_feedback(window, canvas, usuario_logado):
     from .modulos import feedback
 

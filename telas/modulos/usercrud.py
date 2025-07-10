@@ -165,6 +165,109 @@ class Usuario:
 
         return "O email não está cadastrado."
 
+    def enviar_email(destinatario, codigo, info, assunto):
+        """
+        Envia um email com um código de verificação para o destinatário especificado.
+
+        Parâmetros:
+        destinatario (str): Endereço de email do destinatário.
+        codigo (str): Código aleatório de verificação que será enviado.
+        info (str): Mensagem explicativa sobre para que é o código.
+        assunto (str): Assunto do email.
+
+        Funciona usando o servidor SMTP do Gmail com conexão SSL.
+        Requer as constantes EMAIL_REMETENTE e SENHA_APP que são variaváveis globais.
+
+        retorno:
+        Em caso de sucesso, exibe uma mensagem de confirmação no terminal.
+        Em caso de erro, exibe uma mensagem de erro com o motivo.
+        """
+        
+        msg = EmailMessage() # define o objeto msg com a clase EmailMessage
+        msg["Subject"] = assunto
+        msg["From"] = EMAIL_REMETENTE
+        msg["To"] = destinatario
+        msg.set_content(f"{info} {codigo}")
+
+        try:
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp: #Essa é uma classe da biblioteca smtplib que permite enviar e-mails usando o protocolo SMTP com SSL direto na conexão.
+                smtp.login(EMAIL_REMETENTE, SENHA_APP)
+                smtp.send_message(msg)
+            print(" Código de verificação enviado para o seu email!")
+        except Exception as e:
+            print(" Erro ao enviar email:", e)
+
+
+    def recuperar_senha():
+        """
+        Permite ao utilizador redefinir a sua senha através de verificação por e-mail.
+        """
+        usuarios = carregar_dados('usuarios.json') 
+        print("\n=== Redefinir Senha ===")
+        
+        email = ""
+        while True:
+            email = input("Digite seu e-mail: ").strip().lower()
+            
+            email_existe = False
+            for usuario_existente in usuarios:
+                if usuario_existente['email'] == email:
+                    email_existe = True
+                    break
+            
+            if email_existe:
+                break 
+            else:
+                print('\n-- O email não está cadastrado, se dirija para a área de cadastro ou digite outro email.--\n')
+                continuar = input("Deseja tentar com outro email? (s/n): ").lower()
+                if continuar != 's' or continuar != 'sim':
+                    return
+
+        # Envia código de verificação
+        codigo = random.randint(100000, 999999)
+        mensagem = "Código para redefinição de senha:"
+        assunto = "Código de Verificação P.A.T.A.S - Redefinição de Senha"
+        Usuario.enviar_email(email, str(codigo), mensagem, assunto)
+
+        for tentativa in range(3):
+            codigo_digitado = input("Digite o código enviado ao seu email: ").strip()
+            if codigo_digitado == str(codigo):
+                print(" Código correto.")
+                print('\n--- Atualizar Senha ---')
+                
+                nova_senha = ""
+                while True:
+                    nova_senha = input("Digite a nova senha (mínimo 8 caracteres): ").strip()
+                    
+                    if len(nova_senha) < 8:
+                        print('A senha deve ter no mínimo 8 caracteres.')
+                        continue
+                    
+                    confirmar_nova_senha = input("Confirme a nova senha: ").strip()
+                    if nova_senha != confirmar_nova_senha:
+                        print('As senhas não coincidem. Por favor, tente novamente.')
+                        continue
+                    
+                    # 2. Encontrar o utilizador e atualizar sua senha
+                    for usuario in usuarios:
+                        if usuario['email'] == email:
+                            usuario['senha'] = nova_senha
+                            break # Encontrou e atualizou, pode parar de procurar
+                    
+                    # 3. Salvar as alterações no ficheiro JSON
+                    salvar_dados('usuarios.json', usuarios)
+                    
+                    print("\nSenha redefinida com sucesso!")
+                    return # Encerra a função após redefinir a senha
+            else:
+                tentativas_restantes = 2 - tentativa
+                if tentativas_restantes > 0:
+                    print(f" Código incorreto. Você tem mais {tentativas_restantes} tentativa(s).")
+                else:
+                    print("Código incorreto.")
+                
+        print("\nNúmero máximo de tentativas excedido. A operação foi cancelada.")
+
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos usuários"""
     try:
@@ -184,103 +287,4 @@ def salvar_dados(arquivo, dados):
         json.dump(dados, arquivo, indent=4)
         #json é a biblioteca importada,   .dump() é a função que vai jogar da primeira variável, dentro do "arquivo" de usuarios.json, indent=4 é apenas para deixar mais organizado na hora da escrita do arquivo
 
-def enviar_email(destinatario, codigo, info, assunto):
-    """
-       Envia um email com um código de verificação para o destinatário especificado.
 
-       Parâmetros:
-       destinatario (str): Endereço de email do destinatário.
-       codigo (str): Código aleatório de verificação que será enviado.
-       info (str): Mensagem explicativa sobre para que é o código.
-       assunto (str): Assunto do email.
-
-       Funciona usando o servidor SMTP do Gmail com conexão SSL.
-       Requer as constantes EMAIL_REMETENTE e SENHA_APP que são variaváveis globais.
-
-       retorno:
-       Em caso de sucesso, exibe uma mensagem de confirmação no terminal.
-       Em caso de erro, exibe uma mensagem de erro com o motivo.
-       """
-    msg = EmailMessage() # define o objeto msg com a clase EmailMessage
-    msg["Subject"] = assunto
-    msg["From"] = EMAIL_REMETENTE
-    msg["To"] = destinatario
-    msg.set_content(f"{info} {codigo}")
-
-    try:
-        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp: #Essa é uma classe da biblioteca smtplib que permite enviar e-mails usando o protocolo SMTP com SSL direto na conexão.
-            smtp.login(EMAIL_REMETENTE, SENHA_APP)
-            smtp.send_message(msg)
-        print(" Código de verificação enviado para o seu email!")
-    except Exception as e:
-        print(" Erro ao enviar email:", e)
-
-def recuperar_senha():
-    """
-    Permite ao utilizador redefinir a sua senha através de verificação por e-mail.
-    """
-    usuarios = carregar_dados('usuarios.json') 
-    print("\n=== Redefinir Senha ===")
-    
-    email = ""
-    while True:
-        email = input("Digite seu e-mail: ").strip().lower()
-        
-        email_existe = False
-        for usuario_existente in usuarios:
-            if usuario_existente['email'] == email:
-                email_existe = True
-                break
-        
-        if email_existe:
-            break 
-        else:
-            print('\n-- O email não está cadastrado, se dirija para a área de cadastro ou digite outro email.--\n')
-            continuar = input("Deseja tentar com outro email? (s/n): ").lower()
-            if continuar != 's' or continuar != 'sim':
-                return
-
-    # Envia código de verificação
-    codigo = random.randint(100000, 999999)
-    mensagem = "Código para redefinição de senha:"
-    assunto = "Código de Verificação P.A.T.A.S - Redefinição de Senha"
-    enviar_email(email, str(codigo), mensagem, assunto)
-
-    for tentativa in range(3):
-        codigo_digitado = input("Digite o código enviado ao seu email: ").strip()
-        if codigo_digitado == str(codigo):
-            print(" Código correto.")
-            print('\n--- Atualizar Senha ---')
-            
-            nova_senha = ""
-            while True:
-                nova_senha = input("Digite a nova senha (mínimo 8 caracteres): ").strip()
-                
-                if len(nova_senha) < 8:
-                    print('A senha deve ter no mínimo 8 caracteres.')
-                    continue
-                
-                confirmar_nova_senha = input("Confirme a nova senha: ").strip()
-                if nova_senha != confirmar_nova_senha:
-                    print('As senhas não coincidem. Por favor, tente novamente.')
-                    continue
-                
-                # 2. Encontrar o utilizador e atualizar sua senha
-                for usuario in usuarios:
-                    if usuario['email'] == email:
-                        usuario['senha'] = nova_senha
-                        break # Encontrou e atualizou, pode parar de procurar
-                
-                # 3. Salvar as alterações no ficheiro JSON
-                salvar_dados('usuarios.json', usuarios)
-                
-                print("\nSenha redefinida com sucesso!")
-                return # Encerra a função após redefinir a senha
-        else:
-            tentativas_restantes = 2 - tentativa
-            if tentativas_restantes > 0:
-                print(f" Código incorreto. Você tem mais {tentativas_restantes} tentativa(s).")
-            else:
-                print("Código incorreto.")
-            
-    print("\nNúmero máximo de tentativas excedido. A operação foi cancelada.")

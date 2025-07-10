@@ -50,7 +50,7 @@ class Animal:
         animais = carregar_dados(nome_arquivo_json)
 
         maior_foto_id = 0
-        pasta_fotos = Path("fotos_animais")
+        pasta_fotos = Path(__file__).parent.parent / "fotos_animais"
         pasta_fotos.mkdir(exist_ok=True)
         for f in pasta_fotos.glob("*.png"):
             try:
