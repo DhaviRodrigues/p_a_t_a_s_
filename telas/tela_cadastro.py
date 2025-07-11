@@ -12,13 +12,13 @@ def transicao_para_inicial(window, canvas):
         canvas,
         lambda: tela_inicial.criar_tela_inicial(window, canvas)
     )
-def transicao_para_login(window, canvas):
-    from telas import tela_login
+def transicao_para_tela_inserir_codigo(window, canvas, pre_usuario):
+    from telas import tela_inserir_codigo
     
     tools.fade_out(
         window,
         canvas,
-        lambda: tela_login.criar_tela_login(window, canvas)
+        lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario)
     )
 
 def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
@@ -51,18 +51,38 @@ def tentar_cadastro(entries,canvas,window):
 
     resultado = usercrud.Usuario.validar_usuario(nome, email, senha, confirma_senha, user_icon)
 
+    pre_usuario= {
+        "nome": nome,
+        "email": email,
+        "senha": senha,
+        "icone": user_icon,
+    },
+
     if resultado is True:
-        usercrud.Usuario.criar_usuario(nome, email, senha, user_icon)
-        resultado = "Cadastro realizado com sucesso! Você será redirecionado para a tela de login."
-        tools.custom_messagebox(window, "Cadastro Bem-Sucedido", resultado)
-        
+        usercrud.Usuario.gerar_codigo(email)
+        tools.custom_messagebox(
+                    window,
+                    "Código Enviado",
+                    f"Um código de verificação foi enviado para {email}."
+        )
+        transicao_para_tela_inserir_codigo(window, canvas, pre_usuario)
         for entry in entries.values():
             entry.delete(0, 'end')
-        
-        transicao_para_login(window, canvas)
-        
+
     else:
         tools.custom_messagebox(window,"Erro de Cadastro", resultado)
+
+
+    #Código antigo
+    # if resultado is True:
+    #     usercrud.Usuario.criar_usuario(nome, email, senha, user_icon)
+    #     resultado = "Cadastro realizado com sucesso! Você será redirecionado para a tela de login."
+    #     tools.custom_messagebox(window, "Cadastro Bem-Sucedido", resultado)
+        
+    #     for entry in entries.values():
+    #         entry.delete(0, 'end')
+    # else:
+    #     tools.custom_messagebox(window,"Erro de Cadastro", resultado)
         
 
 def criar_tela_cadastro(window, canvas):

@@ -6,11 +6,13 @@ import random
 def transicao_para_login(window, canvas,):
     tools.fade_out(window, canvas, lambda: tela_login.criar_tela_login(window, canvas,))
 
-def tentar_enviar_codigo(entry_email, window):
+def tentar_enviar_codigo(entry_email, window, canvas,):
+    from telas import tela_inserir_codigo
     from .modulos import usercrud
    
     email = entry_email.get()
     resultado = usercrud.Usuario.email_existe(email)
+    pre_usuario={}
 
     if resultado is True:
         usercrud.Usuario.gerar_codigo(email)
@@ -19,6 +21,7 @@ def tentar_enviar_codigo(entry_email, window):
                  "Código Enviado",
                  f"Um código de verificação foi enviado para {email}."
         )
+        tools.fade_out(window, canvas, lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario))
     else:
         tools.custom_messagebox(
             window,
@@ -64,7 +67,7 @@ def criar_tela_esqueceu_senha(window, canvas):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_enviar_codigo(entry_1, window),
+        command=lambda: tentar_enviar_codigo(entry_1, window, canvas),
         relief="flat"
     )
     button_enviar.place(
