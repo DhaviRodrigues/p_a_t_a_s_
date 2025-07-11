@@ -5,13 +5,36 @@ def transicao_para_tela_inicial(window, canvas):
     from telas import tela_inicial
     tools.fade_out(window, canvas, lambda: tela_inicial.criar_tela_inicial(window, canvas, None))
 
-def tentar_verificar_codigo():
-    print("Função ainda não configurada")
+def transicao_para_login(window, canvas):
+    from telas import tela_login
     
+    callback_function = lambda: tela_login.criar_tela_login(window, canvas)
+    tools.fade_out(
+        window,
+        canvas,
+        callback_function
+    )
 
+def tentar_verificar_codigo(window, codigo, entry_codigo, pre_usuario, canvas):
+    from .modulos import usercrud
+    from telas import tela_login
 
-def criar_tela_inserir_codigo(window, canvas, pre_usuario):
+    nome = pre_usuario["nome"]
+    email = pre_usuario["email"]
+    senha = pre_usuario["senha"]
+    user_icon = pre_usuario["icone"]
 
+    if codigo == entry_codigo:
+        if not pre_usuario == {}:
+            usercrud.Usuario.criar_usuario(nome, email, senha, user_icon)
+            tools.custom_messagebox(window, "Cadastro Bem-Sucedido", "Cadastro realizado com sucesso! Você será redirecionado para a tela de login.")
+            tools.fade_out(window,canvas,lambda: tela_login.criar_tela_login(window, canvas,))
+
+    else:    
+        tools.custom_messagebox(window, "Erro no cadastro", "O código está incorreto, verifique novamente")
+
+def criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo):
+    print (f'{codigo}')
     print(f'{pre_usuario}')
     tools.limpar_tela(canvas)
     canvas.configure(

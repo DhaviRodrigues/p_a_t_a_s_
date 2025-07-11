@@ -3,7 +3,7 @@ from pathlib import Path
 import webbrowser
 from telas import tools
 
-def _abrir_link_github():
+def abrir_link_github():
     url = "https://github.com/DhaviRodrigues/p_a_t_a_s_"
     webbrowser.open_new_tab(url)
 
@@ -17,7 +17,7 @@ def _iniciar_transicao_cadastro(window, canvas):
         callback_function
     )
 
-def _iniciar_transicao_login(window, canvas):
+def transicao_para_login(window, canvas):
     from telas import tela_login
     
     callback_function = lambda: tela_login.criar_tela_login(window, canvas)
@@ -72,7 +72,7 @@ def criar_tela_inicial(window, canvas):
         image=canvas.button_img_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: _iniciar_transicao_login(window, canvas),
+        command=lambda: transicao_para_login(window, canvas),
         relief="flat"
     )
     button_2.place(
@@ -87,7 +87,7 @@ def criar_tela_inicial(window, canvas):
         image=canvas.button_img_3,
         borderwidth=0,
         highlightthickness=0,
-        command=_abrir_link_github,
+        command=abrir_link_github,
         relief="flat"
     )
     button_3.place(

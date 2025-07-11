@@ -12,13 +12,13 @@ def transicao_para_inicial(window, canvas):
         canvas,
         lambda: tela_inicial.criar_tela_inicial(window, canvas)
     )
-def transicao_para_tela_inserir_codigo(window, canvas, pre_usuario):
+def transicao_para_tela_inserir_codigo(window, canvas, pre_usuario, codigo):
     from telas import tela_inserir_codigo
     
     tools.fade_out(
         window,
         canvas,
-        lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario)
+        lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo)
     )
 
 def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
@@ -40,7 +40,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
-def tentar_cadastro(entries,canvas,window):
+def tentar_cadastro(entries,canvas,window, codigo):
     
     global user_icon
 
@@ -65,7 +65,7 @@ def tentar_cadastro(entries,canvas,window):
                     "Código Enviado",
                     f"Um código de verificação foi enviado para {email}."
         )
-        transicao_para_tela_inserir_codigo(window, canvas, pre_usuario)
+        transicao_para_tela_inserir_codigo(window, canvas, pre_usuario, codigo)
         for entry in entries.values():
             entry.delete(0, 'end')
 
