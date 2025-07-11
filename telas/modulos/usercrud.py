@@ -198,36 +198,19 @@ class Usuario:
             print(" Erro ao enviar email:", e)
 
 
+    def gerar_codigo(email):
+
+        # Envia código de verificação
+        codigo = random.randint(000000, 999999)
+        mensagem = "Código para redefinição de senha:"
+        assunto = "Código de Verificação P.A.T.A.S - Redefinição de Senha"
+        Usuario.enviar_email(email, str(codigo), mensagem, assunto)
+
     def recuperar_senha():
         """
         Permite ao utilizador redefinir a sua senha através de verificação por e-mail.
         """
         usuarios = carregar_dados('usuarios.json') 
-        print("\n=== Redefinir Senha ===")
-        
-        email = ""
-        while True:
-            email = input("Digite seu e-mail: ").strip().lower()
-            
-            email_existe = False
-            for usuario_existente in usuarios:
-                if usuario_existente['email'] == email:
-                    email_existe = True
-                    break
-            
-            if email_existe:
-                break 
-            else:
-                print('\n-- O email não está cadastrado, se dirija para a área de cadastro ou digite outro email.--\n')
-                continuar = input("Deseja tentar com outro email? (s/n): ").lower()
-                if continuar != 's' or continuar != 'sim':
-                    return
-
-        # Envia código de verificação
-        codigo = random.randint(100000, 999999)
-        mensagem = "Código para redefinição de senha:"
-        assunto = "Código de Verificação P.A.T.A.S - Redefinição de Senha"
-        Usuario.enviar_email(email, str(codigo), mensagem, assunto)
 
         for tentativa in range(3):
             codigo_digitado = input("Digite o código enviado ao seu email: ").strip()

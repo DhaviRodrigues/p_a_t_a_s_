@@ -10,12 +10,12 @@ def transicao_para_inicial(window, canvas):
     )
 
 def transicao_para_redefinir_senha(window, canvas):
-    from telas import tela_redefinir_senha_pt1
+    from telas import tela_esqueceu_senha
     """Função para fazer a transição para a tela de redefinição de senha."""
     tools.fade_out(
         window,
         canvas,
-        lambda: tela_redefinir_senha_pt1.criar_tela_redefinir_senha_pt1(window, canvas)
+        lambda: tela_esqueceu_senha.criar_tela_esqueceu_senha(window, canvas)
     )
 
 def tentar_login(window, canvas, email_entry, senha_entry):
