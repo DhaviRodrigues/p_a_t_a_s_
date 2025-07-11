@@ -40,7 +40,7 @@ def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
     )
     canvas.tag_raise(canvas.selecao_atual_id)
 
-def tentar_cadastro(entries,canvas,window, codigo):
+def tentar_cadastro(entries,canvas,window,):
     
     global user_icon
 
@@ -55,11 +55,11 @@ def tentar_cadastro(entries,canvas,window, codigo):
         "nome": nome,
         "email": email,
         "senha": senha,
-        "icone": user_icon,
-    },
+        "icone": user_icon
+    }
 
     if resultado is True:
-        usercrud.Usuario.gerar_codigo(email)
+        codigo = usercrud.Usuario.gerar_codigo(email)
         tools.custom_messagebox(
                     window,
                     "Código Enviado",

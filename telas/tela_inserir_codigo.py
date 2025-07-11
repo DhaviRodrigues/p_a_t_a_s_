@@ -73,7 +73,7 @@ def criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_verificar_codigo(),
+        command=lambda: tentar_verificar_codigo(window, codigo, entry_codigo.get(), pre_usuario, canvas),
         relief="flat"
     )
     button_1.place(

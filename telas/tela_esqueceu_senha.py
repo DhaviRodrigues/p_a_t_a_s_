@@ -15,13 +15,13 @@ def tentar_enviar_codigo(entry_email, window, canvas,):
     pre_usuario={}
 
     if resultado is True:
-        usercrud.Usuario.gerar_codigo(email)
+        codigo = usercrud.Usuario.gerar_codigo(email)
         tools.custom_messagebox(
                  window,
                  "Código Enviado",
                  f"Um código de verificação foi enviado para {email}."
         )
-        tools.fade_out(window, canvas, lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario))
+        tools.fade_out(window, canvas, lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo))
     else:
         tools.custom_messagebox(
             window,

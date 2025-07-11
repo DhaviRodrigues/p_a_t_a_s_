@@ -34,5 +34,14 @@
         "icone": "button_8.png",
         "adm": false,
         "pedido": true
+    },
+    {
+        "id": 5,
+        "nome": "Ajksdhkas",
+        "email": "kaizanvieira@gmail.com",
+        "senha": "patas123",
+        "icone": "button_9.png",
+        "adm": false,
+        "pedido": false
     }
 ]

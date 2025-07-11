@@ -205,6 +205,7 @@ class Usuario:
         mensagem = "Código para redefinição de senha:"
         assunto = "Código de Verificação P.A.T.A.S - Redefinição de Senha"
         Usuario.enviar_email(email, str(codigo), mensagem, assunto)
+        return str(codigo)
 
     def recuperar_senha():
         """
