@@ -161,7 +161,7 @@ class Usuario:
         usuarios = carregar_dados("usuarios.json")
         for usuario in usuarios:
             if usuario.get('email') == email.strip().lower():
-                return True
+                return usuario
 
         return "O email não está cadastrado."
 

@@ -11,17 +11,18 @@ def tentar_enviar_codigo(entry_email, window, canvas,):
     from .modulos import usercrud
    
     email = entry_email.get()
-    resultado = usercrud.Usuario.email_existe(email)
+    usuario = usercrud.Usuario.email_existe(email)
+    print(f"{usuario}")
     pre_usuario={}
 
-    if resultado is True:
+    if usuario:
         codigo = usercrud.Usuario.gerar_codigo(email)
         tools.custom_messagebox(
                  window,
                  "Código Enviado",
                  f"Um código de verificação foi enviado para {email}."
         )
-        tools.fade_out(window, canvas, lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo))
+        tools.fade_out(window, canvas, lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo, usuario))
     else:
         tools.custom_messagebox(
             window,

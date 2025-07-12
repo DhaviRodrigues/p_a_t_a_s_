@@ -15,27 +15,32 @@ def transicao_para_login(window, canvas):
         callback_function
     )
 
-def tentar_verificar_codigo(window, codigo, entry_codigo, pre_usuario, canvas):
+def tentar_verificar_codigo(window, codigo, entry_codigo, pre_usuario, canvas, usuario):
     from .modulos import usercrud
     from telas import tela_login
 
-    nome = pre_usuario["nome"]
-    email = pre_usuario["email"]
-    senha = pre_usuario["senha"]
-    user_icon = pre_usuario["icone"]
-
     if codigo == entry_codigo:
         if not pre_usuario == {}:
+            nome = pre_usuario["nome"]
+            email = pre_usuario["email"]
+            senha = pre_usuario["senha"]
+            user_icon = pre_usuario["icone"]
+
             usercrud.Usuario.criar_usuario(nome, email, senha, user_icon)
             tools.custom_messagebox(window, "Cadastro Bem-Sucedido", "Cadastro realizado com sucesso! Você será redirecionado para a tela de login.")
             tools.fade_out(window,canvas,lambda: tela_login.criar_tela_login(window, canvas,))
 
-    else:    
+        elif pre_usuario == {}:
+            tools.custom_messagebox(window, "Codigo Correto", "Iremos redirecionar você para a redefinição da sua senha.")
+            tools.fade_out(window,canvas,lambda: tela_login.criar_tela_login(window, canvas, usuario))
+    else:   
         tools.custom_messagebox(window, "Erro no cadastro", "O código está incorreto, verifique novamente")
 
-def criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo):
-    print (f'{codigo}')
-    print(f'{pre_usuario}')
+def criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo, usuario):
+    print (f'Código: {codigo}')
+    print(f'Pré Usuario: {pre_usuario}')
+    print(f'Usuario: {usuario}')
+
     tools.limpar_tela(canvas)
     canvas.configure(
         bg="#FFFFFF"
@@ -73,7 +78,7 @@ def criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_verificar_codigo(window, codigo, entry_codigo.get(), pre_usuario, canvas),
+        command=lambda: tentar_verificar_codigo(window, codigo, entry_codigo.get(), pre_usuario, canvas, usuario),
         relief="flat"
     )
     button_1.place(
