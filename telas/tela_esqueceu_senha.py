@@ -12,10 +12,15 @@ def tentar_enviar_codigo(entry_email, window, canvas,):
    
     email = entry_email.get()
     usuario = usercrud.Usuario.email_existe(email)
-    print(f"{usuario}")
     pre_usuario={}
 
-    if usuario:
+    if not email:
+        tools.custom_messagebox(
+                 window,
+                 "Código Enviado",
+                 "Preencha o campo do email."
+        )
+    elif usuario:
         codigo = usercrud.Usuario.gerar_codigo(email)
         tools.custom_messagebox(
                  window,

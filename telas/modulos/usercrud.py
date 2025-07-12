@@ -29,6 +29,7 @@ class Usuario:
              "pedido": self.pedido
         }
 
+
     def validar_usuario(nome, email, senha, confirma_senha, icone):
         if not nome or not email or not senha or not confirma_senha:
             return "Todos os campos devem ser preenchidos."
@@ -65,6 +66,7 @@ class Usuario:
                 return "Este email já está a ser utilizado."
 
         return True
+
 
     def criar_usuario(nome, email, senha, icone):
         usuarios = carregar_dados("usuarios.json")
@@ -114,6 +116,7 @@ class Usuario:
         
         salvar_dados('usuarios.json', novo_arquivo_usuarios)
 
+
     def deletar_conta(usuario_logado):
         """
         Exclui a conta do usuário do arquivo JSON.
@@ -127,6 +130,7 @@ class Usuario:
         
         salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
         return True
+
 
     def alterar_status_adm(email, novo_status):
         """Encontra um usuário por email e altera seu status de administrador."""
@@ -152,18 +156,17 @@ class Usuario:
         else:
             return f"O usuário {email} foi removido de administrador com sucesso."
     
+
     def email_existe(email):
         """Verifica se um email já está cadastrado no sistema."""
-
-        if not email:
-            return "O campo de email não pode estar vazio."
             
         usuarios = carregar_dados("usuarios.json")
         for usuario in usuarios:
             if usuario.get('email') == email.strip().lower():
                 return usuario
 
-        return "O email não está cadastrado."
+        return False
+
 
     def enviar_email(destinatario, codigo, info, assunto):
         """
@@ -207,50 +210,20 @@ class Usuario:
         Usuario.enviar_email(email, str(codigo), mensagem, assunto)
         return str(codigo)
 
-    def recuperar_senha():
+
+    def recuperar_senha(usuario, nova_senha):
         """
         Permite ao utilizador redefinir a sua senha através de verificação por e-mail.
         """
-        usuarios = carregar_dados('usuarios.json') 
-
-        for tentativa in range(3):
-            codigo_digitado = input("Digite o código enviado ao seu email: ").strip()
-            if codigo_digitado == str(codigo):
-                print(" Código correto.")
-                print('\n--- Atualizar Senha ---')
-                
-                nova_senha = ""
-                while True:
-                    nova_senha = input("Digite a nova senha (mínimo 8 caracteres): ").strip()
-                    
-                    if len(nova_senha) < 8:
-                        print('A senha deve ter no mínimo 8 caracteres.')
-                        continue
-                    
-                    confirmar_nova_senha = input("Confirme a nova senha: ").strip()
-                    if nova_senha != confirmar_nova_senha:
-                        print('As senhas não coincidem. Por favor, tente novamente.')
-                        continue
-                    
-                    # 2. Encontrar o utilizador e atualizar sua senha
-                    for usuario in usuarios:
-                        if usuario['email'] == email:
-                            usuario['senha'] = nova_senha
-                            break # Encontrou e atualizou, pode parar de procurar
-                    
-                    # 3. Salvar as alterações no ficheiro JSON
-                    salvar_dados('usuarios.json', usuarios)
-                    
-                    print("\nSenha redefinida com sucesso!")
-                    return # Encerra a função após redefinir a senha
-            else:
-                tentativas_restantes = 2 - tentativa
-                if tentativas_restantes > 0:
-                    print(f" Código incorreto. Você tem mais {tentativas_restantes} tentativa(s).")
-                else:
-                    print("Código incorreto.")
-                
-        print("\nNúmero máximo de tentativas excedido. A operação foi cancelada.")
+        arquivo_usuarios = carregar_dados('usuarios.json') 
+        email = usuario.get("email")
+        for usuarios in arquivo_usuarios:
+            if usuarios['email'] == email:
+                usuarios['senha'] = nova_senha
+                break
+        
+        salvar_dados('usuarios.json', arquivo_usuarios)
+        return True
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos usuários"""

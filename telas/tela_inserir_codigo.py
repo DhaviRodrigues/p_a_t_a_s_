@@ -17,9 +17,10 @@ def transicao_para_login(window, canvas):
 
 def tentar_verificar_codigo(window, codigo, entry_codigo, pre_usuario, canvas, usuario):
     from .modulos import usercrud
+    from telas import tela_redefinir_senha
     from telas import tela_login
 
-    if codigo == entry_codigo:
+    if codigo == entry_codigo.strip():
         if not pre_usuario == {}:
             nome = pre_usuario["nome"]
             email = pre_usuario["email"]
@@ -32,7 +33,7 @@ def tentar_verificar_codigo(window, codigo, entry_codigo, pre_usuario, canvas, u
 
         elif pre_usuario == {}:
             tools.custom_messagebox(window, "Codigo Correto", "Iremos redirecionar você para a redefinição da sua senha.")
-            tools.fade_out(window,canvas,lambda: tela_login.criar_tela_login(window, canvas, usuario))
+            tools.fade_out(window,canvas,lambda: tela_redefinir_senha.criar_tela_redefinir_senha(window, canvas, usuario))
     else:   
         tools.custom_messagebox(window, "Erro no cadastro", "O código está incorreto, verifique novamente")
 
