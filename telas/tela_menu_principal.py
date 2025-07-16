@@ -180,7 +180,7 @@ def criar_tela_menu_principal(window, canvas, usuario_logado):
     canvas.tag_bind(
         "ver_perfil_link",
         "<Button-1>",
-        lambda e: tools.fade_out(window, canvas, lambda: tela_perfil.criar_tela_perfil(window, canvas, usuario_logado))
+        lambda: tools.fade_out(window, canvas, lambda: tela_perfil.criar_tela_perfil(window, canvas, usuario_logado))
     )
 
     user_icon_filename = usuario_logado.get("icone", "button_3.png")

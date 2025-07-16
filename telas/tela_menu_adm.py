@@ -30,7 +30,32 @@ def tentar_alterar_status_adm(entry_widget, novo_status, window):
     
     entry_widget.delete(0, 'end')
 
+def transicao_para_lista_adocao(window, canvas, usuario_logado):
+    """
+    Inicia a transição para a tela de feedback.
+    """
+    from telas import tela_lista_adocao
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_lista_adocao.criar_tela_lista_adocao(window, canvas, usuario_logado)
+    )
+
+def transicao_para_lista_tratamento(window, canvas, usuario_logado):
+    """
+    Inicia a transição para a tela de feedback.
+    """
+    from telas import tela_lista_tratamento
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_lista_tratamento.criar_tela_lista_tratamento(window, canvas, usuario_logado)
+    )
+
 def criar_tela_menu_adm(window, canvas, usuario_logado):
+    from telas import tela_lista_adocao
+    from telas import tela_lista_tratamento
+    
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
 
@@ -168,7 +193,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_7,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_7 clicked"),
+        command=lambda: tools.fade_out(window, canvas, lambda: tela_lista_adocao.criar_tela_lista_adocao(window, canvas, usuario_logado)),
         relief="flat"
     )
     button_7.place(
@@ -186,31 +211,13 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_8,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_8 clicked"),
+        command=lambda: tools.fade_out(window, canvas, lambda: tela_lista_tratamento.criar_tela_lista_tratamento(window, canvas, usuario_logado)),
         relief="flat"
     )
     button_8.place(
         x=378.0,
         y=483.0,
         width=216.0,
-        height=48.0
-    )
-
-    canvas.button_image_9 = PhotoImage(
-        file=tools.relative_to_assets("TelaMenuAdm", "button_9.png")
-    )
-    button_9 = Button(
-        canvas,
-        image=canvas.button_image_9,
-        borderwidth=0,
-        highlightthickness=0,
-        command=lambda: print("button_9 clicked"),
-        relief="flat"
-    )
-    button_9.place(
-        x=400.0,
-        y=570.0,
-        width=161.0,
         height=48.0
     )
 
