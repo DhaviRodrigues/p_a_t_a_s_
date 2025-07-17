@@ -27,7 +27,7 @@ class Pedidos:
 
 
     def criar_pedido_adocao(animal_clicado, usuario_logado):
-        pedidos = carregar_dados('pedidos.json')
+        pedidos = carregar_dados('pedidos_pedente.json')
 
         maior_id_atual = -1 
         for pedido_existente in pedidos:
@@ -64,7 +64,7 @@ class Pedidos:
             # }
 
         pedidos.append(novo_pedido.converter_para_dicionario())
-        salvar_dados('pedidos.json', pedidos)
+        salvar_dados('pedidos_pendente.json', pedidos)
 
     def pedidos_adocao():
         print("\n--- Lista de Pedidos de Adoção ---")

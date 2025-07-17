@@ -3,12 +3,12 @@ from pathlib import Path
 from PIL import Image, ImageTk
 from telas import tools
 
-def transicao_para_menu_principal(window, canvas, usuario_logado):
-    from telas import tela_menu_principal
-    tools.fade_out(window, canvas, lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, usuario_logado))
+def transicao_para_menu_adm(window, canvas, usuario_logado):
+    from telas import tela_menu_adm
+    tools.fade_out(window, canvas, lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas, usuario_logado))
 
-def criar_tela_lista_tratamento(window, canvas, usuario_logado):
-    from .modulos import animalcrud
+def criar_tela_lista_pedidos_aprovado(window, canvas, usuario_logado):
+    from .modulos import pedidos
     from telas import tela_info_pet_tratamento
 
     tools.limpar_tela(canvas)
@@ -26,7 +26,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         449.0,
         33.0,
         anchor="nw",
-        text="Animais em Tratamento",
+        text="Pedidos Aprovados",
         fill="#EED3B2",
         font=("Poppins Black", 35 * -1)
     )
@@ -39,7 +39,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu_principal(window, canvas, usuario_logado),
+        command=lambda: transicao_para_menu_adm(window, canvas, usuario_logado),
         relief="flat"
     )
     button_voltar.place(
@@ -84,15 +84,18 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
 
     frame_cards.bind("<Configure>", onFrameConfigure)
 
-    animais_em_tratamento = animalcrud.carregar_dados("animais_tratamento.json")
+    pedidos_pedente = pedidos.carregar_dados("pedidos_aprovado.json")
     
-    canvas.lista_imagens_botoes = []
-    canvas.lista_imagens_animais = []
 
-    if not animais_em_tratamento:
+    ############
+    #REVISAR E CORRIGIR CÓDIGO
+
+    canvas.lista_imagens_botoes = []
+
+    if not pedidos_pedente:
         label_vazio = Label(
             frame_cards,
-            text="Não há animais em tratamento no momento.",
+            text="Nenhum pedido foi aprovado ainda.",
             bg="#44312D",
             fg="#44312D",
             font=("Poppins", 24)
@@ -105,7 +108,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
     largura_ref, altura_ref = placeholder_pil.size
     canvas.placeholder_tk = ImageTk.PhotoImage(placeholder_pil)
 
-    for todos_animais in animais_em_tratamento:
+    for pedido in pedidos_pedente:
         img_botao = PhotoImage(
             file=tools.relative_to_assets("TelaLista", "button_1.png")
         )
@@ -128,7 +131,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         )
         card_canvas.pack()
 
-        tag_card = f"card_{todos_animais.get('id')}"
+        tag_card = f"card_{pedido.get('id_mensagem')}"
         card_canvas.create_image(
             1227 / 2,
             217 / 2,
@@ -136,7 +139,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
             tags=(tag_card,)
         )
         
-        card_canvas.tag_bind(tag_card, "<Button-1>", lambda e, animal=todos_animais: tools.fade_out(window, canvas, lambda: tela_info_pet_tratamento.criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal)))
+        card_canvas.tag_bind(tag_card, "<Button-1>", lambda e, animal=pedido: tools.fade_out(window, canvas, lambda: tela_info_pet_tratamento.criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal)))
 
         card_canvas.create_image(
             124.0,
@@ -145,28 +148,11 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
             tags=(tag_card,)
         )
 
-        caminho_foto = Path(__file__).parent / "fotos_animais" / todos_animais.get("foto", "")
-        if caminho_foto.exists():
-            img = Image.open(caminho_foto)
-            img_redimensionada = img.resize(
-                (largura_ref, altura_ref),
-                Image.Resampling.LANCZOS
-            )
-            img_tk = ImageTk.PhotoImage(img_redimensionada)
-            canvas.lista_imagens_animais.append(img_tk)
-            
-            card_canvas.create_image(
-                124.0,
-                109,
-                image=img_tk,
-                tags=(tag_card,)
-            )
-
         card_canvas.create_text(
             272.0,
             30,
             anchor="nw",
-            text=f"Nome: {todos_animais.get('nome', '')}",
+            text=f"Nome do animal: {pedido.get('nome_animal', '')}",
             fill="#44312D",
             font=("Poppins Black", 32 * -1),
             tags=(tag_card,)
@@ -175,7 +161,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
             272.0,
             69,
             anchor="nw",
-            text=f"Espécie: {todos_animais.get('especie', '')}",
+            text=f"Email do Usuário: {pedido.get('email_usuario', '')}",
             fill="#44312D",
             font=("Poppins Black", 32 * -1),
             tags=(tag_card,)
@@ -184,16 +170,7 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
             272.0,
             107,
             anchor="nw",
-            text=f"Sexo: {todos_animais.get('sexo', '')}",
-            fill="#44312D",
-            font=("Poppins Black", 32 * -1),
-            tags=(tag_card,)
-        )
-        card_canvas.create_text(
-            272.0,
-            145,
-            anchor="nw",
-            text=f"Idade: {todos_animais.get('idade', '')}",
+            text=f"Nome do Usuário: {pedido.get('nome_usuario', '')}",
             fill="#44312D",
             font=("Poppins Black", 32 * -1),
             tags=(tag_card,)

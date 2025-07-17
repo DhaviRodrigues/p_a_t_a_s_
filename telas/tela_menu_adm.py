@@ -17,6 +17,30 @@ def transicao_para_cadastrar_animal(window, canvas, usuario_logado):
         lambda: tela_cadastrar_animal.criar_tela_cadastrar_animal(window, canvas, usuario_logado)
     )
 
+def transicao_para_lista_pedidos_pendente(window, canvas, usuario_logado):
+    from telas import tela_lista_pedidos_pendente
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_lista_pedidos_pendente.criar_tela_lista_pedidos_pendente(window, canvas, usuario_logado)
+    )
+
+def transicao_para_lista_pedidos_recusado(window, canvas, usuario_logado):
+    from telas import tela_lista_pedidos_recusado
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_lista_pedidos_recusado.criar_tela_lista_pedidos_recusado(window, canvas, usuario_logado)
+    )
+
+def transicao_para_lista_pedidos_aprovado(window, canvas, usuario_logado):
+    from telas import tela_lista_pedidos_aprovado
+    tools.fade_out(
+        window,
+        canvas,
+        lambda: tela_lista_pedidos_aprovado.criar_tela_lista_pedidos_aprovado(window, canvas, usuario_logado)
+    )
+
 def tentar_alterar_status_adm(entry_widget, novo_status, window):
     from .modulos import usercrud
 
@@ -55,6 +79,9 @@ def transicao_para_lista_tratamento(window, canvas, usuario_logado):
 def criar_tela_menu_adm(window, canvas, usuario_logado):
     from telas import tela_lista_adocao
     from telas import tela_lista_tratamento
+    from telas import tela_lista_pedidos_pendente
+    from telas import tela_lista_pedidos_recusado
+    from telas import tela_lista_pedidos_aprovado
     
     tools.limpar_tela(canvas)
     canvas.configure(bg="#FFFFFF")
@@ -139,7 +166,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_4,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_4 clicked"),
+        command=lambda: transicao_para_lista_pedidos_pendente(window, canvas, usuario_logado),
         relief="flat"
     )
     button_4.place(
@@ -157,7 +184,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_5,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_5 clicked"),
+        command=lambda: transicao_para_lista_pedidos_recusado(window, canvas, usuario_logado),
         relief="flat"
     )
     button_5.place(
@@ -175,7 +202,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_6,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_6 clicked"),
+        command=lambda: transicao_para_lista_pedidos_aprovado(window, canvas, usuario_logado),
         relief="flat"
     )
     button_6.place(
