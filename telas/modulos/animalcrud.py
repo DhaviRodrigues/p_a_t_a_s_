@@ -85,7 +85,7 @@ class Animal:
 
     def editar_animal(animal_atualizado, tipo_cadastro):
         """Encontra e salva as alterações de um animal no arquivo JSON apropriado."""
-        nome_arquivo = {tipo_cadastro}
+        nome_arquivo = tipo_cadastro
         todos_animais = carregar_dados(nome_arquivo)
 
         nova_lista_animais = []

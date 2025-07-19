@@ -43,9 +43,10 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu_principal(window, canvas, usuario_logado),
-        relief="flat"
-    )
+        command=lambda e, animal=todos_animais: tools.fade_out(window,canvas,lambda: tela_editar_animal.criar_tela_editar_animal(window, canvas, usuario_logado, animal, "animais_adocao.json")
+        if usuario_logado.get("adm") == True
+        else tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal)))
+
     button_voltar.place(
         x=1155.0,
         y=19.0,
