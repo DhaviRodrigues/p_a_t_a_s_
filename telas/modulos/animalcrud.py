@@ -1,7 +1,7 @@
 import json
 import shutil
-from time import sleep
 from pathlib import Path
+from telas import tools
 
 class Animal:
     """Classe que representa um animal"""
@@ -13,7 +13,7 @@ class Animal:
         self.idade = idade
         self.informacoes = informacoes
         self.foto = foto
-        self.processo_adoacao = False
+        self.processo_adocao = False
 
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
         return {
@@ -24,7 +24,7 @@ class Animal:
             "idade": self.idade,
             "informacoes": self.informacoes,
             "foto": self.foto,
-            "processo_doacao": self.processo_adoacao
+            "processo_adocao": self.processo_adocao
         }
 
     def validar_animal(nome, especie, sexo, idade, foto):
@@ -74,7 +74,7 @@ class Animal:
                 maior_id = animal['id']
         novo_id = maior_id + 1
 
-        novo_animal = Animal(novo_id, nome.strip(), especie, sexo, idade, info, novo_nome_foto)
+        novo_animal = Animal(novo_id, nome.strip(), especie.strip(), sexo, idade.strip(), info, novo_nome_foto)
         
         animais.append(novo_animal.converter_para_dicionario())
         salvar_dados(nome_arquivo_json, animais)
@@ -97,7 +97,7 @@ class Animal:
         salvar_dados(nome_arquivo, nova_lista_animais)
         return True
 
-    def deletar_animal(animal_id, tipo_cadastro):
+    def excluir_animal(animal_id, tipo_cadastro):
         """Encontra e deleta um animal do arquivo JSON apropriado."""
         nome_arquivo = f"animais_{tipo_cadastro}.json"
         todos_animais = carregar_dados(nome_arquivo)
@@ -113,8 +113,6 @@ class Animal:
         if animal_encontrado:
             salvar_dados(nome_arquivo, nova_lista_animais)
             return True
-        else:
-            return "Animal não encontrado para exclusão."
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos animais"""
