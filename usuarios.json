@@ -33,7 +33,7 @@
         "senha": "patas123",
         "icone": "button_8.png",
         "adm": false,
-        "pedido": true
+        "pedido": false
     },
     {
         "id": 5,

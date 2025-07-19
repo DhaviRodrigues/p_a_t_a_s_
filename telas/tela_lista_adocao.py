@@ -11,6 +11,7 @@ def transicao_para_menu_principal(window,canvas,usuario_logado):
 def criar_tela_lista_adocao(window,canvas,usuario_logado):
     from telas import tela_info_pet_adocao
     from .modulos import animalcrud
+    from telas import tela_editar_animal
 
     tools.limpar_tela(canvas)
     canvas.configure(
@@ -148,8 +149,15 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
             tags=(tag_card,)
         )
         
-        card_canvas.tag_bind(tag_card, "<Button-1>", lambda e, animal=todos_animais: tools.fade_out(window, canvas, lambda: tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal)))
-
+        card_canvas.tag_bind(tag_card,
+            "<Button-1>",
+            lambda e, animal=todos_animais: tools.fade_out(window,canvas,
+            lambda: tela_editar_animal.criar_tela_editar_animal(window, canvas, usuario_logado, animal)
+            if usuario_logado.get("adm") == True
+            else tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal)
+            )
+        )
+        
         card_canvas.create_image(
             124.0,
             109,

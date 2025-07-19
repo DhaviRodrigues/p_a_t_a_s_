@@ -80,209 +80,41 @@ class Animal:
         salvar_dados(nome_arquivo_json, animais)
 
 
-def editar_animal_adocao():
-    """Permite que o administrador possa editar livrimente as informações dos animais em adoção"""
+    def editar_animal(animal_atualizado, tipo_cadastro):
+        """Encontra e salva as alterações de um animal no arquivo JSON apropriado."""
+        nome_arquivo = f"animais_{tipo_cadastro}.json"
+        todos_animais = carregar_dados(nome_arquivo)
 
-    print(f"\n--- Editar Animal para Adoção ---")
-    nome_arquivo = 'animais_adocao.json'
-    animais_da_lista = carregar_dados(nome_arquivo) #Adicona a lista de animais a variável
-    
-    if not animais_da_lista: #Caso nao haja animais na lista:
-        print(f"Não há animais para adoção para editar.")
-        sleep(2)
-        return
-
-    animal_para_atualizar = None 
-
-    while True:
-        id_str = input(str(f"Digite o ID do animal para adoção que deseja editar (ou 'VOLTAR' para cancelar): ")).strip().lower()
+        nova_lista_animais = []
+        for animal in todos_animais:
+            if animal.get("id") != animal_atualizado.get("id"):
+                nova_lista_animais.append(animal)
         
-        if id_str == 'voltar': #Opção de voltar ao menu
-            print("Operação de edição cancelada.")
-            sleep(1)
-            return
-
-        try:
-            id_num = int(id_str) #Converte o valor do input para int
-        except ValueError: #Caso o usuario nao digite um número, daria um erro na conversão, por isso o tratamento
-            print("ID inválido. Por favor, digite um número.")
-            sleep(1)
-            continue
-
-        verificação_id = None
-        for animais in animais_da_lista: #Para cada animal na lista:
-            if animais.get('id') == id_num: #Se o id do animal for igual ao id numerico:
-                verificação_id = animais #Verificação id receberá o dicionário daquele animal
-                break
+        # Adiciona a versão atualizada do animal à nova lista.
+        nova_lista_animais.append(animal_atualizado)
         
-        if verificação_id:
-            animal_para_atualizar = verificação_id #Informa qual animal iremos editar
-            break 
-        else:
-            print(f"ID {id_num} não encontrado. Por favor, informe um ID existente.")
-            sleep(1)
-            
-    print("\n--- Informações Atuais ---") #Imprime as atuais informações
-    print(f"ID: {animal_para_atualizar.get('id')}")
-    print(f"Nome: {animal_para_atualizar.get('nome')}")
-    print(f"Espécie: {animal_para_atualizar.get('especie')}")
-    print(f"Sexo: {animal_para_atualizar.get('sexo')}")
-    print(f"Idade: {animal_para_atualizar.get('idade')}")
-    print(f"Informações: {animal_para_atualizar.get('informacões')}")
+        # Salva a lista completa de volta no ficheiro.
+        salvar_dados(nome_arquivo, nova_lista_animais)
+        return True
 
-    print("\n--- Digite o novo valor ou deixe em branco para manter o atual ---")
-    
-    while True: #Permite que o adm modifique o nome do animal
-        novo_nome = input("Nome: ").strip()
-        if not novo_nome:
-            break
-        elif novo_nome.replace(' ', '').isalnum() == False:
-            print('Nome deve conter apenas letras e espaços. Tente novamente.')
-        else:
-            animal_para_atualizar['nome'] = novo_nome
-            break
+    def deletar_animal(animal_id, tipo_cadastro):
+        """Encontra e deleta um animal do arquivo JSON apropriado."""
+        nome_arquivo = f"animais_{tipo_cadastro}.json"
+        todos_animais = carregar_dados(nome_arquivo)
 
-    while True:  #Permite que o adm modifique a espécie do animal
-        nova_especie = input("Espécie: ").strip()
-        if not nova_especie:
-            break
-        elif nova_especie.replace(' ', '').isalnum() == False:
-            print('A espécie deve conter apenas letras, números e parênteses. Tente novamente.')
-        else:
-            animal_para_atualizar['especie'] = nova_especie
-            break
-
-    while True:  #Permite que o adm modifique o sexo do animal
-        novo_sexo = input("Sexo [M/F]: ").strip().upper()
-        if not novo_sexo:
-            break
-        elif novo_sexo not in ('M', 'F'):
-            print('Digite um valor válido (M ou F). Tente novamente.')
-        else:
-            animal_para_atualizar['sexo'] = novo_sexo
-            break
-
-    while True:  #Permite que o adm modifique a idade do animal
-        nova_idade = input("Idade: ").strip()
-        if not nova_idade:
-            break
-        elif nova_idade.replace(' ', '').isalnum() == False:
-            print('A idade deve conter apenas letras e números. Tente novamente.')
-        else:
-            animal_para_atualizar['idade'] = nova_idade
-            break
-
-    nova_info = input("Informações: ").strip()  #Permite que o adm modifique as informações do animal
-    if nova_info:
-        animal_para_atualizar['informacões'] = nova_info
-
-
-    salvar_dados(nome_arquivo, animais_da_lista) #Salva os dados
-    
-    print('\nAnimal atualizado com sucesso!')
-    sleep(2)
-
-def editar_animal_tratamento():
-    """Permite que o administrador possa editar livrimente as informações dos animais em tratamento"""
-
-    print(f"\n--- Editar Animal em Tratamento ---")
-    nome_arquivo = 'animais_tratamento.json'
-    animais_da_lista = carregar_dados(nome_arquivo) #Adicona a lista de animais a variável
-    
-    if not animais_da_lista: #Caso nao haja animais na lista:
-        print(f"Não há animais em tratamento para editar.")
-        sleep(2)
-        return
-
-    animal_para_atualizar = None 
-
-    while True:
-        id_str = input(str(f"Digite o ID do animal em tratamento que deseja editar (ou 'VOLTAR' para cancelar): ")).strip().lower()
+        animal_encontrado = False
+        nova_lista_animais = []
+        for animal in todos_animais:
+            if animal.get("id") == animal_id:
+                animal_encontrado = True
+            else:
+                nova_lista_animais.append(animal)
         
-        if id_str == 'voltar': #Opção de voltar ao menu
-            print("Operação de edição cancelada.")
-            sleep(1)
-            return
-
-        try:
-            id_num = int(id_str) #Converte o valor do input para int
-        except ValueError: #Caso o usuario nao digite um número, daria um erro na conversão, por isso o tratamento
-            print("ID inválido. Por favor, digite um número.")
-            sleep(1)
-            continue
-
-        verificação_id = None
-        for animais in animais_da_lista: #Para cada animal na lista: (Mantendo seu nome de variável 'animais')
-            if animais.get('id') == id_num: #Se o id do animal for igual ao id numerico:
-                verificação_id = animais #Verificação id receberá o dicionário daquele animal
-                break
-        
-        if verificação_id:
-            animal_para_atualizar = verificação_id #Informa qual animal iremos editar
-            break 
+        if animal_encontrado:
+            salvar_dados(nome_arquivo, nova_lista_animais)
+            return True
         else:
-            print(f"ID {id_num} não encontrado na lista de tratamento. Por favor, informe um ID existente.")
-            sleep(1)
-            
-    print("\n--- Informações Atuais ---") #Imprime as atuais informações
-    print(f"ID: {animal_para_atualizar.get('id')}")
-    print(f"Nome: {animal_para_atualizar.get('nome')}")
-    print(f"Espécie: {animal_para_atualizar.get('especie')}")
-    print(f"Sexo: {animal_para_atualizar.get('sexo')}")
-    print(f"Idade: {animal_para_atualizar.get('idade')}")
-    print(f"Informações: {animal_para_atualizar.get('informacões')}")
-
-    print("\n--- Digite o novo valor ou deixe em branco para manter o atual ---")
-    
-    while True: #Permite que o adm modifique o nome do animal
-        novo_nome = input("Nome: ").strip()
-        if not novo_nome:
-            break
-        elif novo_nome.replace(' ', '').isalnum() == False:
-            print('Nome deve conter apenas letras e espaços. Tente novamente.')
-        else:
-            animal_para_atualizar['nome'] = novo_nome
-            break
-
-    while True:  #Permite que o adm modifique a espécie do animal
-        nova_especie = input("Espécie: ").strip()
-        if not nova_especie:
-            break
-        elif nova_especie.replace(' ', '').isalnum() == False:
-            print('A espécie deve conter apenas letras, números e parênteses. Tente novamente.')
-        else:
-            animal_para_atualizar['especie'] = nova_especie
-            break
-
-    while True:  #Permite que o adm modifique o sexo do animal
-        novo_sexo = input("Sexo [M/F]: ").strip().upper()
-        if not novo_sexo:
-            break
-        elif novo_sexo not in ('M', 'F'):
-            print('Digite um valor válido (M ou F). Tente novamente.')
-        else:
-            animal_para_atualizar['sexo'] = novo_sexo
-            break
-
-    while True:  #Permite que o adm modifique a idade do animal
-        nova_idade = input("Idade: ").strip()
-        if not nova_idade:
-            break
-        elif nova_idade.replace(' ', '').isalnum() == False:
-            print('A idade deve conter apenas letras e números. Tente novamente.')
-        else:
-            animal_para_atualizar['idade'] = nova_idade
-            break
-
-    nova_info = input("Informações: ").strip()  #Permite que o adm modifique as informações do animal
-    if nova_info:
-        animal_para_atualizar['informacões'] = nova_info
-
-
-    salvar_dados(nome_arquivo, animais_da_lista) #Salva os dados
-    
-    print('\nAnimal atualizado com sucesso!')
-    sleep(2)
+            return "Animal não encontrado para exclusão."
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos animais"""
