@@ -140,11 +140,9 @@ def criar_tela_lista_tratamento(window, canvas, usuario_logado):
         card_canvas.tag_bind(tag_card,
             "<Button-1>",
             lambda e, animal=todos_animais: tools.fade_out(window,canvas,
-            lambda: tela_editar_animal.criar_tela_editar_animal(window, canvas, usuario_logado, animal)
+            lambda: tela_editar_animal.criar_tela_editar_animal(window, canvas, usuario_logado, animal, "animais_tratamento.json")
             if usuario_logado.get("adm") == True
-            else tela_info_pet_tratamento.criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal)
-            )
-        )
+            else tela_info_pet_tratamento.criar_tela_info_pet_tratamento(window, canvas, usuario_logado, animal,)))
         
         card_canvas.create_image(
             124.0,
