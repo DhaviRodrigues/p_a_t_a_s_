@@ -7,12 +7,12 @@ sexo_selecionado = None
 tipo_cadastro_selecionado = None
 caminho_imagem_animal = None
 
-def transicao_para_menu_adm(window, canvas, usuario_logado):
+def transicao_para_menu_adm(window, canvas):
     from telas import tela_menu_adm
     tools.fade_out(
         window,
         canvas,
-        lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas, usuario_logado)
+        lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas,)
     )
 
 def selecionar_imagem_animal(canvas):
@@ -63,10 +63,10 @@ def selecionar_sexo(canvas, x, y, imagem_selecao, animal):
         image=canvas.imagem_selecao_sexo
     )
 
-def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, valor):
-    global tipo_cadastro_selecionado
-    tipo_cadastro_selecionado = valor
+def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, tipo_cadastro_selecionado):
 
+    print(f"Tipo de cadastro selecionado: {tipo_cadastro_selecionado}")
+    
     if hasattr(canvas, "selecao_tipo_id"):
         canvas.delete(canvas.selecao_tipo_id)
 
@@ -81,8 +81,10 @@ def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, valor):
 
     return tipo_cadastro_selecionado
 
-def tentar_editar_animal(entries, window, canvas, animal):
+def tentar_editar_animal(entries, window, canvas, animal, arquivo_original):
     global caminho_imagem_animal, sexo_selecionado, tipo_cadastro_selecionado
+
+    print(f"{tipo_cadastro_selecionado}")
 
     nome = entries["nome"].get()
     idade = entries["idade"].get()
@@ -98,18 +100,11 @@ def tentar_editar_animal(entries, window, canvas, animal):
     )
 
     if resultado_validacao is not True:
-        tools.custom_messagebox(
-            window,
-            "Erro de Validação",
-            resultado_validacao
-        )
+        tools.custom_messagebox(window,"Erro de Validação", resultado_validacao)
         return
 
     if tipo_cadastro_selecionado is None:
-        tools.custom_messagebox(
-            window,
-            "Erro de Validação",
-            "Selecione o tipo de cadastro (Tratamento ou Adoção)."
+        tools.custom_messagebox(window,"Erro de Validação", "Selecione o tipo de cadastro (Tratamento ou Adoção)."
         )
         return
 
@@ -126,6 +121,9 @@ def tentar_editar_animal(entries, window, canvas, animal):
 
     animalcrud.Animal.editar_animal(animal, tipo_cadastro_selecionado)
 
+    if tipo_cadastro_selecionado != arquivo_original:
+        animalcrud.Animal.excluir_animal(animal["id"], arquivo_original)
+
     tools.custom_messagebox(
         window,
         "Sucesso",
@@ -134,7 +132,7 @@ def tentar_editar_animal(entries, window, canvas, animal):
 
     transicao_para_menu_adm(window, canvas)
 
-def tentar_excluir(window, canvas, usuario_logado, animal):
+def tentar_excluir(window, canvas, usuario_logado, animal, arquivo_original):
     resposta = tools.custom_yn(
         window,
         "Confirmar Exclusão",
@@ -142,11 +140,11 @@ def tentar_excluir(window, canvas, usuario_logado, animal):
     )
 
     if resposta:
-        if animalcrud.Animal.excluir_animal(animal["id"], animal["tipo"]):
+        if animalcrud.Animal.excluir_animal(animal["id"], arquivo_original):
             tools.custom_messagebox(window, "Sucesso", "Animal excluído com sucesso!")
             transicao_para_menu_adm(window, canvas, usuario_logado)
 
-def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
+def criar_tela_editar_animal(window, canvas, usuario_logado, animal, arquivo_original):
     global sexo_selecionado, tipo_cadastro_selecionado, caminho_imagem_animal
 
     sexo_selecionado = animal["sexo"]
@@ -242,7 +240,7 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
         image=canvas.button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_editar_animal(entries, window, canvas, animal),
+        command=lambda: tentar_editar_animal(entries, window, canvas, animal, arquivo_original),
         relief="flat"
     )
     button_salvar.place(
@@ -260,7 +258,7 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
         image=canvas.button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu_adm(window, canvas, usuario_logado),
+        command=lambda: transicao_para_menu_adm(window, canvas),
         relief="flat"
     )
     button_voltar.place(
@@ -296,7 +294,7 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
         image=canvas.button_image_8,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_excluir(window, canvas, usuario_logado, animal),
+        command=lambda: tentar_excluir(window, canvas, usuario_logado, animal, arquivo_original),
         relief="flat"
     )
     button_deletar.place(
@@ -368,7 +366,7 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
         image=canvas.button_image_adocao,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: selecionar_tipo_cadastro(canvas, 1087.0, 206.0, "image_5.png", "adocao"),
+        command=lambda: selecionar_tipo_cadastro(canvas, 1087.0, 206.0, "image_5.png", "animais_adocao.json"),
         relief="flat"
     )
     button_adocao.place(
@@ -386,7 +384,7 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
         image=canvas.button_image_tratamento,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: selecionar_tipo_cadastro(canvas, 1170.0, 206.0, "image_4.png", "tratamento"),
+        command=lambda: selecionar_tipo_cadastro(canvas, 1170.0, 206.0, "image_4.png", "animais_tratamento.json"),
         relief="flat"
     )
     button_tratamento.place(
@@ -470,11 +468,28 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
 
     imagem_selecao = None
     if animal["sexo"] == "M":
+        imagem_selecao = "image_2.png"
         x= 865.0 
         y= 206.0
     else:
         imagem_selecao = "image_3.png"
-        x= 206.0
+        x= 919.0
         y= 206.0
 
     selecionar_sexo(canvas, x, y, imagem_selecao, animal)
+
+    imagem_selecao = None
+    if arquivo_original == "animais_adocao.json":
+        imagem_selecao = "image_5.png"
+        x=1087.0
+        y=206.0
+    else:
+        imagem_selecao = "image_4.png"
+        x=1170.0
+        y=206.0
+
+    tipo_cadastro_selecionado = arquivo_original
+
+    selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, tipo_cadastro_selecionado,)
+
+    print(f"Tipo de cadastro selecionado: {tipo_cadastro_selecionado}")

@@ -15,6 +15,7 @@ class Animal:
         self.foto = foto
         self.processo_adocao = False
 
+
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
         return {
             "id": self.id,
@@ -26,6 +27,7 @@ class Animal:
             "foto": self.foto,
             "processo_adocao": self.processo_adocao
         }
+
 
     def validar_animal(nome, especie, sexo, idade, foto):
         if not nome:
@@ -44,6 +46,7 @@ class Animal:
             return "É obrigatório inserir uma foto do animal."
             
         return True
+
 
     def criar_animal(nome, especie, sexo, idade, info, tipo_cadastro, caminho_imagem_original):
         nome_arquivo_json = f"animais_{tipo_cadastro}.json"
@@ -82,7 +85,7 @@ class Animal:
 
     def editar_animal(animal_atualizado, tipo_cadastro):
         """Encontra e salva as alterações de um animal no arquivo JSON apropriado."""
-        nome_arquivo = f"animais_{tipo_cadastro}.json"
+        nome_arquivo = {tipo_cadastro}
         todos_animais = carregar_dados(nome_arquivo)
 
         nova_lista_animais = []
