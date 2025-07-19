@@ -66,7 +66,7 @@ def selecionar_sexo(canvas, x, y, imagem_selecao, animal):
 def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, tipo_cadastro_selecionado):
 
     print(f"Tipo de cadastro selecionado: {tipo_cadastro_selecionado}")
-    
+
     if hasattr(canvas, "selecao_tipo_id"):
         canvas.delete(canvas.selecao_tipo_id)
 
@@ -118,6 +118,8 @@ def tentar_editar_animal(entries, window, canvas, animal, arquivo_original):
         "foto": caminho_imagem_animal or animal["foto"],
         "processo_adocao": animal["processo_adocao"]
     })
+    
+    print(f"Função editar animal; arquivo selecionado: {tipo_cadastro_selecionado}")
 
     animalcrud.Animal.editar_animal(animal, tipo_cadastro_selecionado)
 
@@ -473,7 +475,7 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal, arquivo_ori
         y= 206.0
     else:
         imagem_selecao = "image_3.png"
-        x= 919.0
+        x=955.0
         y= 206.0
 
     selecionar_sexo(canvas, x, y, imagem_selecao, animal)
