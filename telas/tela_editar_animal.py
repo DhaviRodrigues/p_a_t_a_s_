@@ -44,9 +44,12 @@ def selecionar_imagem_animal(canvas):
     )
     canvas.tag_raise(canvas.preview_id)
 
-def selecionar_sexo(canvas, x, y, imagem_selecao, valor):
+def selecionar_sexo(canvas, x, y, imagem_selecao, animal):
     global sexo_selecionado
-    sexo_selecionado = valor
+    if animal["sexo"] == "M":
+        imagem_selecao = "image_2.png"
+    else:
+        imagem_selecao = "image_3.png"
 
     if hasattr(canvas, "selecao_sexo_id"):
         canvas.delete(canvas.selecao_sexo_id)
@@ -75,6 +78,8 @@ def selecionar_tipo_cadastro(canvas, x, y, imagem_selecao, valor):
         y,
         image=canvas.imagem_selecao_tipo
     )
+
+    return tipo_cadastro_selecionado
 
 def tentar_editar_animal(entries, window, canvas, animal):
     global caminho_imagem_animal, sexo_selecionado, tipo_cadastro_selecionado
@@ -119,7 +124,7 @@ def tentar_editar_animal(entries, window, canvas, animal):
         "processo_adocao": animal["processo_adocao"]
     })
 
-    animalcrud.Animal.editar_animal(animal)
+    animalcrud.Animal.editar_animal(animal, tipo_cadastro_selecionado)
 
     tools.custom_messagebox(
         window,
@@ -127,7 +132,19 @@ def tentar_editar_animal(entries, window, canvas, animal):
         "Animal editado com sucesso!"
     )
 
-    transicao_para_menu_adm(window, canvas, animal["responsavel"])
+    transicao_para_menu_adm(window, canvas)
+
+def tentar_excluir(window, canvas, usuario_logado, animal):
+    resposta = tools.custom_yn(
+        window,
+        "Confirmar Exclusão",
+        "Tem certeza que deseja excluir este animal? Essa ação não pode ser desfeita."
+    )
+
+    if resposta:
+        if animalcrud.Animal.excluir_animal(animal["id"], animal["tipo"]):
+            tools.custom_messagebox(window, "Sucesso", "Animal excluído com sucesso!")
+            transicao_para_menu_adm(window, canvas, usuario_logado)
 
 def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
     global sexo_selecionado, tipo_cadastro_selecionado, caminho_imagem_animal
@@ -279,14 +296,14 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
         image=canvas.button_image_8,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu_adm(window, canvas, usuario_logado),
+        command=lambda: tentar_excluir(window, canvas, usuario_logado, animal),
         relief="flat"
     )
     button_deletar.place(
-        x=600.0,
-        y=900.0,
-        width=106.7,
-        height=102.0
+        x=900.0,
+        y=600.0,
+        width=187.875,
+        height=36.0
     )
 
     canvas.image_6 = PhotoImage(
@@ -450,3 +467,14 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal):
         fill="#44302C",
         font=("Poppins Black", 20 * -1)
     )
+
+    imagem_selecao = None
+    if animal["sexo"] == "M":
+        x= 865.0 
+        y= 206.0
+    else:
+        imagem_selecao = "image_3.png"
+        x= 206.0
+        y= 206.0
+
+    selecionar_sexo(canvas, x, y, imagem_selecao, animal)
