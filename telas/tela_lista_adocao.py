@@ -12,6 +12,7 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
     from telas import tela_info_pet_adocao
     from .modulos import animalcrud
     from telas import tela_editar_animal
+    from telas import tela_menu_adm
 
     tools.limpar_tela(canvas)
     canvas.configure(
@@ -35,21 +36,24 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
         font=("Poppins Black", 35 * -1)
     )
 
-    canvas.button_image_2 = PhotoImage(
-        file=tools.relative_to_assets("TelaLista", "button_2.png")
-    )
-    button_voltar = Button(
-        canvas,
-        image=canvas.button_image_2,
-        borderwidth=0,
-        highlightthickness=0,
-        command=lambda e, animal=todos_animais: tools.fade_out(window,canvas,lambda: tela_editar_animal.criar_tela_editar_animal(window, canvas, usuario_logado, animal, "animais_adocao.json")
-        if usuario_logado.get("adm") == True
-        else tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal)))
+    canvas.button_image_2= PhotoImage(
+        file=tools.relative_to_assets("TelaLista", "button_2.png"))
 
-    button_voltar.place(
-        x=1155.0,
-        y=19.0,
+    button_2 = Button(
+    canvas,
+    image=canvas.button_image_2,
+    borderwidth=0,
+    highlightthickness=0,
+    command=lambda: tools.fade_out(window, canvas,lambda: (
+            tela_menu_adm.criar_tela_menu_adm(window, canvas, usuario_logado)
+            if usuario_logado.get("adm")
+            else transicao_para_menu_principal(window,canvas,usuario_logado))),
+    relief="flat"
+    )
+
+    button_2.place(
+        x=28.0,
+        y=28.0,
         width=90.0,
         height=89.0
     )
