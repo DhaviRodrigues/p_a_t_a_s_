@@ -79,6 +79,8 @@ Para executar o P.A.T.A.S. no seu ambiente local, siga os passos abaixo.
 2.  **Instale as bibliotecas:**
     O ficheiro `requesitos.txt` contém todas as bibliotecas necessária:
     ```bash
+    setuptools
+    tkinter
     pillow
     webbrowser
     tkextrafont
