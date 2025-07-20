@@ -40,6 +40,14 @@ def tentar_alteracao(entries,canvas,window,usuario_logado):
     
     global user_icon # Informa que estamos usando a variável global.
 
+    #Caso o Usuário tentasse alterar os dados com um pedido em andamento traria muitos problemas no processo de comunicação com o usuário,
+    #E ele poderia fraudar o sistema, podendo ter mais de um pedido por vez, e a função de email nao funcionaria corretamente
+    #Pois enviaria um email ao email antigo.
+    
+    if usuario_logado.get('pedido') is True:
+        tools.custom_messagebox(window,"Alteração Bloqueada","Você não pode alterar seus dados enquanto tiver um pedido de adoção em andamento.")
+        return
+    
     nome = entries['nome'].get() # Obtém o nome do campo de entrada.
     email = entries['email'].get() # Obtém o email do campo de entrada.
     senha = entries['senha'].get() # Obtém a senha do campo de entrada.

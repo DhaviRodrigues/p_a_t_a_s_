@@ -10,12 +10,19 @@ def transicao_para_menu_adm(window, canvas, usuario_logado):
     tools.fade_out(window, canvas, lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas, usuario_logado)) # Efeito de fade-out antes de transicionar.
 
 
-def aceitar_pedido(window, canvas, pedido, usuario_logado):
+def tentar_aceitar_pedido(window, canvas, pedido, usuario_logado):
     """Chama a função para aceitar o pedido e depois transiciona para o menu de administrador."""
     from .modulos import pedidos
 
     pedidos.Pedidos.aceitar_pedido(pedido)
     tools.custom_messagebox(window, "Sucesso", "Pedido de adoção aceito com sucesso!")
+    transicao_para_menu_adm(window, canvas, usuario_logado)
+
+def tentar_recusar_pedido(window, canvas, pedido, usuario_logado):
+    from .modulos import pedidos
+
+    pedidos.Pedidos.recusar_pedido(pedido)
+    tools.custom_messagebox(window, "Pedido Recusado", "Pedido de adoção recusado com sucesso.")
     transicao_para_menu_adm(window, canvas, usuario_logado)
 
 
@@ -102,7 +109,7 @@ def criar_tela_info_pedido_pendente(window, canvas, usuario_logado, pedido, nome
         image=canvas.button_image_2,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: aceitar_pedido(window, canvas, pedido, usuario_logado),
+        command=lambda: tentar_aceitar_pedido(window, canvas, pedido, usuario_logado),
         relief="flat"
     )
     button_2.place( # Posiciona o botão "Pedido Concluido".
@@ -123,7 +130,7 @@ def criar_tela_info_pedido_pendente(window, canvas, usuario_logado, pedido, nome
         image=canvas.button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print ("ainda nao faz nada"), #tentar_adotar(window, canvas, animal_clicado, usuario_logado),
+        command=lambda: tentar_recusar_pedido(window, canvas, pedido, usuario_logado),
         relief="flat"
     )
     button_3.place( # Posiciona o botão "Adotar".

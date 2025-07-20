@@ -99,6 +99,53 @@ Equipe P.A.T.A.S.
 """
         codigo = ""
         usercrud.Usuario.enviar_email(destinatario, codigo, corpo, assunto)
+    
+
+    def recusar_pedido(pedido_usuario):
+        from . import animalcrud
+
+        # Remove o pedido da lista de pendentes
+        pedidos_pendentes = carregar_dados('pedidos_pendente.json')
+        pedidos_pendentes_atualizados = []
+        for pedido in pedidos_pendentes:
+            if pedido.get('id_mensagem') != pedido_usuario.get('id_mensagem'):
+                pedidos_pendentes_atualizados.append(pedido)
+        salvar_dados('pedidos_pendente.json', pedidos_pendentes_atualizados)
+
+        # Adiciona o pedido à lista de recusados
+        pedidos_recusados = carregar_dados('pedidos_recusado.json')
+        pedidos_recusados.append(pedido_usuario)
+        salvar_dados('pedidos_recusado.json', pedidos_recusados)
+
+        # Altera a chave 'pedido' do usuário para False
+        todos_usuarios = usercrud.carregar_dados("usuarios.json")
+        for usuario in todos_usuarios:
+            if usuario.get("id") == pedido_usuario.get("id_usuario"):
+                usuario["pedido"] = False
+                break
+        usercrud.salvar_dados("usuarios.json", todos_usuarios)
+
+        # Altera a chave 'processo_adocao' do animal para False
+        todos_animais = animalcrud.carregar_dados("animais_adocao.json")
+        for animal in todos_animais:
+            if animal.get("id") == pedido_usuario.get("id_animal"):
+                animal["processo_adocao"] = False
+                break
+        animalcrud.salvar_dados("animais_adocao.json", todos_animais)
+
+        # Envia e-mail de recusa
+        destinatario = pedido_usuario.get('email_usuario')
+        assunto = "Pedido de Adoção Recusado"
+        corpo = f"""Olá, {pedido_usuario.get('nome_usuario')}.
+
+Agradecemos o seu interesse em adotar o(a) {pedido_usuario.get('nome_animal')}, mas infelizmente o seu pedido foi recusado.
+
+Determinamos que essa adoção não seria a melhor opção para o animal.
+
+Atenciosamente,  
+Equipe P.A.T.A.S."""
+        codigo = ""
+        usercrud.Usuario.enviar_email(destinatario, codigo, corpo, assunto)
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos animais"""
