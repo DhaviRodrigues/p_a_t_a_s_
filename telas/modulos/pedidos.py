@@ -56,69 +56,49 @@ class Pedidos:
         pedidos.append(novo_pedido.converter_para_dicionario())
         salvar_dados('pedidos_pendente.json', pedidos)
 
-    # def pedidos_adocao():
-    #     print("\n--- Lista de Pedidos de Adoção ---")
-    #     pedidos = carregar_dados('pedidos.json')
 
-    #     if not pedidos:
-    #         print("Não há pedidos de adoção registrados no momento.")
-            
-    #         return
-
-    #     for pedido in pedidos:
-    #         print("-" * 30)
-    #         print(f"ID Mensagem: {pedido.get('id_mensagem', )}")
-    #         print(f"Animal: {pedido.get('nome_animal')}") 
-    #         print(f"ID: {pedido.get('id_animal_adotado')}")
-    #         print(f"Usuario: {pedido.get('nome_usuario')}")
-    #         print(f"E-mail: {pedido.get('email_usuario')}")
-    #         print(f"Mensagem: {pedido.get('mensagem_pedido')}")
-    #         print("-" * 30)
+    def aceitar_pedido(pedido_usuario):
+        from . import animalcrud
         
+        # Remove o pedido da lista de pendentes
+        pedidos_pendentes = carregar_dados('pedidos_pendente.json')
+        pedidos_pendentes_atualizados = []
+        for pedido in pedidos_pendentes:
+            if pedido.get('id_mensagem') != pedido_usuario.get('id_mensagem'):
+                pedidos_pendentes_atualizados.append(pedido)
+        salvar_dados('pedidos_pendente.json', pedidos_pendentes_atualizados)
 
-    # def deletar_pedido():
-    #     print("\n--- Deletar Pedido de Adoção ---")
-    #     while True:
-    #         id_deletar = input("Insira o ID da mensagem do pedido que deseja deletar (Digite VOLTAR para o menu): ").strip().lower()
-            
-    #         if id_deletar == "voltar":
-    #             print("Operação de exclusão de pedido cancelada.")
-                
-    #             return
-    #         else:
-    #             id_deletar = int(id_deletar)
+        # Adiciona o pedido à lista de aprovados
+        pedidos_aprovados = carregar_dados('pedidos_aprovado.json')
+        pedidos_aprovados.append(pedido_usuario)
+        salvar_dados('pedidos_aprovado.json', pedidos_aprovados)
 
-    #         pedidos = carregar_dados('pedidos.json')
-            
-    #         nova_lista_pedidos = []
-    #         for pedido in pedidos:
-    #             if pedido.get('id_mensagem') == id_deletar:
-    #                 pedido_encontrado = pedido
-            
-    #         if pedido_encontrado is None:
-    #             print(f"Não foi encontrado nenhum pedido com o ID {id_deletar}.")
-                
-    #             continue
-            
-    #         while True:
-    #             confirmacao_exclusao = input(str(f"Tem certeza que deseja deletar o pedido do animal '{pedido_encontrado.get('nome_animal')}' (ID Mensagem: {id_deletar})? (S/N): ")).strip().lower()
-    #             if confirmacao_exclusao == 's':
-    #                 nova_lista_pedidos = []
-    #                 for pedido in pedidos:
-    #                     if pedido.get('id_mensagem') != id_deletar:
-    #                         nova_lista_pedidos.append(pedido)
-    #                 salvar_dados('pedidos.json', nova_lista_pedidos)
-    #                 print(f"Pedido com ID {id_deletar} deletado com sucesso.")
-                    
-    #                 return
-                
-    #             elif confirmacao_exclusao == 'n':
-    #                 print("Exclusão de pedido cancelada.")
-                    
-    #                 return
-    #             else:
-    #                 print("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.")
-                    
+        # Altera a chave 'pedido' do usuário para False
+        todos_usuarios = usercrud.carregar_dados("usuarios.json")
+        for usuario in todos_usuarios:
+            if usuario.get("id") == pedido.get("id_usuario"):
+                usuario["pedido"] = False
+                break
+        usercrud.salvar_dados("usuarios.json", todos_usuarios)
+
+        # Chama a função para mover os dados do animal
+        animalcrud.Animal.mover_animal_para_adotados(pedido_usuario.get('id_animal'))
+
+        destinatario = pedido.get('email_usuario')
+        assunto = "Adoção Aprovada! Seu novo amigo está a sua espera!"
+        corpo = f"""Olá, {pedido_usuario.get('nome_usuario')}!
+
+Temos uma notícia maravilhosa! Seu adoção para o(a) {pedido_usuario.get('nome_animal')} aconteceu com sucesso!
+
+Estamos muito felizes por você e por ele(a). Temos certeza que ele receberá todo o amor e carinho que merece.
+
+E também prepare-se para muito amor e carinho vindo dele!  :)
+
+Atenciosamente,
+Equipe P.A.T.A.S.
+"""
+        codigo = ""
+        usercrud.Usuario.enviar_email(destinatario, codigo, corpo, assunto)
 
 def carregar_dados(arquivo):
     """Carrega o arquivo json dos animais"""

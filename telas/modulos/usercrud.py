@@ -213,6 +213,7 @@ class Usuario:
         salvar_dados('usuarios.json', arquivo_usuarios) # Salva a lista de usuários atualizada.
         return True
 
+
 def carregar_dados(arquivo):
     """Carrega dados de um arquivo JSON especificado."""
     try:

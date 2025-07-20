@@ -119,6 +119,27 @@ class Animal:
             salvar_dados(nome_arquivo, nova_lista_animais) # salva a nova lista (sem o animal excluído) no arquivo.
             return True
 
+    def mover_animal_para_adotados(animal_id):
+        # Carrega a lista de animais para adoção
+        animais_adocao = carregar_dados("animais_adocao.json")
+        animal_para_mover = None
+        
+        # Procura pelo animal na lista de animais para adoção
+        nova_lista_adocao = []
+        for animal in animais_adocao:
+            if animal.get("id") != animal_id: #Excluindo o animal que será movido
+                nova_lista_adocao.append(animal) # Gerar nova lista de adoção sem o animal que será movido
+            if animal.get("id") == animal_id: #Encontra o animal que será movido
+                animal_para_mover = animal
+                break
+
+        salvar_dados("animais_adocao.json", nova_lista_adocao) #Salva a nova lista de adoção sem o animal que será movido
+        
+        # Adiciona o animal na lista de animais já adotados
+        animais_adotados = carregar_dados("animais_adotados.json")
+        animais_adotados.append(animal_para_mover)
+        salvar_dados("animais_adotados.json", animais_adotados)
+
 def carregar_dados(arquivo):
     """Carrega dados de um arquivo JSON especificado."""
     try:
