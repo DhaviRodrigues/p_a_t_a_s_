@@ -16,7 +16,7 @@ def criar_tela_lista_pedidos_pendente(window, canvas, usuario_logado):
     Esta tela é destinada a administradores para análise dos pedidos.
     """
     from .modulos import pedidos
-    from telas import tela_info_pet_tratamento
+    from telas import tela_info_pedido_pendente
     from .modulos import animalcrud
 
     tools.limpar_tela(canvas) # Limpa a tela para desenhar os novos elementos.
@@ -150,9 +150,10 @@ def criar_tela_lista_pedidos_pendente(window, canvas, usuario_logado):
                     tags=(tag_card,)
                 )
 
-                card_canvas.tag_bind(tag_card, "<Button-1>", # Associa um evento de clique ao card.
-                    lambda e, p=pedido: tools.fade_out(window, canvas, 
-                    lambda: tela_info_pet_tratamento.criar_tela_info_pet_tratamento(window, canvas, usuario_logado, p)))
+                card_canvas.tag_bind(
+                    tag_card,
+                    "<Button-1>",  # Associa um evento de clique ao card.
+                    lambda e: tools.fade_out(window,canvas,lambda: tela_info_pedido_pendente.criar_tela_info_pedido_pendente(window, canvas, usuario_logado, pedido, nome_arquivo_foto)))
 
                 card_canvas.create_image( # Desenha a imagem placeholder para a foto.
                     124.0,
