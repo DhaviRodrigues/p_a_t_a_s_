@@ -17,6 +17,7 @@ def criar_tela_lista_pedidos_aprovado(window, canvas, usuario_logado):
     """
     from .modulos import pedidos
     from telas import tela_info_pet_tratamento
+    from .modulos import animalcrud
 
     tools.limpar_tela(canvas) # Limpa a tela para desenhar os novos elementos.
     canvas.configure(bg="#44312D") # Define a cor de fundo do canvas.
@@ -92,6 +93,7 @@ def criar_tela_lista_pedidos_aprovado(window, canvas, usuario_logado):
     frame_cards.bind("<Configure>", onFrameConfigure) # Associa a função ao evento de configuração do frame.
 
     pedidos_aprovados = pedidos.carregar_dados("pedidos_aprovado.json") # Carrega os dados dos pedidos aprovados.
+    todos_animais = animalcrud.carregar_dados("animais_adocao.json") # Carrega os dados de 'animais.json'
 
     canvas.lista_imagens_botoes = [] # Lista para manter referência das imagens dos botões.
     canvas.lista_imagens_animais = [] # Lista para manter referência das imagens dos animais.
@@ -113,86 +115,90 @@ def criar_tela_lista_pedidos_aprovado(window, canvas, usuario_logado):
     canvas.placeholder_tk = ImageTk.PhotoImage(placeholder_pil) # Converte para formato Tkinter.
 
     for pedido in pedidos_aprovados: # Itera sobre cada pedido aprovado para criar um card.
-        img_botao = PhotoImage( # Carrega a imagem de fundo do card.
-            file=tools.relative_to_assets("TelaLista", "button_1.png")
-        )
-        canvas.lista_imagens_botoes.append(img_botao) # Adiciona à lista para evitar garbage collection.
-        
-        card_frame = Frame( # Cria um frame para o card.
-            frame_cards,
-            width=1227,
-            height=217,
-            bg="#44312D"
-        )
-        card_frame.pack(pady=10) # Empacota o frame do card.
-
-        card_canvas = Canvas( # Cria um canvas dentro do frame do card.
-            card_frame,
-            width=1227,
-            height=217,
-            bg="#44312D",
-            highlightthickness=0
-        )
-        card_canvas.pack() # Empacota o canvas do card.
-
-        tag_card = f"card_{pedido.get('id_mensagem')}" # Cria uma tag única para os elementos do card.
-        
-        card_canvas.create_image( # Desenha a imagem de fundo do card.
-            1227 / 2,
-            217 / 2,
-            image=img_botao,
-            tags=(tag_card,)
-        )
-
-        card_canvas.tag_bind(tag_card, "<Button-1>", # Associa um evento de clique ao card.
-            lambda e, p=pedido: tools.fade_out(window, canvas, 
-            lambda: tela_info_pet_tratamento.criar_tela_info_pet_tratamento(window, canvas, usuario_logado, p)))
-
-        card_canvas.create_image( # Desenha a imagem placeholder para a foto.
-            124.0,
-            109,
-            image=canvas.placeholder_tk,
-            tags=(tag_card,)
-        )
-
-        caminho_foto = Path(__file__).parent.parent / "fotos_animais" / pedido.get("foto_animal", "") # Constrói o caminho para a foto real do animal.
-        if caminho_foto.exists(): # Verifica se o arquivo da foto existe.
-            img = Image.open(caminho_foto) # Abre a imagem do animal.
-            img_redimensionada = img.resize((largura_ref, altura_ref), Image.Resampling.LANCZOS) # Redimensiona a imagem.
-            img_tk = ImageTk.PhotoImage(img_redimensionada) # Converte a imagem para formato Tkinter.
-            canvas.lista_imagens_animais.append(img_tk) # Adiciona à lista para evitar garbage collection.
+        for animal in todos_animais: # Verifica se o animal do pedido existe na lista de animais.
+            if animal.get("id") == pedido.get("id_animal"):
+                nome_arquivo_foto = animal.get("foto", "") # Obtém o nome do arquivo da foto do animal.
             
-            card_canvas.create_image( # Exibe a foto real do animal sobre o placeholder.
-                124.0,
-                109,
-                image=img_tk,
-                tags=(tag_card,)
-            )
+                img_botao = PhotoImage( # Carrega a imagem de fundo do card.
+                    file=tools.relative_to_assets("TelaLista", "button_1.png")
+                )
+                canvas.lista_imagens_botoes.append(img_botao) # Adiciona à lista para evitar garbage collection.
+                
+                card_frame = Frame( # Cria um frame para o card.
+                    frame_cards,
+                    width=1227,
+                    height=217,
+                    bg="#44312D"
+                )
+                card_frame.pack(pady=10) # Empacota o frame do card.
 
-        card_canvas.create_text( # Exibe o nome do animal do pedido.
-            272.0,
-            30,
-            anchor="nw",
-            text=f"Nome do animal: {pedido.get('nome_animal', '')}",
-            fill="#44312D",
-            font=("Poppins Black", 32 * -1),
-            tags=(tag_card,)
-        )
-        card_canvas.create_text( # Exibe o email do usuário do pedido.
-            272.0,
-            69,
-            anchor="nw",
-            text=f"Email do Usuário: {pedido.get('email_usuario', '')}",
-            fill="#44312D",
-            font=("Poppins Black", 32 * -1),
-            tags=(tag_card,)
-        )
-        card_canvas.create_text( # Exibe o nome do usuário do pedido.
-            272.0,
-            107,
-            anchor="nw",
-            text=f"Nome do Usuário: {pedido.get('nome_usuario', '')}",
-            fill="#44312D",
-            font=("Poppins Black", 32 * -1),
-            tags=(tag_card,)
-        )
+                card_canvas = Canvas( # Cria um canvas dentro do frame do card.
+                    card_frame,
+                    width=1227,
+                    height=217,
+                    bg="#44312D",
+                    highlightthickness=0
+                )
+                card_canvas.pack() # Empacota o canvas do card.
+
+                tag_card = f"card_{pedido.get('id_mensagem')}" # Cria uma tag única para os elementos do card.
+                
+                card_canvas.create_image( # Desenha a imagem de fundo do card.
+                    1227 / 2,
+                    217 / 2,
+                    image=img_botao,
+                    tags=(tag_card,)
+                )
+
+                card_canvas.tag_bind(tag_card, "<Button-1>", # Associa um evento de clique ao card.
+                    lambda e, p=pedido: tools.fade_out(window, canvas, 
+                    lambda: tela_info_pet_tratamento.criar_tela_info_pet_tratamento(window, canvas, usuario_logado, p)))
+
+                card_canvas.create_image( # Desenha a imagem placeholder para a foto.
+                    124.0,
+                    109,
+                    image=canvas.placeholder_tk,
+                    tags=(tag_card,)
+                )
+
+                caminho_foto = Path(__file__).parent / "fotos_animais" / nome_arquivo_foto # Constrói o caminho para a foto real do animal.
+                if caminho_foto.exists(): # Verifica se o arquivo da foto existe.
+                    img = Image.open(caminho_foto) # Abre a imagem do animal.
+                    img_redimensionada = img.resize((largura_ref, altura_ref), Image.Resampling.LANCZOS) # Redimensiona a imagem.
+                    img_tk = ImageTk.PhotoImage(img_redimensionada) # Converte a imagem para formato Tkinter.
+                    canvas.lista_imagens_animais.append(img_tk) # Adiciona à lista para evitar garbage collection.
+                    
+                    card_canvas.create_image( # Exibe a foto real do animal sobre o placeholder.
+                        124.0,
+                        109,
+                        image=img_tk,
+                        tags=(tag_card,)
+                    )
+
+                card_canvas.create_text( # Exibe o nome do animal do pedido.
+                    272.0,
+                    30,
+                    anchor="nw",
+                    text=f"Nome do animal: {pedido.get('nome_animal', '')}",
+                    fill="#44312D",
+                    font=("Poppins Black", 32 * -1),
+                    tags=(tag_card,)
+                )
+                card_canvas.create_text( # Exibe o email do usuário do pedido.
+                    272.0,
+                    69,
+                    anchor="nw",
+                    text=f"Email do Usuário: {pedido.get('email_usuario', '')}",
+                    fill="#44312D",
+                    font=("Poppins Black", 32 * -1),
+                    tags=(tag_card,)
+                )
+                card_canvas.create_text( # Exibe o nome do usuário do pedido.
+                    272.0,
+                    107,
+                    anchor="nw",
+                    text=f"Nome do Usuário: {pedido.get('nome_usuario', '')}",
+                    fill="#44312D",
+                    font=("Poppins Black", 32 * -1),
+                    tags=(tag_card,)
+                )
