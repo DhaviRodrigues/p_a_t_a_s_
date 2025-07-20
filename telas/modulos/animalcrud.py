@@ -4,8 +4,10 @@ from pathlib import Path
 from telas import tools
 
 class Animal:
-    """Classe que representa um animal"""
+    """Classe que representa um animal e tudo que diz respeito a ele."""
     def __init__(self, id, nome, especie, sexo, idade, informacoes, foto):
+        """Inicializa um novo animal com os atributos fornecidos."""
+
         self.id = id
         self.nome = nome
         self.especie = especie
@@ -17,6 +19,7 @@ class Animal:
 
 
     def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
+        """Converte os atributos do animal em um dicionário."""
         return {
             "id": self.id,
             "nome": self.nome,
@@ -30,108 +33,102 @@ class Animal:
 
 
     def validar_animal(nome, especie, sexo, idade, foto):
-        if not nome:
+        """Valida os dados fornecidos para o cadastro de um novo animal."""
+        if not nome: # Verifica se o nome foi preenchido.
             return 'O nome não pode estar vazio.'
-        if not nome.replace(' ', '').isalpha():
+        if not nome.replace(' ', '').isalpha(): # Verifica se o nome contém apenas letras e espaços.
             return 'O nome deve conter apenas letras e espaços.'
-        if not especie:
+        if not especie: # Verifica se a espécie foi preenchida.
             return 'A espécie não pode estar vazia.'
-        if sexo is None or sexo.upper() not in ['M', 'F']:
+        if sexo is None or sexo.upper() not in ['M', 'F']: # Verifica se o sexo foi selecionado.
             return 'O sexo deve ser selecionado (M ou F).'
-        if not idade:
+        if not idade: # Verifica se a idade foi preenchida.
             return 'A idade não pode estar vazia.'
-        if not idade.replace(' ', '').isalnum():
+        if not idade.replace(' ', '').isalnum(): # Verifica se a idade contém apenas letras, espaços e números.
             return 'A idade deve conter apenas letras, espaços e números.'
-        if not foto:
+        if not foto: # Verifica se uma foto foi selecionada.
             return "É obrigatório inserir uma foto do animal."
             
-        return True
+        return True # Retorna True se todas as validações passarem.
 
 
     def criar_animal(nome, especie, sexo, idade, info, tipo_cadastro, caminho_imagem_original):
-        nome_arquivo_json = f"animais_{tipo_cadastro}.json"
-        animais = carregar_dados(nome_arquivo_json)
+        """Cria um novo animal, salva sua foto e o adiciona ao arquivo JSON apropriado."""
+        nome_arquivo_json = f"animais_{tipo_cadastro}.json" # Determina o nome do arquivo JSON com base no tipo de cadastro.
+        animais = carregar_dados(nome_arquivo_json) # Carrega a lista de animais existente.
 
-        maior_foto_id = 0
-        pasta_fotos = Path(__file__).parent.parent / "fotos_animais"
-        pasta_fotos.mkdir(exist_ok=True)
-        for f in pasta_fotos.glob("*.png"):
+        maior_foto_id = 0 # Inicializa a variável para encontrar o maior ID de foto existente.
+        pasta_fotos = Path(__file__).parent.parent / "fotos_animais" # Define o caminho para a pasta de fotos.
+        pasta_fotos.mkdir(exist_ok=True) # Cria a pasta se ela não existir.
+        for f in pasta_fotos.glob("*.png"): # Itera sobre todos os arquivos .png na pasta.
             try:
-                id_foto = int(f.stem)
-                if id_foto > maior_foto_id:
-                    maior_foto_id = id_foto
+                id_foto = int(f.stem) # Tenta converter o nome do arquivo (sem extensão) para um inteiro.
+                if id_foto > maior_foto_id: # Se o ID da foto atual for maior,
+                    maior_foto_id = id_foto # atualiza o maior ID encontrado.
             except ValueError:
-                continue
-        novo_nome_foto = f"{maior_foto_id + 1}.png"
-        caminho_destino_foto = pasta_fotos / novo_nome_foto
+                continue # Ignora arquivos que não têm nomes numéricos.
+        novo_nome_foto = f"{maior_foto_id + 1}.png" # Cria um novo nome de arquivo para a foto, incrementando o maior ID.
+        caminho_destino_foto = pasta_fotos / novo_nome_foto # Define o caminho completo de destino para a nova foto.
 
         try:
-            shutil.copy(caminho_imagem_original, caminho_destino_foto)
+            shutil.copy(caminho_imagem_original, caminho_destino_foto) # Copia a imagem selecionada para a pasta de fotos do projeto.
         except Exception as e:
-            print(f"Erro ao copiar a imagem: {e}")
+            print(f"Erro ao copiar a imagem: {e}") # Imprime um erro se a cópia falhar.
             return
 
-        maior_id = -1
-        for animal in animais:
+        maior_id = -1 # Inicializa a variável para encontrar o maior ID de animal existente.
+        for animal in animais: # Itera sobre os animais para encontrar o maior ID.
             if animal.get('id', -1) > maior_id:
                 maior_id = animal['id']
-        novo_id = maior_id + 1
+        novo_id = maior_id + 1 # Cria um novo ID incremental para o animal.
 
-        novo_animal = Animal(novo_id, nome.strip(), especie.strip(), sexo, idade.strip(), info, novo_nome_foto)
+        novo_animal = Animal(novo_id, nome.strip(), especie.strip(), sexo, idade.strip(), info, novo_nome_foto) # Cria uma nova instância da classe Animal.
         
-        animais.append(novo_animal.converter_para_dicionario())
-        salvar_dados(nome_arquivo_json, animais)
+        animais.append(novo_animal.converter_para_dicionario()) # Adiciona o novo animal (convertido em dicionário) à lista.
+        salvar_dados(nome_arquivo_json, animais) # Salva a lista atualizada no arquivo JSON.
 
 
     def editar_animal(animal_atualizado, tipo_cadastro):
         """Encontra e salva as alterações de um animal no arquivo JSON apropriado."""
-        nome_arquivo = tipo_cadastro
-        todos_animais = carregar_dados(nome_arquivo)
+        nome_arquivo = tipo_cadastro # Define o nome do arquivo de destino.
+        todos_animais = carregar_dados(nome_arquivo) # Carrega todos os animais do arquivo.
 
-        nova_lista_animais = []
-        for animal in todos_animais:
-            if animal.get("id") != animal_atualizado.get("id"):
+        nova_lista_animais = [] # Cria uma nova lista para armazenar os animais.
+        for animal in todos_animais: # Itera sobre os animais existentes.
+            if animal.get("id") != animal_atualizado.get("id"): # Adiciona todos os animais, exceto o que está sendo atualizado.
                 nova_lista_animais.append(animal)
         
-        # Adiciona a versão atualizada do animal à nova lista.
-        nova_lista_animais.append(animal_atualizado)
+        nova_lista_animais.append(animal_atualizado) # Adiciona a versão atualizada do animal à nova lista.
         
-        # Salva a lista completa de volta no ficheiro.
-        salvar_dados(nome_arquivo, nova_lista_animais)
+        salvar_dados(nome_arquivo, nova_lista_animais) # Salva a lista completa de volta no arquivo.
         return True
 
-    def excluir_animal(animal_id, tipo_cadastro):
+    def excluir_animal(animal_id, nome_arquivo):
         """Encontra e deleta um animal do arquivo JSON apropriado."""
-        nome_arquivo = f"animais_{tipo_cadastro}.json"
-        todos_animais = carregar_dados(nome_arquivo)
+        todos_animais = carregar_dados(nome_arquivo) # Carrega todos os animais do arquivo especificado.
 
-        animal_encontrado = False
-        nova_lista_animais = []
-        for animal in todos_animais:
-            if animal.get("id") == animal_id:
-                animal_encontrado = True
+        animal_encontrado = False # Flag para verificar se o animal foi encontrado.
+        nova_lista_animais = [] # Cria uma nova lista para armazenar os animais.
+        for animal in todos_animais: # Itera sobre os animais existentes.
+            if animal.get("id") == animal_id: # Se o ID corresponder ao animal a ser excluído,
+                animal_encontrado = True # marca como encontrado e não o adiciona à nova lista.
             else:
-                nova_lista_animais.append(animal)
+                nova_lista_animais.append(animal) # Adiciona os outros animais à nova lista.
         
-        if animal_encontrado:
-            salvar_dados(nome_arquivo, nova_lista_animais)
+        if animal_encontrado: # Se o animal foi encontrado e removido da lista,
+            salvar_dados(nome_arquivo, nova_lista_animais) # salva a nova lista (sem o animal excluído) no arquivo.
             return True
 
 def carregar_dados(arquivo):
-    """Carrega o arquivo json dos animais"""
+    """Carrega dados de um arquivo JSON especificado."""
     try:
-        with open(arquivo, 'r') as arquivo:
-            #Tenta abrir o arquivo em modo 'r'(leitura)
-            dados = json.load(arquivo)
-            #Insere as informações do arquivo json em "dados"
-            return dados
-    except FileNotFoundError:
-        #Se o arquivo não for encontrado, ele retornará o arquivo com uma lista em branco no nome informado na variável "arquivo"
-        return []
+        with open(arquivo, 'r') as f: # Tenta abrir o arquivo em modo de leitura ('r').
+            dados = json.load(f) # Carrega o conteúdo JSON do arquivo.
+            return dados # Retorna os dados carregados.
+    except FileNotFoundError: # Se o arquivo não existir.
+        return [] # Retorna uma lista vazia para evitar erros.
 
 def salvar_dados(arquivo, dados):
-    """Salva as informações no arquivo json dos animais"""
-    with open(arquivo, 'w') as arquivo:
-        #Abre o arquivo json em modo 'w'(write)
-        json.dump(dados, arquivo, indent=6)
-        #json é a biblioteca importada, .dump() é a função que vai jogar da primeira variável, dentro do "arquivo" de animais.json, indent=6 é apenas para deixar mais organizado na hora da escrita do arquivo
+    """Salva uma lista de dicionários em um arquivo JSON com formatação."""
+    with open(arquivo, 'w') as f: # Abre o arquivo em modo de escrita ('w'), sobrescrevendo o conteúdo.
+        json.dump(dados, f, indent=6) # Escreve os dados no arquivo JSON com uma indentação de 6 espaços para legibilidade.

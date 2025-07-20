@@ -53,81 +53,71 @@ class Pedidos:
                 break
         animalcrud.salvar_dados("animais_adocao.json", todos_animais)
 
-
-            # novo_pedido = {
-            #     'id_mensagem': id_mensagem,
-            #     'nome_animal': nome_animal,
-            #     'id_usuario': usuario_logado['id'],
-            #     'id_animal_adotado': id_animal,
-            #     'nome_usuario': usuario_logado['nome'],
-            #     'email_usuario': usuario_logado['email'],
-            # }
-
         pedidos.append(novo_pedido.converter_para_dicionario())
         salvar_dados('pedidos_pendente.json', pedidos)
 
-    def pedidos_adocao():
-        print("\n--- Lista de Pedidos de Adoção ---")
-        pedidos = carregar_dados('pedidos.json')
+    # def pedidos_adocao():
+    #     print("\n--- Lista de Pedidos de Adoção ---")
+    #     pedidos = carregar_dados('pedidos.json')
 
-        if not pedidos:
-            print("Não há pedidos de adoção registrados no momento.")
+    #     if not pedidos:
+    #         print("Não há pedidos de adoção registrados no momento.")
             
-            return
+    #         return
 
-        for pedido in pedidos:
-            print("-" * 30)
-            print(f"ID Mensagem: {pedido.get('id_mensagem', )}")
-            print(f"Animal: {pedido.get('nome_animal')}") 
-            print(f"ID: {pedido.get('id_animal_adotado')}")
-            print(f"Usuario: {pedido.get('nome_usuario')}")
-            print(f"E-mail: {pedido.get('email_usuario')}")
-            print(f"Mensagem: {pedido.get('mensagem_pedido')}")
-            print("-" * 30)
+    #     for pedido in pedidos:
+    #         print("-" * 30)
+    #         print(f"ID Mensagem: {pedido.get('id_mensagem', )}")
+    #         print(f"Animal: {pedido.get('nome_animal')}") 
+    #         print(f"ID: {pedido.get('id_animal_adotado')}")
+    #         print(f"Usuario: {pedido.get('nome_usuario')}")
+    #         print(f"E-mail: {pedido.get('email_usuario')}")
+    #         print(f"Mensagem: {pedido.get('mensagem_pedido')}")
+    #         print("-" * 30)
         
 
-    def deletar_pedido():
-        print("\n--- Deletar Pedido de Adoção ---")
-        while True:
-            id_deletar = input("Insira o ID da mensagem do pedido que deseja deletar (Digite VOLTAR para o menu): ").strip().lower()
+    # def deletar_pedido():
+    #     print("\n--- Deletar Pedido de Adoção ---")
+    #     while True:
+    #         id_deletar = input("Insira o ID da mensagem do pedido que deseja deletar (Digite VOLTAR para o menu): ").strip().lower()
             
-            if id_deletar == "voltar":
-                print("Operação de exclusão de pedido cancelada.")
+    #         if id_deletar == "voltar":
+    #             print("Operação de exclusão de pedido cancelada.")
                 
-                return
-            else:
-                id_deletar = int(id_deletar)
+    #             return
+    #         else:
+    #             id_deletar = int(id_deletar)
 
-            pedidos = carregar_dados('pedidos.json')
+    #         pedidos = carregar_dados('pedidos.json')
             
-            nova_lista_pedidos = []
-            for pedido in pedidos:
-                if pedido.get('id_mensagem') == id_deletar:
-                    pedido_encontrado = pedido
+    #         nova_lista_pedidos = []
+    #         for pedido in pedidos:
+    #             if pedido.get('id_mensagem') == id_deletar:
+    #                 pedido_encontrado = pedido
             
-            if pedido_encontrado is None:
-                print(f"Não foi encontrado nenhum pedido com o ID {id_deletar}.")
+    #         if pedido_encontrado is None:
+    #             print(f"Não foi encontrado nenhum pedido com o ID {id_deletar}.")
                 
-                continue
+    #             continue
             
-            while True:
-                confirmacao_exclusao = input(str(f"Tem certeza que deseja deletar o pedido do animal '{pedido_encontrado.get('nome_animal')}' (ID Mensagem: {id_deletar})? (S/N): ")).strip().lower()
-                if confirmacao_exclusao == 's':
-                    nova_lista_pedidos = []
-                    for pedido in pedidos:
-                        if pedido.get('id_mensagem') != id_deletar:
-                            nova_lista_pedidos.append(pedido)
-                    salvar_dados('pedidos.json', nova_lista_pedidos)
-                    print(f"Pedido com ID {id_deletar} deletado com sucesso.")
+    #         while True:
+    #             confirmacao_exclusao = input(str(f"Tem certeza que deseja deletar o pedido do animal '{pedido_encontrado.get('nome_animal')}' (ID Mensagem: {id_deletar})? (S/N): ")).strip().lower()
+    #             if confirmacao_exclusao == 's':
+    #                 nova_lista_pedidos = []
+    #                 for pedido in pedidos:
+    #                     if pedido.get('id_mensagem') != id_deletar:
+    #                         nova_lista_pedidos.append(pedido)
+    #                 salvar_dados('pedidos.json', nova_lista_pedidos)
+    #                 print(f"Pedido com ID {id_deletar} deletado com sucesso.")
                     
-                    return
+    #                 return
                 
-                elif confirmacao_exclusao == 'n':
-                    print("Exclusão de pedido cancelada.")
+    #             elif confirmacao_exclusao == 'n':
+    #                 print("Exclusão de pedido cancelada.")
                     
-                    return
-                else:
-                    print("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.")
+    #                 return
+    #             else:
+    #                 print("Resposta inválida. Por favor, digite 's' para sim ou 'n' para não.")
                     
 
 def carregar_dados(arquivo):
