@@ -1,97 +1,96 @@
 from tkinter import Button, PhotoImage, Entry, messagebox
 from telas import tools
 
-user_icon = None
+user_icon = None # Variável global para armazenar o nome do ícone selecionado.
 
 def transicao_para_perfil(window, canvas, usuario_logado):
+    """Realiza a transição de volta para a tela de perfil."""
     from telas import tela_perfil
-    tools.fade_out(
-        window,
-        canvas,
-        lambda: tela_perfil.criar_tela_perfil(window, canvas, usuario_logado)
-    )
+    tools.fade_out(window,canvas,lambda: tela_perfil.criar_tela_perfil(window, canvas, usuario_logado)) # Efeito de fade-out antes de transicionar.
 
 def transicao_para_login(window, canvas):
+    """Realiza a transição para a tela de login, geralmente após uma alteração bem-sucedida."""
     from telas import tela_login
-    tools.fade_out(
-        window,
-        canvas,
-        lambda: tela_login.criar_tela_login(window, canvas)
-    )
+    tools.fade_out(window,canvas,lambda: tela_login.criar_tela_login(window, canvas)) # Efeito de fade-out antes de transicionar.
 
 def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
-    
-    global user_icon
-    user_icon = nome_icone
-    print(f"Ícone selecionado: {user_icon}")
+    """
+    Atualiza o ícone selecionado pelo usuário e exibe um feedback visual (uma imagem de seleção) sobre o ícone escolhido.
+    """
+    global user_icon # Informa que estamos usando a variável global.
+    user_icon = nome_icone # Atualiza a variável global com o nome do arquivo do ícone.
+    print(f"Ícone selecionado: {user_icon}") # Imprime o ícone selecionado para depuração.
 
-    if hasattr(canvas, "selecao_atual_id"):
-        canvas.delete(canvas.selecao_atual_id)
+    if hasattr(canvas, "selecao_atual_id"): # Verifica se já existe uma seleção anterior.
+        canvas.delete(canvas.selecao_atual_id) # Apaga a imagem de seleção anterior.
 
-    canvas.imagem_selecionada = PhotoImage(
+    canvas.imagem_selecionada = PhotoImage( # Carrega a imagem que indica a seleção.
         file=tools.relative_to_assets("TelaEditarPerfil", nome_imagem_selecao)
     )
-    canvas.selecao_atual_id = canvas.create_image(
-        x,
-        y,
-        image=canvas.imagem_selecionada
-    )
-    canvas.tag_raise(canvas.selecao_atual_id)
+    canvas.selecao_atual_id = canvas.create_image(x,y,image=canvas.imagem_selecionada) # Desenha a nova imagem de seleção.
+    canvas.tag_raise(canvas.selecao_atual_id) # Garante que a imagem de seleção fique na frente.
+
 
 def tentar_alteracao(entries,canvas,window,usuario_logado):
+    """
+    Valida e salva as alterações do perfil do usuário. Se a validação for bem-sucedida,
+    atualiza os dados e redireciona para a tela de login. Caso contrário, exibe uma mensagem de erro.
+    """
     from .modulos import usercrud
     
-    global user_icon
+    global user_icon # Informa que estamos usando a variável global.
 
-    nome = entries['nome'].get()
-    email = entries['email'].get()
-    senha = entries['senha'].get()
-    confirma_senha = entries['confirma_senha'].get()
+    nome = entries['nome'].get() # Obtém o nome do campo de entrada.
+    email = entries['email'].get() # Obtém o email do campo de entrada.
+    senha = entries['senha'].get() # Obtém a senha do campo de entrada.
+    confirma_senha = entries['confirma_senha'].get() # Obtém a confirmação de senha do campo.
 
-    resultado = usercrud.Usuario.validar_usuario(nome, email, senha, confirma_senha, user_icon)
+    resultado = usercrud.Usuario.validar_usuario(nome, email, senha, confirma_senha, user_icon) # Valida todos os dados inseridos.
 
-    if resultado is True:
+    if resultado is True: # Se a validação for bem-sucedida.
 
-        usuario_logado['nome'] = nome.strip().title()
-        usuario_logado['email'] = email.strip().lower()
-        usuario_logado['senha'] = senha
-        usuario_logado['icone'] = user_icon
+        usuario_logado['nome'] = nome.strip().title() # Atualiza o nome no dicionário do usuário.
+        usuario_logado['email'] = email.strip().lower() # Atualiza o email no dicionário do usuário.
+        usuario_logado['senha'] = senha # Atualiza a senha no dicionário do usuário.
+        usuario_logado['icone'] = user_icon # Atualiza o ícone no dicionário do usuário.
 
-        usercrud.Usuario.salvar_alteracoes_perfil(usuario_logado)
-        resultado = "Alteração realizada com sucesso! Você será redirecionado para a tela de login."
-        tools.custom_messagebox(window, "Alterações bem-sucedidas", resultado)
+        usercrud.Usuario.salvar_alteracoes_perfil(usuario_logado) # Salva as alterações no banco de dados.
+        resultado = "Alteração realizada com sucesso! Você será redirecionado para a tela de login." # Define a mensagem de sucesso.
+        tools.custom_messagebox(window, "Alterações bem-sucedidas", resultado) # Exibe a mensagem de sucesso.
         
-        for entry in entries.values():
-            entry.delete(0, 'end')      
+        for entry in entries.values(): # Itera sobre todos os campos de entrada.
+            entry.delete(0, 'end') # Limpa cada campo.
 
-        transicao_para_login(window, canvas)
+        transicao_para_login(window, canvas) # Redireciona para a tela de login.
 
-    else:
-        tools.custom_messagebox(window,"Erro ao Alterar Informações", resultado)
+    else: # Se a validação falhar.
+        tools.custom_messagebox(window,"Erro ao Alterar Informações", resultado) # Exibe a mensagem de erro retornada pela validação.
         
-        if hasattr(canvas, "selecao_atual_id"):
-            canvas.delete(canvas.selecao_atual_id)
-            delattr(canvas, "selecao_atual_id")
-        user_icon = None
+        if hasattr(canvas, "selecao_atual_id"): # Se um ícone foi selecionado.
+            canvas.delete(canvas.selecao_atual_id) # Remove o feedback visual da seleção.
+            delattr(canvas, "selecao_atual_id") # Deleta o atributo para evitar erros futuros.
+        user_icon = None # Reseta a variável de ícone selecionado.
+
 
 def criar_tela_editar_perfil(window, canvas, usuario_logado):
+    """Cria a interface gráfica da tela de edição de perfil, com campos para novos dados e uma grade de ícones selecionáveis."""
     
-    tools.limpar_tela(canvas)
-    canvas.configure(bg="#EADFC8")
+    tools.limpar_tela(canvas) # Limpa a tela para desenhar os novos elementos.
+    canvas.configure(bg="#EADFC8") # Define a cor de fundo do canvas.
 
-    canvas.image_1 = PhotoImage(
+    canvas.image_1 = PhotoImage( # Carrega a imagem de fundo da tela.
         file=tools.relative_to_assets("TelaEditarPerfil", "image_1.png")
     )
-    canvas.create_image(
+    canvas.create_image( # Exibe a imagem de fundo.
         646.0373306274414,
         365.037353515625,
         image=canvas.image_1
     )
 
-    canvas.button_image_1 = PhotoImage(
+    canvas.button_image_1 = PhotoImage( # Carrega a imagem do botão "Salvar".
         file=tools.relative_to_assets("TelaEditarPerfil", "button_1.png")
     )
-    button_1 = Button(
+    button_1 = Button( # Botão para tentar salvar as alterações.
         canvas,
         image=canvas.button_image_1,
         borderwidth=0,
@@ -106,10 +105,10 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         height=78.0
     )
 
-    canvas.button_image_2 = PhotoImage(
+    canvas.button_image_2 = PhotoImage( # Carrega a imagem do botão "Voltar".
         file=tools.relative_to_assets("TelaEditarPerfil", "button_2.png")
     )
-    button_2 = Button(
+    button_2 = Button( # Botão para voltar à tela de perfil sem salvar.
         canvas,
         image=canvas.button_image_2,
         borderwidth=0,
@@ -124,8 +123,10 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         height=73.0
     )
     
-    canvas.icon_images = []
+    canvas.icon_images = [] # Lista para manter referência das imagens dos ícones.
 
+#---------------------------- Criação dos ícones selecionáveis ----------------------------#
+#------------------------------------------------------------------------------------------#
     icon_image_3 = PhotoImage(
         file=tools.relative_to_assets("TelaEditarPerfil", "button_3.png")
     )
@@ -317,8 +318,10 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         "<Button-1>",
         lambda e: selecionar_icone(canvas, 370.0, 580.0, "image_13.png", "button_14.png")
     )
+#------------------------- Fim da criação dos ícones selecionáveis ------------------------#
+#------------------------------------------------------------------------------------------#
 
-    canvas.create_text(
+    canvas.create_text( # Texto "Nome:".
         489.0,
         132.0,
         anchor="nw",
@@ -327,7 +330,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 24 * -1)
     )
 
-    canvas.create_text(
+    canvas.create_text( # Texto "Email:".
         489.0,
         248.0,
         anchor="nw",
@@ -336,7 +339,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 24 * -1)
     )
 
-    canvas.create_text(
+    canvas.create_text( # Texto "Senha:".
         489.0,
         364.0,
         anchor="nw",
@@ -345,7 +348,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 24 * -1)
     )
 
-    canvas.create_text(
+    canvas.create_text( # Texto "Confirme sua senha:".
         489.0,
         475.0,
         anchor="nw",
@@ -354,7 +357,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 24 * -1)
     )
 
-    canvas.create_text(
+    canvas.create_text( # Título da seção de ícones.
         153.0,
         76.0,
         anchor="nw",
@@ -363,7 +366,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 24 * -1)
     )
     
-    canvas.create_text(
+    canvas.create_text( # Título da seção de formulário.
         588.0,
         70.0,
         anchor="nw",
@@ -372,7 +375,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         font=("Poppins Black", 36 * -1)
     )
 
-    entry_nome = Entry(
+    entry_nome = Entry( # Campo de entrada para o nome.
         canvas,
         bd=0,
         bg="#FFFFFF",
@@ -387,7 +390,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         height=56.0
     )
 
-    entry_email = Entry(
+    entry_email = Entry( # Campo de entrada para o email.
         canvas,
         bd=0,
         bg="#FFFFFF",
@@ -402,7 +405,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         height=56.0
     )
 
-    entry_senha = Entry(
+    entry_senha = Entry( # Campo de entrada para a senha.
         canvas,
         bd=0,
         bg="#FFFFFF",
@@ -418,7 +421,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         height=56.0
     )
 
-    entry_confirma_senha = Entry(
+    entry_confirma_senha = Entry( # Campo de entrada para confirmar a senha.
         canvas,
         bd=0,
         bg="#FFFFFF",
@@ -434,7 +437,7 @@ def criar_tela_editar_perfil(window, canvas, usuario_logado):
         height=56.0
     )
 
-    entries = {
+    entries = { # Dicionário para poder editar os usuários depois.
         "nome": entry_nome,
         "email": entry_email,
         "senha": entry_senha,

@@ -18,7 +18,7 @@ def criar_tela_pedido_usuario(window, canvas, usuario_logado):
     from .modulos import animalcrud
 
     user_id = usuario_logado.get('id') # Pega o ID do usuário logado
-    todos_pedidos = pedidos.carregar_dados('pedidos.json') # Carrega todos os pedidos de adoção
+    todos_pedidos = pedidos.carregar_dados('pedidos_pendente.json') # Carrega todos os pedidos de adoção
     todos_animais = animalcrud.carregar_dados("animais_adocao.json") # Carrega todos os dados dos animais
 
     id_animal_pedido = None # Inicializa o ID do animal do pedido como nulo
