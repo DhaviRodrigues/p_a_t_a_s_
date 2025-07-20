@@ -14,7 +14,7 @@ class Pedidos:
         self.email_usuario = email_usuario
         self.processo = processo
 
-    def converter_para_dicionario(self): #Converte todas as intâncias em dicionarios
+    def converter_para_dicionario(self):
         return {
             "id_mensagem": self.id_mensagem,
             "nome_animal": self.nome_animal,
