@@ -87,7 +87,7 @@ def criar_tela_info_pedido_pendente(window, canvas, usuario_logado, pedido, nome
             "button_2.png"
         )
     )
-    button_2 = Button( # Botão para iniciar a tentativa de adoção.
+    button_2 = Button( # Botão para concluir a adoção.
         canvas,
         image=canvas.button_image_2,
         borderwidth=0,
@@ -95,9 +95,30 @@ def criar_tela_info_pedido_pendente(window, canvas, usuario_logado, pedido, nome
         command=lambda: print ("ainda nao faz nada"), #tentar_adotar(window, canvas, animal_clicado, usuario_logado),
         relief="flat"
     )
-    button_2.place( # Posiciona o botão "Adotar".
-        x=1079.0,
-        y=557.0,
+    button_2.place( # Posiciona o botão "Pedido Concluido".
+        x=630.0,
+        y=470.0,
+        width=181.0,
+        height=116.0
+    )
+
+    canvas.button_image_3 = PhotoImage( # Carrega a imagem do botão "Pedido Concluido".
+        file=tools.relative_to_assets(
+            "TelaInfoPedido",
+            "button_3.png"
+        )
+    )
+    button_3 = Button( # Botão para iniciar a tentativa de adoção.
+        canvas,
+        image=canvas.button_image_3,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: print ("ainda nao faz nada"), #tentar_adotar(window, canvas, animal_clicado, usuario_logado),
+        relief="flat"
+    )
+    button_3.place( # Posiciona o botão "Adotar".
+        x=280.0,
+        y=470.0,
         width=181.0,
         height=116.0
     )

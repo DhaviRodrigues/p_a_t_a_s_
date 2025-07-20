@@ -46,8 +46,10 @@ def tentar_alterar_status_adm(entry_widget, novo_status, window):
     """Tenta alterar o status de administrador de um usuário com base no e-mail fornecido. Exibe uma mensagem de sucesso ou erro e limpa o campo de entrada."""
     from .modulos import usercrud
 
+    print (f"{entry_widget.get()}")
+
     email = entry_widget.get() # Obtém o email do campo de entrada
-    resultado = usercrud.alterar_status_adm(email, novo_status) # Chama a função para alterar o status
+    resultado = usercrud.Usuario.alterar_status_adm(email, novo_status) # Chama a função para alterar o status
 
     if "sucesso" in resultado: # Se a operação foi bem-sucedida
         tools.custom_messagebox(window, "Operação Concluída", resultado) # Mostra mensagem de sucesso
@@ -129,7 +131,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_alterar_status_adm(entry_remover_adm, False, window),
+        command=lambda: tentar_alterar_status_adm(entry_adicionar_adm, True, window),
         relief="flat"
     )
     button_3.place( # Posiciona o botão.
@@ -237,7 +239,7 @@ def criar_tela_menu_adm(window, canvas, usuario_logado):
         image=canvas.button_image_10,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: tentar_alterar_status_adm(entry_adicionar_adm, True, window),
+        command=lambda: tentar_alterar_status_adm(entry_remover_adm, False, window),
         relief="flat"
     )
     button_10.place( # Posiciona o botão.
