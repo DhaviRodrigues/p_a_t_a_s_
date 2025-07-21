@@ -90,7 +90,7 @@ Para executar o P.A.T.A.S. no seu ambiente local, siga os passos abaixo.
     ```
 
 4.  **Execute a aplicação:**
-    Para iniciar a interface gráfica, execute o `gui_main.py` em **modo administrador** (Caso contrário ele não modificará os arquivos .json ao criar uma conta) a partir da pasta raiz do projeto, ou adicione a pasta ao workspace do VS Code e inicie o `gui_main.py`.
+    Para iniciar a interface gráfica, execute o `gui_main.py` em **modo administrador (Caso contrário ele não modificará os arquivos .json ao criar uma conta)** a partir da pasta raiz do projeto, ou adicione a pasta ao workspace do VS Code e inicie o `gui_main.py`.
     ```bash
     python gui_main.py
     ```
