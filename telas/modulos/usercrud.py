@@ -201,16 +201,25 @@ class Usuario:
         except Exception as e:
             print(" Erro ao enviar email:", e)
 
-
     def gerar_codigo(email):
+        """
+        Gera um código de 6 dígitos garantindo que nenhum número se repita mais de 3 vezes.
+        """
+        while True:
+            codigo_provisorio = str(random.randint(100000, 999999))# Gera um número candidato entre 100000 e 999999 e o converte para string
+            verificao_codigo = Counter(codigo_provisorio)# Conta a ocorrência de cada dígito no número gerado
+            
+            # Verifica se algum dígito apareceu mais de 3 vezes.
+            # A função any() retorna True se qualquer valor na sequência for True.
+            # Se nenhum dígito se repetiu mais de 3 vezes, a condição é falsa e o 'if not' é executado.
+            if not any(count > 3 for count in verificao_codigo.values()):
+                codigo_final = codigo_provisorio
+                break
 
-        # Envia código de verificação
-        codigo = random.randint(100000, 999999)
-        mensagem = "Código para Confirmação de indentidade:"
+        mensagem = "Código para Confirmação de identidade:"
         assunto = "Código de Verificação P.A.T.A.S"
-        Usuario.enviar_email(email, str(codigo), mensagem, assunto)
-        return str(codigo)
-
+        Usuario.enviar_email(email, str(codigo_final), mensagem, assunto)
+        return codigo_final
 
     def recuperar_senha(usuario, nova_senha):
         """
