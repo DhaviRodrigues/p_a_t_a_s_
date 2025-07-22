@@ -211,7 +211,7 @@ class Usuario:
         Usuario.enviar_email(email, str(codigo), mensagem, assunto)
         return str(codigo)
 
-    def gerar_codigo_modificado(email):
+    def gerar_codigo(email):
         """
         Gera um código de 6 dígitos garantindo que nenhum número se repita mais de 3 vezes.
         """
@@ -228,6 +228,7 @@ class Usuario:
 
         mensagem = "Código para Confirmação de identidade:"
         assunto = "Código de Verificação P.A.T.A.S"
+        Usuario.enviar_email(email, str(codigo_final), mensagem, assunto)
         return codigo_final
 
 
