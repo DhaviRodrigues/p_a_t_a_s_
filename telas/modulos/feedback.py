@@ -4,14 +4,12 @@ EMAIL_ADMIN = EMAIL_REMETENTE
 
 class Feedback:
     """
-    Módulo de Feedback do P.A.T.A.S.
+    Classe de Feedback do P.A.T.A.S.
     
     Este módulo permite que os utilizadores enviem feedback sobre o sistema.
     Ele recolhe informações como nome, email e mensagem de feedback,
     e envia um email para o administrador do sistema.
     """
-
-
 
     def enviar_feedback(entry_assunto,entry_mensagem,usuario_logado):
         """
