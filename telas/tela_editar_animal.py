@@ -7,10 +7,10 @@ sexo_selecionado = None # Variável global para guardar o sexo selecionado (M/F)
 tipo_cadastro_selecionado = None # Variável global para guardar o tipo de cadastro (adoção/tratamento).
 caminho_imagem_animal = None # Variável global para guardar o caminho da nova imagem selecionada.
 
-def transicao_para_menu_adm(window, canvas):
+def transicao_para_menu_adm(window, canvas, usuario_logado):
     """Realiza a transição de volta para a tela do menu de administrador."""
     from telas import tela_menu_adm
-    tools.fade_out( window,canvas,lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas,)) # Chama a função de efeito fade-out.
+    tools.fade_out( window,canvas,lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas, usuario_logado)) # Chama a função de efeito fade-out.
 
 def selecionar_imagem_animal(canvas):
     """Abre uma janela para o usuário selecionar um arquivo de imagem e exibe um preview na tela."""
@@ -259,7 +259,7 @@ def criar_tela_editar_animal(window, canvas, usuario_logado, animal, arquivo_ori
         image=canvas.button_image_3,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: transicao_para_menu_adm(window, canvas),
+        command=lambda: transicao_para_menu_adm(window, canvas, usuario_logado),
         relief="flat"
     )
     button_voltar.place(

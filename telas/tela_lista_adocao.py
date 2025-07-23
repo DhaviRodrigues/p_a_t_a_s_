@@ -15,6 +15,15 @@ def transicao_para_menu_adm(window, canvas, usuario_logado):
     from telas import tela_menu_adm
     tools.fade_out(window, canvas, lambda: tela_menu_adm.criar_tela_menu_adm(window, canvas, usuario_logado)) # Efeito de fade-out antes de transicionar
 
+def transicao_do_botao_animal(window, canvas, usuario_logado, todos_animais, animal):
+    from telas import tela_editar_animal, tela_info_pet_adocao
+
+    if usuario_logado.get("adm") == True and animal.get("processo_adocao") == False:
+        tela_editar_animal.criar_tela_editar_animal(window, canvas, usuario_logado, animal, "animais_adocao.json") # Se for admin, vai para a tela de edição.
+    elif usuario_logado.get("adm") == True and animal.get("processo_adocao") == True:
+        tools.custom_messagebox(window, "Adoção Pendente", "Este animal já está em processo de adoção. caso queria editá-lo, recuse o pedido primeiro") # Exibe mensagem de erro.
+    else:
+        tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal)
 
 def criar_tela_lista_adocao(window,canvas,usuario_logado):
     """
@@ -168,13 +177,12 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
             tags=(tag_card,)
         )
         
-        card_canvas.tag_bind(tag_card, # Associa um evento de clique a todos os elementos com a tag.
+        card_canvas.tag_bind(
+            tag_card, # Associa um evento de clique a todos os elementos com a tag.
             "<Button-1>",
-            lambda e, animal=todos_animais: tools.fade_out(window,canvas, # Define a ação de clique no card.
-            lambda: tela_editar_animal.criar_tela_editar_animal(window, canvas, usuario_logado, animal, "animais_adocao.json") # Se for admin, vai para a tela de edição.
-            if usuario_logado.get("adm") == True
-            else tela_info_pet_adocao.criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal))) # Se não, vai para a tela de informações de adoção.
-        
+            lambda event, animal=todos_animais: transicao_do_botao_animal(window, canvas, usuario_logado, todos_animais, animal) # Ação do clique é condicional.
+        )
+
         card_canvas.create_image( # Desenha a imagem placeholder da foto do animal.
             124.0,
             109,
