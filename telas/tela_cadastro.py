@@ -13,7 +13,8 @@ def transicao_para_inicial(window, canvas):
 def transicao_para_tela_inserir_codigo(window, canvas, pre_usuario, codigo):
     """Realiza a transição para a tela de inserção de código de verificação."""
     from telas import tela_inserir_codigo
-    tools.fade_out(window,canvas,lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo)) # Efeito de fade-out antes de transicionar.
+    usuario= {} # Dicionário em branco, que será usado se o usuário já existir e precisar redefinir a senha.
+    tools.fade_out(window,canvas,lambda: tela_inserir_codigo.criar_tela_inserir_codigo(window, canvas, pre_usuario, codigo, usuario)) # Efeito de fade-out antes de transicionar.
 
 
 def selecionar_icone(canvas, x, y, nome_imagem_selecao, nome_icone):
@@ -57,6 +58,8 @@ def tentar_cadastro(entries,canvas,window,):
         "senha": senha,
         "icone": user_icon
     }
+
+
 
     if resultado is True: # Se a validação for bem-sucedida.
         codigo = usercrud.Usuario.gerar_codigo(email) # Gera e envia o código de verificação para o e-mail.

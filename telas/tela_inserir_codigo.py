@@ -4,12 +4,12 @@ from telas import tools
 def transicao_para_tela_inicial(window, canvas):
     """Realiza a transição para a tela inicial do programa."""
     from telas import tela_inicial
-    tools.fade_out(window, canvas, lambda: tela_inicial.criar_tela_inicial(window, canvas, None)) # Efeito de fade-out antes de transicionar.
+    tools.fade_out(window, canvas, lambda: tela_inicial.criar_tela_inicial(window, canvas)) # Efeito de fade-out antes de transicionar.
 
 def transicao_para_login(window, canvas):
     """Realiza a transição para a tela de login."""
     from telas import tela_login
-    tools.fade_out(window, canvas, lambda: tela_login.criar_tela_login(window, canvas, None)) # Efeito de fade-out antes de transicionar.
+    tools.fade_out(window, canvas, lambda: tela_login.criar_tela_login(window, canvas)) # Efeito de fade-out antes de transicionar.
 
 def tentar_verificar_codigo(window, codigo, entry_codigo, pre_usuario, canvas, usuario):
     """

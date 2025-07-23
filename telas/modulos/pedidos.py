@@ -52,11 +52,11 @@ class Pedidos:
         usuario_logado['pedido'] = True
 
 
-        # Atualiza o status de 'processo_adoacao' do animal para True.
+        # Atualiza o status de 'processo_adocao' do animal para True.
         todos_animais = animalcrud.carregar_dados("animais_adocao.json")
         for animal in todos_animais:
             if animal.get("id") == animal_clicado['id']:
-                animal["processo_adoacao"] = True
+                animal["processo_adocao"] = True
                 break
         animalcrud.salvar_dados("animais_adocao.json", todos_animais)
 

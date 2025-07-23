@@ -23,33 +23,23 @@ def tentar_adotar(window, canvas, animal_clicado, usuario_logado):
             "Adoção Pendente",
             "Você já possui um pedido de adoção pendente.\n Para mais informações, veja seu perfil."
         )
-    elif animal_clicado.get('processo_adoacao', True): # Verifica se o animal já está em processo de adoção.
+    elif animal_clicado.get('processo_adocao', True): # Verifica se o animal já está em processo de adoção.
         tools.custom_messagebox( # Exibe mensagem de erro se o animal já estiver sendo adotado.
             window,
             "Adoção Pendente",
             "Este animal já está em processo de adoção.\n Caso queira, adote outro animal."
         )
     else: # Se não houver impedimentos, prossegue com o pedido.
-        resposta = tools.custom_yn( # Pede a confirmação do usuário em uma caixa de diálogo Sim/Não.
-            window,
-            "Confirmar Pedido de Adoção", 
-            "Tem a certeza de que deseja adotar este animal?"
-        )
+        resposta = tools.custom_yn(window,"Confirmar Pedido de Adoção", "Tem a certeza de que deseja adotar este animal?") # Pede a confirmação do usuário em uma caixa de diálogo Sim/Não.
+        
         if resposta: # Se o usuário confirmar...
 
             pedidos.Pedidos.criar_pedido_adocao(animal_clicado, usuario_logado) # Chama a função para criar o pedido.
+            
             if pedidos.Pedidos.criar_pedido_adocao: # Verifica se a função de criação foi executada (condição pode ser melhorada).
-                tools.custom_messagebox( # Exibe mensagem de sucesso.
-                    window,
-                    "Pedido Enviado",
-                    "O seu pedido de adoção foi enviado com sucesso!\nVeja mais informações no seu perfil."
-                )
+                tools.custom_messagebox(window,"Pedido Enviado","O seu pedido de adoção foi enviado com sucesso!\nVeja mais informações no seu perfil.") # Exibe mensagem de sucesso.
             else: # Caso ocorra um erro.
-                tools.custom_messagebox( # Exibe mensagem de erro.
-                    window,
-                    "Erro",
-                    "Ocorreu um erro ao enviar o pedido de adoção. Por favor, tente novamente mais tarde\n\n Peço que nos envie uma mensagem relatando o erro."
-                )
+                tools.custom_messagebox(window,"Erro","Ocorreu um erro ao enviar o pedido de adoção. Por favor, tente novamente mais tarde\n\n Peço que nos envie uma mensagem relatando o erro.")  # Exibe mensagem de erro.
 
 
 def criar_tela_info_pet_adocao(window, canvas, usuario_logado, animal_clicado):

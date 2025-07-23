@@ -209,7 +209,17 @@ def criar_tela_lista_adocao(window,canvas,usuario_logado):
             tags=(tag_card,)
         )
 
-        if not todos_animais.get("processo_adoacao", False): # Verifica se o animal não está em processo de adoção.
+        card_canvas.create_text( # Exibe a espécie do animal.
+            272.0,
+            69,
+            anchor="nw",
+            text=f"Espécie: {todos_animais.get('especie', '')}",
+            fill="#44312D",
+            font=("Poppins Black", 32 * -1),
+            tags=(tag_card,)
+        )
+
+        if not todos_animais.get("processo_adocao", False): # Verifica se o animal não está em processo de adoção.
             card_canvas.create_text( # Exibe a mensagem de que está disponível.
                 730,
                 145,

@@ -12,9 +12,9 @@ def transicao_para_menu_principal(window, canvas, usuario_logado):
 
 def transicao_para_editar_perfil(window, canvas, usuario_logado):
     """Realiza a transição da tela de perfil para editar perfil."""
-    from telas import tela_menu_principal
-
-    tools.fade_out( window,canvas,lambda: tela_menu_principal.criar_tela_menu_principal(window, canvas, usuario_logado)) # Efeito de fade-out antes de transicionar
+    from telas import tela_editar_perfil
+    print(f'Usuário Logado: {usuario_logado}') # Imprime o usuário logado para depuração.
+    tools.fade_out( window,canvas,lambda: tela_editar_perfil.criar_tela_editar_perfil(window, canvas, usuario_logado)) # Efeito de fade-out antes de transicionar
 
 
 def transicao_para_logout(window, canvas):
@@ -133,7 +133,7 @@ def criar_tela_perfil(window, canvas, usuario_logado,):
         image=canvas.button_image_1, 
         borderwidth=0, 
         highlightthickness=0,
-        command=lambda: transicao_para_editar_perfil(window, canvas, usuario_logado), 
+        command=lambda: transicao_para_editar_perfil(window, canvas, usuario_logado),
         relief="flat"
     )
     button_1.place( # Posiciona o botão de editar perfil
