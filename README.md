@@ -49,14 +49,17 @@ Com uma interface gráfica intuitiva, o objetivo é otimizar o trabalho dos volu
 
 ---
 
-## 🛠️ Tecnologias e Ferramentas
+## 🛠️ Tecnologias e Bibliotecas
 
 | Tecnologia | Propósito |
 | :--- | :--- |
 | **Python** | Linguagem principal do projeto. |
+| **webbrowser** | Abre o navegador padrão do utilizador para aceder a links externos. |
 | **Tkinter** | Biblioteca nativa para a construção da interface gráfica (GUI). |
 | **Pillow (PIL)** | Manipulação e redimensionamento de imagens (fotos dos animais e ícones). |
+| **shutil** | Realiza operações com ficheiros, como copiar as imagens enviadas. |
 | **tkextrafont**| Carregamento de fontes personalizadas (`.ttf`) para uma identidade visual única. |
+| **pathlib**| Facilita a manipulação de caminhos de ficheiros de forma independente do sistema operativo. |
 | **JSON** | Formato utilizado para o armazenamento persistente dos dados (utilizadores, animais, etc.). |
 
 ---
@@ -77,9 +80,8 @@ Para executar o P.A.T.A.S. no seu ambiente local, siga os passos abaixo.
     ```
 
 2.  **Instale as bibliotecas:**
-    O ficheiro `requesitos.txt` contém todas as bibliotecas necessária:
+    O ficheiro `requesitos.txt` contém todas as bibliotecas necessárias:
     ```bash
-    setuptools
     tkinter
     pillow
     webbrowser
@@ -90,7 +92,7 @@ Para executar o P.A.T.A.S. no seu ambiente local, siga os passos abaixo.
     ```
 
 4.  **Execute a aplicação:**
-    Para iniciar a interface gráfica, execute o `gui_main.py` em **modo administrador** a partir da pasta raiz do projeto, ou adicione a pasta ao workspace do VS Code e inicie o `gui_main.py`.
+    Para iniciar a interface gráfica, execute o `gui_main.py` em **modo administrador (Caso contrário ele não modificará os arquivos .json ao criar uma conta)** a partir da pasta raiz do projeto, ou adicione a pasta ao workspace do VS Code e inicie o `gui_main.py`.
     ```bash
     python gui_main.py
     ```
