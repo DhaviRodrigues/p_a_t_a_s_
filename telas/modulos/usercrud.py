@@ -32,24 +32,30 @@ class Usuario:
 
 
     def validar_usuario(nome, email, senha, confirma_senha, icone):
+        # Verifica se todos os campos foram preenchidos.
         if not nome or not email or not senha or not confirma_senha:
             return "Todos os campos devem ser preenchidos."
 
+        # Verifica o comprimento do nome de usuário.
         if len(nome) > 40:
             return "Nome de usuário acima do limite."
 
+        # Verifica se as senhas coincidem.
         if senha != confirma_senha:
             return "As senhas não coincidem."
 
+        # Verifica o comprimento mínimo e máximo da senha.
         if len(senha) < 8:
             return "A senha deve ter no mínimo 8 caracteres."
 
         if len(senha) > 16:
             return "A senha não pode ter mais de 16 caracteres."
 
+        # Verifica se um ícone de perfil foi escolhido.
         if icone is None:
             return "Por favor, escolha um ícone de perfil."
 
+        # Valida o formato do e-mail.
         email_valido = (
             '@gmail.com' in email or
             '@hotmail.com' in email or
@@ -61,6 +67,7 @@ class Usuario:
         if not email_valido:
             return "Formato de email inválido ou domínio não permitido."
 
+        # Verifica se o e-mail já está em uso.
         usuarios = carregar_dados("usuarios.json")
         for usuario_existente in usuarios:
             if usuario_existente['email'] == email.strip().lower():
@@ -69,34 +76,35 @@ class Usuario:
         return True
 
 
+    # Cria um novo usuário.
     def criar_usuario(nome, email, senha, icone):
         usuarios = carregar_dados("usuarios.json")
 
+        # Gera um novo ID para o usuário.
         maior_id = -1
         for u in usuarios:
             if u['id'] > maior_id:
                 maior_id = u['id']
         novo_id = maior_id + 1
 
+        # Cria uma nova instância de Usuario e a adiciona à lista de usuários.
         novo_usuario = Usuario(novo_id, nome.title().strip(), email.strip().lower(), senha.strip(), icone)
         usuarios.append(novo_usuario.converter_para_dicionario())
 
+        # Salva os dados atualizados no arquivo JSON.
         salvar_dados("usuarios.json", usuarios)
 
 
+    # Realiza o login do usuário.
     def fazer_login(email, senha):
-        """Comando para fazer login do usuário.
-        Informações requisitadas:
-        email:
-        senha:
-        
-        As informações devem estar presentes no id de algum usuário do "Usuários.json" 
-        """
+        """Comando para fazer login do usuário."""
+        # Verifica se os campos de e-mail e senha foram preenchidos.
         if not email or not senha:
             return "Preencha todos os campos."
 
         usuarios = carregar_dados("usuarios.json")
 
+        # Verifica as credenciais do usuário.
         for usuario in usuarios:
             if usuario['email'] == email and usuario['senha'] == senha:
                 print(f"--- Login bem-sucedido para {usuario['nome']} ---")
@@ -105,9 +113,11 @@ class Usuario:
         return "Email ou senha incorretos."
 
 
+    # Salva as alterações no perfil do usuário.
     def salvar_alteracoes_perfil(usuario_atualizado):
         todos_usuarios = carregar_dados('usuarios.json')
 
+        # Cria uma nova lista de usuários, substituindo os dados do usuário atualizado.
         novo_arquivo_usuarios = []
         for usuario in todos_usuarios:
             if usuario['id'] != usuario_atualizado['id']:
@@ -118,21 +128,22 @@ class Usuario:
         salvar_dados('usuarios.json', novo_arquivo_usuarios)
 
 
+    # Deleta a conta do usuário.
     def deletar_conta(usuario_logado):
-        """
-        Exclui a conta do usuário do arquivo JSON.
-        """
+        """Exclui a conta do usuário do arquivo JSON."""
         arquivo_usuario = carregar_dados('usuarios.json')
         
+        # Cria uma nova lista de usuários, excluindo o usuário logado.
         novo_arquivo_usuarios = []
         for usuarios in arquivo_usuario:
-            if usuarios['id'] != usuario_logado['id']:#Exclui o usuario da lista
-                novo_arquivo_usuarios.append(usuarios) #Cria uma lista sem o usario logado
+            if usuarios['id'] != usuario_logado['id']:
+                novo_arquivo_usuarios.append(usuarios) 
         
-        salvar_dados('usuarios.json', novo_arquivo_usuarios) #Salva os dados
+        salvar_dados('usuarios.json', novo_arquivo_usuarios) 
         return True
 
 
+    # Altera o status de administrador de um usuário.
     def alterar_status_adm(email, novo_status):
         """Encontra um usuário por email e altera seu status de administrador."""
         if not email:
@@ -140,6 +151,7 @@ class Usuario:
 
         usuarios = carregar_dados("usuarios.json")
         
+        # Encontra o usuário pelo e-mail e atualiza seu status de administrador.
         usuario_encontrado = False
         for usuario in usuarios:
             if usuario['email'] == email.strip().lower():
@@ -158,9 +170,9 @@ class Usuario:
             return f"O usuário {email} foi removido de administrador com sucesso."
     
 
+    # Verifica se um e-mail já está cadastrado.
     def email_existe(email):
         """Verifica se um email já está cadastrado no sistema."""
-            
         usuarios = carregar_dados("usuarios.json")
         for usuario in usuarios:
             if usuario.get('email') == email.strip().lower():

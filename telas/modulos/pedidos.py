@@ -26,17 +26,23 @@ class Pedidos:
         }
 
 
+    # Cria um novo pedido de adoção.
     def criar_pedido_adocao(animal_clicado, usuario_logado):
+        # Carrega os pedidos pendentes do arquivo JSON.
         pedidos = carregar_dados('pedidos_pedente.json')
 
+        # Encontra o maior ID de mensagem existente para gerar um novo ID.
         maior_id_atual = -1 
         for pedido_existente in pedidos:
             if pedido_existente['id_mensagem'] > maior_id_atual:
                 maior_id_atual = pedido_existente['id_mensagem']
         id_mensagem = maior_id_atual + 1
+        # Define o status inicial do processo de adoção.
         processo = "Em análise, verifique sempre seu email."
+        # Cria uma nova instância de Pedidos.
         novo_pedido = Pedidos(id_mensagem, animal_clicado['nome'], animal_clicado['id'], usuario_logado['id'], usuario_logado['nome'], usuario_logado['email'], processo)
         
+        # Atualiza o status do pedido do usuário para True.
         todos_usuarios = usercrud.carregar_dados("usuarios.json")
         for usuario in todos_usuarios:
             if usuario.get("id") == usuario_logado['id']:
@@ -46,6 +52,7 @@ class Pedidos:
         usuario_logado['pedido'] = True
 
 
+        # Atualiza o status de 'processo_adoacao' do animal para True.
         todos_animais = animalcrud.carregar_dados("animais_adocao.json")
         for animal in todos_animais:
             if animal.get("id") == animal_clicado['id']:
@@ -53,6 +60,7 @@ class Pedidos:
                 break
         animalcrud.salvar_dados("animais_adocao.json", todos_animais)
 
+        # Adiciona o novo pedido à lista de pedidos pendentes e salva no arquivo.
         pedidos.append(novo_pedido.converter_para_dicionario())
         salvar_dados('pedidos_pendente.json', pedidos)
 
