@@ -356,6 +356,15 @@ def criar_tela_cadastro(window, canvas):
         font=("Poppins Black", 24 * -1)
     )
 
+    canvas.create_text( # Texto "De 8 a 16 caracteres".
+        760.0,
+        485.0,
+        anchor="nw",
+        text="(De 8 a 16 caracteres)",
+        fill="#44302C",
+        font=("Poppins Black", 16 * -1)
+    )
+
     canvas.create_text( # Título da seção de ícones.
         153.0,
         76.0,

@@ -116,6 +116,15 @@ def criar_tela_redefinir_senha(window, canvas, email):
         font=("Poppins Black", 24 * -1)
     )
 
+    canvas.create_text( # Cria o texto "(De 8 a 16 caracteres)" na tela.
+        453.0,
+        239.0,
+        anchor="nw",
+        text="(De 8 a 16 caracteres)",
+        fill="#44302C",
+        font=("Poppins Black", 16 * -1)
+    )
+
     canvas.button_image_2 = PhotoImage(
         file=tools.relative_to_assets("TelaRedefinirSenha", "button_2.png"))
 
