@@ -47,6 +47,26 @@ Com uma interface gráfica intuitiva, o objetivo é otimizar o trabalho dos volu
     - Definição do estado: "Em Tratamento" ou "Para Adoção".
 - **Gestão de Pedidos:** Visualização e gestão dos pedidos de adoção enviados pelos utilizadores.
 
+  ## 📋 Lista Completa de Funcionalidades
+
+| Código     | Funcionalidade                          | Descrição                                                                                                          |
+|------------|------------------------------------------|--------------------------------------------------------------------------------------------------------------------|
+| **RF001**  | Cadastro de Usuário                     | CRUD completo com validação de e-mail (com “@” e “.com”, sem espaços ou caracteres não latinos) e senha segura.    |
+| **RF002**  | Cadastro de Animal                      | Registro com campos: Status, Espécie, Raça, Nome, Sexo, Idade e Observações adicionais.                           |
+| **RF004**  | Menus Interativos                       | Navegação via menus (cadastro, login, funcionalidades, painel admin, edição de perfil e gestão de animais).       |
+| **RF005**  | Pedido de Adoção                        | Permite usuários solicitarem adoção de um animal; pedidos são enviados para validação do administrador.            |
+| **RF008**  | Verificação em Duas Etapas              | Envia um código de verificação por e-mail no cadastro. Conta só é criada após validação.                          |
+| **RF009**  | Canal de Feedback e Dúvidas             | Canal direto para envio de sugestões ou dúvidas para o e-mail da plataforma.                                      |
+| **RF010**  | Arquivamento de Animais Adotados        | Após adoção, animal é movido para área de arquivo, inacessível a usuários comuns.                                 |
+| **RF011**  | Prevenção de Conflitos de Adoção        | Bloqueia múltiplos pedidos simultâneos; animal fica marcado como “EM PROCESSO DE ADOÇÃO”.                         |
+| **RF012**  | Área para Doações Financeiras           | Seção com links para doações via PIX, Patreon e redes sociais.                                                    |
+| **RF018**  | Recuperação de Senha                    | Envio de código por e-mail para redefinir senha esquecida.                                                        |
+| **ENH001** | Adição de Fotos dos Animais             | Permite upload de fotos no cadastro usando `shutil` para manuseio dos arquivos.                                   |
+| **RF018**  | Fotos de Perfil dos Usuários            | Seleção de ícones predefinidos como foto de perfil (impede envio de imagens impróprias).                          |
+| **RF017 / RF019** | Interface Gráfica e Telas Personalizadas | GUI desenvolvida com Tkinter + Figma; inclui telas personalizadas no lugar de messageboxes.                  |
+| **RF007**  | Acesso e Funções de Administrador       | Administradores podem editar/mover animais, conceder privilégios e acessar menus exclusivos.                      |
+
+
 ---
 
 ## 🛠️ Tecnologias e Bibliotecas
