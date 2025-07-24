@@ -62,7 +62,7 @@ Com uma interface gráfica intuitiva, o objetivo é otimizar o trabalho dos volu
 | **RF012**  | Área para Doações Financeiras           | Seção com links para doações via PIX, Patreon e redes sociais.                                                    |
 | **RF018**  | Recuperação de Senha                    | Envio de código por e-mail para redefinir senha esquecida.                                                        |
 | **ENH001** | Adição de Fotos dos Animais             | Permite upload de fotos no cadastro usando `shutil` para manuseio dos arquivos.                                   |
-| **RF018**  | Fotos de Perfil dos Usuários            | Seleção de ícones predefinidos como foto de perfil (impede envio de imagens impróprias).                          |
+| **RF020**  | Fotos de Perfil dos Usuários            | Seleção de ícones predefinidos como foto de perfil (impede envio de imagens impróprias).                          |
 | **RF017 / RF019** | Interface Gráfica e Telas Personalizadas | GUI desenvolvida com Tkinter + Figma; inclui telas personalizadas no lugar de messageboxes.                  |
 | **RF007**  | Acesso e Funções de Administrador       | Administradores podem editar/mover animais, conceder privilégios e acessar menus exclusivos.                      |
 
