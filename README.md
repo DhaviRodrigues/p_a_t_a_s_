@@ -63,7 +63,7 @@ Com uma interface gráfica intuitiva, o objetivo é otimizar o trabalho dos volu
 | **JSON** | Formato utilizado para o armazenamento persistente dos dados (utilizadores, animais, etc.). |
 
 ---
-```markdown
+```bash
 ## 🖥️ Interface Gráfica do Projeto no Figma:
 
 (https://www.figma.com/design/HYEJbu0Zy6hmj5aPscfjq0/P.A.T.A.S.?node-id=77-5&t=LxwDij6E0fdhJYus-1)
